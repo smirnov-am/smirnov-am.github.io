@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-10T23:08:59+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">E-commerce recommendation systems</title><link href="http://localhost:4000/machine/learning,/data/mining,/python/2018/04/08/E-commerce-recommendation-systems.html" rel="alternate" type="text/html" title="E-commerce recommendation systems" /><published>2018-04-08T23:01:34+02:00</published><updated>2018-04-08T23:01:34+02:00</updated><id>http://localhost:4000/machine/learning,/data/mining,/python/2018/04/08/E-commerce-recommendation-systems</id><content type="html" xml:base="http://localhost:4000/machine/learning,/data/mining,/python/2018/04/08/E-commerce-recommendation-systems.html">&lt;p&gt;Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-14T20:53:15+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">E-commerce recommendation systems</title><link href="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html" rel="alternate" type="text/html" title="E-commerce recommendation systems" /><published>2018-04-08T00:00:00+02:00</published><updated>2018-04-08T00:00:00+02:00</updated><id>http://localhost:4000/2018/04/08/E-commerce-recommendation-systems</id><content type="html" xml:base="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html">&lt;p&gt;Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.&lt;/p&gt;
 
 &lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
 &lt;p&gt;Amazon is one of the most prominent organizations used recommendations to increase sales.
@@ -256,7 +256,7 @@ FP-Growth needs some more testing though, so I’ve used &lt;a href=&quot;https:
 &lt;table&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th&gt;from-teimset&lt;/th&gt;
+      &lt;th&gt;from_itemset&lt;/th&gt;
       &lt;th&gt;to_itemset&lt;/th&gt;
       &lt;th&gt;confidence&lt;/th&gt;
       &lt;th&gt;lift&lt;/th&gt;
