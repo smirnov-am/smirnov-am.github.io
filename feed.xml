@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-24T21:20:56+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Topic extraction</title><link href="http://localhost:4000/2018/04/16/Topic-extraction.html" rel="alternate" type="text/html" title="Topic extraction" /><published>2018-04-16T00:00:00+02:00</published><updated>2018-04-16T00:00:00+02:00</updated><id>http://localhost:4000/2018/04/16/Topic-extraction</id><content type="html" xml:base="http://localhost:4000/2018/04/16/Topic-extraction.html">&lt;p&gt;Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-04-25T21:42:31+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Topic extraction</title><link href="http://localhost:4000/2018/04/16/Topic-extraction.html" rel="alternate" type="text/html" title="Topic extraction" /><published>2018-04-16T00:00:00+02:00</published><updated>2018-04-16T00:00:00+02:00</updated><id>http://localhost:4000/2018/04/16/Topic-extraction</id><content type="html" xml:base="http://localhost:4000/2018/04/16/Topic-extraction.html">&lt;p&gt;Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document.
 There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.&lt;/p&gt;
 
 &lt;h3 id=&quot;supervised-approach&quot;&gt;Supervised approach&lt;/h3&gt;
@@ -35,16 +35,24 @@ For word embeddings RNN are a &lt;a href=&quot;http://colah.github.io/posts/2014
 
 &lt;p&gt;I’ve tried to implement his algorithm &lt;a href=&quot;https://github.com/smirnov-am/pytopicrank&quot;&gt;here&lt;/a&gt; which goes like this:&lt;/p&gt;
 
-&lt;p&gt;1) tokenize text and identify part-of-speech of each token
-2) identify longest sequences of adjectives and nouns - they constitute keyphrases
-3) convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression
-4) find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:&lt;/p&gt;
+&lt;p&gt;1) tokenize text and identify part-of-speech of each token&lt;/p&gt;
+
+&lt;p&gt;2) identify longest sequences of adjectives and nouns - they constitute keyphrases&lt;/p&gt;
+
+&lt;p&gt;3) convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression&lt;/p&gt;
+
+&lt;p&gt;4) find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;use average strategy&lt;/li&gt;
-  &lt;li&gt;identify cluster by max depth of 0.74 (good explanation if HAC can be found &lt;a href=&quot;https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters&quot;&gt;here&lt;/a&gt;
-5) use clusters as graph vertices and sum of distances between each keyphare of topic pairs as edge weight
-6) apply PageRank to identify most prominent topics (implemented in &lt;code class=&quot;highlighter-rouge&quot;&gt;networkx&lt;/code&gt;)
-7) For topN topics extract most significant keyphrases that represent this topic. Possible strategies&lt;/li&gt;
+  &lt;li&gt;identify cluster by max depth of 0.74 (good explanation if HAC can be found &lt;a href=&quot;https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;5) use clusters as graph vertices and sum of distances between each keyphare of topic pairs as edge weight&lt;/p&gt;
+
+&lt;p&gt;6) apply PageRank to identify most prominent topics (implemented in &lt;code class=&quot;highlighter-rouge&quot;&gt;networkx&lt;/code&gt;)&lt;/p&gt;
+
+&lt;p&gt;7) For topN topics extract most significant keyphrases that represent this topic. Possible strategies&lt;/p&gt;
+&lt;ul&gt;
   &lt;li&gt;use a keyphrase which is closer to the beginning of the text&lt;/li&gt;
   &lt;li&gt;use center of the cluster from p.4&lt;/li&gt;
   &lt;li&gt;use most frequent&lt;/li&gt;
@@ -64,7 +72,10 @@ For word embeddings RNN are a &lt;a href=&quot;http://colah.github.io/posts/2014
 
 &lt;h2 id=&quot;tests&quot;&gt;Tests&lt;/h2&gt;
 &lt;p&gt;Let’s try to analyze key phrases of original article on TopicsRank.
-Top10 keyphrases are: &lt;code class=&quot;highlighter-rouge&quot;&gt;document&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;topics&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;keyphrase&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;graph&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;method&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;topicrank&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;word&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;vertices&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;keyphrase candidate&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;datasets&lt;/code&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</summary></entry><entry><title type="html">E-commerce recommendation systems</title><link href="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html" rel="alternate" type="text/html" title="E-commerce recommendation systems" /><published>2018-04-08T00:00:00+02:00</published><updated>2018-04-08T00:00:00+02:00</updated><id>http://localhost:4000/2018/04/08/E-commerce-recommendation-systems</id><content type="html" xml:base="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html">&lt;p&gt;Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.&lt;/p&gt;
+Top10 keyphrases are: &lt;code class=&quot;highlighter-rouge&quot;&gt;document&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;topics&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;keyphrase&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;graph&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;metshod&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;topicrank&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;word&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;vertices&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;keyphrase candidate&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;datasets&lt;/code&gt;, which is pretty close to what article is about.&lt;/p&gt;
+
+&lt;h2 id=&quot;deployment&quot;&gt;Deployment&lt;/h2&gt;
+&lt;p&gt;I’ve deployed my implementation of TopicRank as a AWS Lambda function that is being invoked from JavaScript directly &lt;a href=&quot;http://pytopicrank.s3-website-us-east-1.amazonaws.com/&quot;&gt;here&lt;/a&gt; (I’ve set &lt;code class=&quot;highlighter-rouge&quot;&gt;max_d=1.25&lt;/code&gt; there for no particular reason so results may vary)&lt;/p&gt;</content><author><name></name></author><summary type="html">Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</summary></entry><entry><title type="html">E-commerce recommendation systems</title><link href="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html" rel="alternate" type="text/html" title="E-commerce recommendation systems" /><published>2018-04-08T00:00:00+02:00</published><updated>2018-04-08T00:00:00+02:00</updated><id>http://localhost:4000/2018/04/08/E-commerce-recommendation-systems</id><content type="html" xml:base="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html">&lt;p&gt;Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.&lt;/p&gt;
 
 &lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
 &lt;p&gt;Amazon is one of the most prominent organizations used recommendations to increase sales.

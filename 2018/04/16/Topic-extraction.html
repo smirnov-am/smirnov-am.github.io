@@ -84,16 +84,24 @@ For word embeddings RNN are a <a href="http://colah.github.io/posts/2014-07-NLP-
 
 <p>I’ve tried to implement his algorithm <a href="https://github.com/smirnov-am/pytopicrank">here</a> which goes like this:</p>
 
-<p>1) tokenize text and identify part-of-speech of each token
-2) identify longest sequences of adjectives and nouns - they constitute keyphrases
-3) convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression
-4) find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:</p>
+<p>1) tokenize text and identify part-of-speech of each token</p>
+
+<p>2) identify longest sequences of adjectives and nouns - they constitute keyphrases</p>
+
+<p>3) convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression</p>
+
+<p>4) find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:</p>
 <ul>
   <li>use average strategy</li>
-  <li>identify cluster by max depth of 0.74 (good explanation if HAC can be found <a href="https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters">here</a>
-5) use clusters as graph vertices and sum of distances between each keyphare of topic pairs as edge weight
-6) apply PageRank to identify most prominent topics (implemented in <code class="highlighter-rouge">networkx</code>)
-7) For topN topics extract most significant keyphrases that represent this topic. Possible strategies</li>
+  <li>identify cluster by max depth of 0.74 (good explanation if HAC can be found <a href="https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters">here</a></li>
+</ul>
+
+<p>5) use clusters as graph vertices and sum of distances between each keyphare of topic pairs as edge weight</p>
+
+<p>6) apply PageRank to identify most prominent topics (implemented in <code class="highlighter-rouge">networkx</code>)</p>
+
+<p>7) For topN topics extract most significant keyphrases that represent this topic. Possible strategies</p>
+<ul>
   <li>use a keyphrase which is closer to the beginning of the text</li>
   <li>use center of the cluster from p.4</li>
   <li>use most frequent</li>
@@ -113,13 +121,16 @@ For word embeddings RNN are a <a href="http://colah.github.io/posts/2014-07-NLP-
 
 <h2 id="tests">Tests</h2>
 <p>Let’s try to analyze key phrases of original article on TopicsRank.
-Top10 keyphrases are: <code class="highlighter-rouge">document</code>, <code class="highlighter-rouge">topics</code>, <code class="highlighter-rouge">keyphrase</code>, <code class="highlighter-rouge">graph</code>, <code class="highlighter-rouge">method</code>, <code class="highlighter-rouge">topicrank</code>, <code class="highlighter-rouge">word</code>, <code class="highlighter-rouge">vertices</code> <code class="highlighter-rouge">keyphrase candidate</code>, <code class="highlighter-rouge">datasets</code></p>
+Top10 keyphrases are: <code class="highlighter-rouge">document</code>, <code class="highlighter-rouge">topics</code>, <code class="highlighter-rouge">keyphrase</code>, <code class="highlighter-rouge">graph</code>, <code class="highlighter-rouge">metshod</code>, <code class="highlighter-rouge">topicrank</code>, <code class="highlighter-rouge">word</code>, <code class="highlighter-rouge">vertices</code> <code class="highlighter-rouge">keyphrase candidate</code>, <code class="highlighter-rouge">datasets</code>, which is pretty close to what article is about.</p>
 
+<h2 id="deployment">Deployment</h2>
+<p>I’ve deployed my implementation of TopicRank as a AWS Lambda function that is being invoked from JavaScript directly <a href="http://pytopicrank.s3-website-us-east-1.amazonaws.com/">here</a> (I’ve set <code class="highlighter-rouge">max_d=1.25</code> there for no particular reason so results may vary)</p>
 
   </div><a class="u-url" href="/2018/04/16/Topic-extraction.html" hidden></a>
 </article>
 
       </div>
-    </main></body>
+    </main><form style="border:1px solid #ccc;padding:3px;text-align:center;" action="https://tinyletter.com/smirnov-am" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/smirnov-am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail">Subscribe to newsletter</label></p><p><input type="text" style="width:140px" name="email" id="tlemail" /></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /><p><a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a></p></form>
+         </body>
 
 </html>
