@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-15T12:50:59+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Securing Flask web applications.</title><link href="http://localhost:4000/2018/07/11/securing-flask.html" rel="alternate" type="text/html" title="Securing Flask web applications." /><published>2018-07-11T00:00:00+02:00</published><updated>2018-07-11T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/11/securing-flask</id><content type="html" xml:base="http://localhost:4000/2018/07/11/securing-flask.html">&lt;p&gt;I’ve just recently finished a web security training and in this post I’d like to investigate security mechanisms of my beloved web framework - Flask.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-15T12:57:23+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Securing Flask web applications.</title><link href="http://localhost:4000/2018/07/11/securing-flask.html" rel="alternate" type="text/html" title="Securing Flask web applications." /><published>2018-07-11T00:00:00+02:00</published><updated>2018-07-11T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/11/securing-flask</id><content type="html" xml:base="http://localhost:4000/2018/07/11/securing-flask.html">&lt;p&gt;I’ve just recently finished a web security training and in this post I’d like to investigate security mechanisms of my beloved web framework - Flask.
 I’ll go through different types of possible vulnerabilities and the way they can be mitigated.&lt;/p&gt;
 
 &lt;h2 id=&quot;xss&quot;&gt;XSS&lt;/h2&gt;
@@ -67,7 +67,7 @@ The following extensions for templates trigger autoescaping: .html, .htm, .xml, 
 We have a following option to mitigate&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;do not use user input with &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;use `` when rendering template. This has additional benefit of automatically building proper URLs if endpoint path changes.&lt;/li&gt;
+  &lt;li&gt;use &lt;code class=&quot;highlighter-rouge&quot;&gt;{{ url_for('endpoint')}}&lt;/code&gt; when rendering template. This has additional benefit of automatically building proper URLs if endpoint path changes.&lt;/li&gt;
   &lt;li&gt;use  &lt;code class=&quot;highlighter-rouge&quot;&gt;Content-Security-Policy&lt;/code&gt; header in response:&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -97,7 +97,7 @@ Unlike XSS the malicious code is stored on hacker controlled server where user i
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!doctype html&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Hello from Flask&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Account balance $&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Account balance ${{ balance }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
 
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;New transfer&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;method=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;

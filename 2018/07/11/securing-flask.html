@@ -119,7 +119,7 @@ The following extensions for templates trigger autoescaping: .html, .htm, .xml, 
 We have a following option to mitigate</p>
 <ul>
   <li>do not use user input with <code class="highlighter-rouge">href</code></li>
-  <li>use `` when rendering template. This has additional benefit of automatically building proper URLs if endpoint path changes.</li>
+  <li>use <code class="highlighter-rouge">{{ url_for('endpoint')}}</code> when rendering template. This has additional benefit of automatically building proper URLs if endpoint path changes.</li>
   <li>use  <code class="highlighter-rouge">Content-Security-Policy</code> header in response:</li>
 </ul>
 
@@ -149,7 +149,7 @@ Unlike XSS the malicious code is stored on hacker controlled server where user i
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
 <span class="nt">&lt;title&gt;</span>Hello from Flask<span class="nt">&lt;/title&gt;</span>
-<span class="nt">&lt;h1&gt;</span>Account balance $<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Account balance ${{ balance }}<span class="nt">&lt;/h1&gt;</span>
 
 <span class="nt">&lt;h2&gt;</span>New transfer<span class="nt">&lt;/h2&gt;</span>
 <span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">"post"</span> <span class="na">action=</span><span class="s">"/"</span><span class="nt">&gt;</span>
