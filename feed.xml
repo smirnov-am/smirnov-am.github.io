@@ -1,4 +1,241 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-15T12:57:23+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Securing Flask web applications.</title><link href="http://localhost:4000/2018/07/11/securing-flask.html" rel="alternate" type="text/html" title="Securing Flask web applications." /><published>2018-07-11T00:00:00+02:00</published><updated>2018-07-11T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/11/securing-flask</id><content type="html" xml:base="http://localhost:4000/2018/07/11/securing-flask.html">&lt;p&gt;I’ve just recently finished a web security training and in this post I’d like to investigate security mechanisms of my beloved web framework - Flask.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-09T20:46:44+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Running Flask in production with Docker</title><link href="http://localhost:4000/2018/08/09/flask-docker.html" rel="alternate" type="text/html" title="Running Flask in production with Docker" /><published>2018-08-09T00:00:00+02:00</published><updated>2018-08-09T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/09/flask-docker</id><content type="html" xml:base="http://localhost:4000/2018/08/09/flask-docker.html">&lt;p&gt;Google top for running Flask with Docker is full of posts where Flask runs in debug mode.
+That what logs look like when Flask is in developement mode:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I’d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.&lt;/p&gt;
+
+&lt;h2 id=&quot;flask-app&quot;&gt;Flask app&lt;/h2&gt;
+&lt;p&gt;I’ll take a basic Flask app from it’s official &lt;a href=&quot;http://flask.pocoo.org/&quot;&gt;docs&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;flask&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Flask&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Flask&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@app.route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Naming this file as &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.py&lt;/code&gt; and running it with &lt;code class=&quot;highlighter-rouge&quot;&gt;FLASK_APP=test.py flask run --port 5555&lt;/code&gt; will yield a warning that development server is used in a production environment like above.&lt;/p&gt;
+
+&lt;h2 id=&quot;uwsgi&quot;&gt;uwsgi&lt;/h2&gt;
+&lt;p&gt;As suggested by the warning we should use &lt;code class=&quot;highlighter-rouge&quot;&gt;uwsgi&lt;/code&gt; to run it. For that to happen let’s create a uwsgi configuration file named &lt;code class=&quot;highlighter-rouge&quot;&gt;uwsgi.ini&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;uwsgi]
+module &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; hello:app
+uid &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; www-data
+gid &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; www-data
+master &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;processes &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+
+socket &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /tmp/uwsgi.socket
+chmod-sock &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 664
+vacuum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true
+
+&lt;/span&gt;die-on-term &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So running uwsgi app with &lt;code class=&quot;highlighter-rouge&quot;&gt;uwsgi --ini uwsgi.ini &lt;/code&gt; will give long output indicating that uwsgi started 5 processes (see &lt;code class=&quot;highlighter-rouge&quot;&gt;processes=5&lt;/code&gt; in the config). Development server runs only 1 process thus allowing only 1 request at a time. By increasing this number you will increase the number if simultaneous requests to Flask app, but that will require more RAM and there will be more processes with Python interpreter running.&lt;/p&gt;
+
+&lt;p&gt;There is also a backlog for uwsgi meaning that if all workers (uwsgi processes) are buy with requests, excessive requests will be put in a queue of size 100 by default. Requests above that level will be dropped by uwsgi, but we will eventually have nginx in front of it with it’s own backlog.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;uWSGI] getting INI configuration from uwsgi.ini                                             
+&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; Starting uWSGI 2.0.17.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;64bit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Fri Aug  3 22:29:18 2018] &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;                        
+compiled with version: 7.2.0 on 03 August 2018 22:23:17                                      
+os: Linux-4.13.0-46-generic &lt;span class=&quot;c&quot;&gt;#51-Ubuntu SMP Tue Jun 12 12:36:29 UTC 2018                      &lt;/span&gt;
+nodename: ubuntuvm                                                                                                                                                                           
+machine: x86_64                                                                              
+clock &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;: unix                            
+detected number of CPU cores: 4               
+current working directory: /home/as/Desktop/blog                                    
+detected binary path: /home/as/.virtualenvs/blog/bin/uwsgi                          
+&lt;span class=&quot;o&quot;&gt;!!!&lt;/span&gt; no internal routing support, rebuild with pcre support &lt;span class=&quot;o&quot;&gt;!!!&lt;/span&gt;                               
+your processes number limit is 63569          
+your memory page size is 4096 bytes  
+detected max file descriptor number: 1024     
+lock engine: pthread robust mutexes                                                          
+thunder lock: disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;you can &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;it with &lt;span class=&quot;nt&quot;&gt;--thunder-lock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                               
+uwsgi socket 0 bound to UNIX address /tmp/uwsgi.socket fd 3                                  
+Python version: 3.6.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default, Oct  3 2017, 21:45:48&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;GCC 7.2.0]                          
+&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; Python threads support is disabled. You can &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;it with &lt;span class=&quot;nt&quot;&gt;--enable-threads&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;          
+Python main interpreter initialized at 0x562fb447cb40        i     i         i               
+your server socket listen backlog is limited to 100 connections                              
+your mercy &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;graceful operations on workers is 60 seconds                                  
+mapped 437520 bytes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;427 KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;5 cores                                                     
+&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; Operational MODE: preforking &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;                                                         
+WSGI app 0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;mountpoint&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ready &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;1 seconds on interpreter 0x562fb447cb40 pid: 23917 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default app&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                       
+&lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; uWSGI is running &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;multiple interpreter mode &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;                                        
+spawned uWSGI master process &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 23917&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;     
+spawned uWSGI worker 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 23923, cores: 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+spawned uWSGI worker 2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 23924, cores: 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                     
+spawned uWSGI worker 3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 23925, cores: 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                     
+spawned uWSGI worker 4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 23926, cores: 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                     
+spawned uWSGI worker 5 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pid: 23927, cores: 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Also this will create a socket file, that will be referred later in nginx configuration.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~ &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt; /tmp/uwsgi.socket  
+srwxrwxr-x 1 as as 0 aug  3 22:29 /tmp/uwsgi.socket
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Another thing is the user which runs &lt;code class=&quot;highlighter-rouge&quot;&gt;uwsgi&lt;/code&gt; processes and owns a socket. Ideally you need to use user with minimum access right. With &lt;code class=&quot;highlighter-rouge&quot;&gt;uid&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;gid&lt;/code&gt; options I’ve specified &lt;code class=&quot;highlighter-rouge&quot;&gt;www-data&lt;/code&gt; - standard user used by web servers. If you run uwsgi manually from bash it will use your user for socket and processes. But in Docker we will run it as root so these options are needed to downgrade it to &lt;code class=&quot;highlighter-rouge&quot;&gt;www-data&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Also I’ve seen that some distributions clean /tmp or some daemons have different view but it’s not the case with the base distribution for the image I’m using.&lt;/p&gt;
+
+&lt;p&gt;Uwsgi has a lot of configuration options. There is a good list you need to check if you need to troubleshoot/tune your application that can be found &lt;a href=&quot;https://uwsgi-docs.readthedocs.io/en/latest/ThingsToKnow.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;nginx&quot;&gt;nginx&lt;/h2&gt;
+&lt;p&gt;Nginx will serve as a proxy to uwsgi. It’s nginx that will listen on ports 80/443 and forward requests to the socket.
+It’s config (named &lt;code class=&quot;highlighter-rouge&quot;&gt;nginx.conf&lt;/code&gt;) is pretty straightforward (I’m omitting SSL config)&lt;/p&gt;
+
+&lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;www-data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;worker_processes&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;auto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;pid&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/run/nginx.pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;events&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;worker_connections&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;epoll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;multi_accept&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;access_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/dev/stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;error_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/dev/stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kn&quot;&gt;sendfile&lt;/span&gt;            &lt;span class=&quot;no&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;tcp_nopush&lt;/span&gt;          &lt;span class=&quot;no&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;tcp_nodelay&lt;/span&gt;         &lt;span class=&quot;no&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;keepalive_timeout&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;65&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;types_hash_max_size&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2048&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kn&quot;&gt;include&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;/etc/nginx/mime.types&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;default_type&lt;/span&gt;        &lt;span class=&quot;nc&quot;&gt;application/octet-stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kn&quot;&gt;index&lt;/span&gt;   &lt;span class=&quot;s&quot;&gt;index.html&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.htm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kn&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt;       &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;default_server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt;       &lt;span class=&quot;s&quot;&gt;[::]:80&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;default_server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;server_name&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;root&lt;/span&gt;         &lt;span class=&quot;n&quot;&gt;/var/www/html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;kn&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kn&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;uwsgi_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;kn&quot;&gt;uwsgi_pass&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;unix:/tmp/uwsgi.socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I’ve added redirection of access and error logs to stdout so both will be accessible through &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs&lt;/code&gt; command. Uwsgi logs are streamed to stdout by default.&lt;/p&gt;
+
+&lt;p&gt;One interesting thing I found is about long lasting requests. Nginx itself may kill these requests. So it’s worth adding this config to &lt;code class=&quot;highlighter-rouge&quot;&gt;location&lt;/code&gt; block:&lt;/p&gt;
+
+&lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;uwsgi_read_timeout&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;uwsgi_send_timeout&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;proxy_send_timeout&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;proxy_read_timeout&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;1h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;startup-script&quot;&gt;Startup script&lt;/h2&gt;
+&lt;p&gt;This is a simple startup stript that will be used as default for executing container.
+Name of the file will be &lt;code class=&quot;highlighter-rouge&quot;&gt;start.sh&lt;/code&gt; and it will be referred in Dockerfile.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
+service nginx start
+uwsgi &lt;span class=&quot;nt&quot;&gt;--ini&lt;/span&gt; uwsgi.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;requirements&quot;&gt;requirements&lt;/h2&gt;
+&lt;p&gt;Requirements file (&lt;code class=&quot;highlighter-rouge&quot;&gt;requirements.txt&lt;/code&gt;) will have only flask and uwsgi and will look like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;6.7
+&lt;span class=&quot;nv&quot;&gt;Flask&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;1.0.2
+&lt;span class=&quot;nv&quot;&gt;itsdangerous&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;0.24
+&lt;span class=&quot;nv&quot;&gt;Jinja2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;2.10
+&lt;span class=&quot;nv&quot;&gt;MarkupSafe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;1.0
+&lt;span class=&quot;nv&quot;&gt;uWSGI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;2.0.17.1
+&lt;span class=&quot;nv&quot;&gt;Werkzeug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;0.14.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;dockerfile&quot;&gt;Dockerfile&lt;/h2&gt;
+&lt;p&gt;I’ve tried a couple of ready-made images from Docker hub and found them overcomplicated or edited in a way by their maintainers making them unusable. So I’ll start with basic python image.&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; python:3.6-slim&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;First thing let’s copy &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.py&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;uwsgi.ini&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;requirements.txt&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;start.sh&lt;/code&gt; to working directory:&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; . /srv/flask_app&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /srv/flask_app&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Base image doesn’t have nginx and some useful packages&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;apt-get clean &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; update
+
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;nginx &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;python3-dev &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;build-essential
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now let’s install python requirements&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;pip &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; requirements.txt &lt;span class=&quot;nt&quot;&gt;--src&lt;/span&gt; /usr/local/src
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, copy nginx config to the proper location, add execution rights to startup script and set is as default.&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; nginx.conf /etc/nginx&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x ./start.sh
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; [&quot;./start.sh&quot;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;building-and-running&quot;&gt;Building and running&lt;/h2&gt;
+
+&lt;p&gt;Image build can be done like so:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; flask_image
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;It creates an image named &lt;code class=&quot;highlighter-rouge&quot;&gt;flask_image&lt;/code&gt; that can be run with this command:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker run  --name flask_container -p 80:80 flask_image&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now you may navigate to http://localhost in you browser to see the output.&lt;/p&gt;
+
+&lt;p&gt;Some usefull options when runnign container&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--name&lt;/code&gt; gives the container a name that can be found in &lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt; output&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; instructs to publish port 80. Second 80 after semicolons tells what port nginx inside the container listens on&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-d&lt;/code&gt; runs container detached from terminal. Logs then can be viewed by issuing &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs&lt;/code&gt; command&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;advantages-of-dockerized-flask&quot;&gt;Advantages of dockerized Flask&lt;/h2&gt;
+&lt;p&gt;I found it very useful to run Flask like that for a number of reasons:&lt;/p&gt;
+
+&lt;p&gt;1) Portability: spinning projects on a different machine with different distribution is a piece of cake, provided docker is installed.&lt;/p&gt;
+
+&lt;p&gt;2) No need to configure process managers (upstart/systemd)&lt;/p&gt;
+
+&lt;p&gt;3) Automatic restart of failed containers. Just use &lt;code class=&quot;highlighter-rouge&quot;&gt;--restart on-failure&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;docker run&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;4) It’s very easy to start with almost serverless AWS ECS Fargate.&lt;/p&gt;
+
+&lt;h2 id=&quot;toubleshooting&quot;&gt;Toubleshooting&lt;/h2&gt;
+&lt;p&gt;1) When running docker container we specified port 80 so you host should have this port available for docker to bind to on you host. If it’s not then change it to something else.&lt;/p&gt;
+
+&lt;p&gt;2) If your host runs multiple containers they should listen on different ports and some kind if proxy should be running on host OS to direct requests to the proper container.&lt;/p&gt;
+
+&lt;p&gt;3) To get inside the container issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec -it flask_container /bin/bash&lt;/code&gt;. To get the exact container name issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;4) To follow error and access logs issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs -f flask_container&lt;/code&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in developement mode:</summary></entry><entry><title type="html">Securing Flask web applications.</title><link href="http://localhost:4000/2018/07/11/securing-flask.html" rel="alternate" type="text/html" title="Securing Flask web applications." /><published>2018-07-11T00:00:00+02:00</published><updated>2018-07-11T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/11/securing-flask</id><content type="html" xml:base="http://localhost:4000/2018/07/11/securing-flask.html">&lt;p&gt;I’ve just recently finished a web security training and in this post I’d like to investigate security mechanisms of my beloved web framework - Flask.
 I’ll go through different types of possible vulnerabilities and the way they can be mitigated.&lt;/p&gt;
 
 &lt;h2 id=&quot;xss&quot;&gt;XSS&lt;/h2&gt;
