@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-09T20:46:44+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Running Flask in production with Docker</title><link href="http://localhost:4000/2018/08/09/flask-docker.html" rel="alternate" type="text/html" title="Running Flask in production with Docker" /><published>2018-08-09T00:00:00+02:00</published><updated>2018-08-09T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/09/flask-docker</id><content type="html" xml:base="http://localhost:4000/2018/08/09/flask-docker.html">&lt;p&gt;Google top for running Flask with Docker is full of posts where Flask runs in debug mode.
-That what logs look like when Flask is in developement mode:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-09T20:50:08+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Running Flask in production with Docker</title><link href="http://localhost:4000/2018/08/09/flask-docker.html" rel="alternate" type="text/html" title="Running Flask in production with Docker" /><published>2018-08-09T00:00:00+02:00</published><updated>2018-08-09T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/09/flask-docker</id><content type="html" xml:base="http://localhost:4000/2018/08/09/flask-docker.html">&lt;p&gt;Google top for running Flask with Docker is full of posts where Flask runs in debug mode.
+That what logs look like when Flask is in development mode:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; * Serving Flask app &quot;app&quot; (lazy loading)
  * Environment: production
@@ -144,7 +144,7 @@ It’s config (named &lt;code class=&quot;highlighter-rouge&quot;&gt;nginx.conf&
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;startup-script&quot;&gt;Startup script&lt;/h2&gt;
-&lt;p&gt;This is a simple startup stript that will be used as default for executing container.
+&lt;p&gt;This is a simple startup script that will be used as default for executing container.
 Name of the file will be &lt;code class=&quot;highlighter-rouge&quot;&gt;start.sh&lt;/code&gt; and it will be referred in Dockerfile.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
@@ -210,7 +210,7 @@ uwsgi &lt;span class=&quot;nt&quot;&gt;--ini&lt;/span&gt; uwsgi.ini
 
 &lt;p&gt;Now you may navigate to http://localhost in you browser to see the output.&lt;/p&gt;
 
-&lt;p&gt;Some usefull options when runnign container&lt;/p&gt;
+&lt;p&gt;Some useful options when running container&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--name&lt;/code&gt; gives the container a name that can be found in &lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt; output&lt;/li&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; instructs to publish port 80. Second 80 after semicolons tells what port nginx inside the container listens on&lt;/li&gt;
@@ -228,14 +228,14 @@ uwsgi &lt;span class=&quot;nt&quot;&gt;--ini&lt;/span&gt; uwsgi.ini
 
 &lt;p&gt;4) It’s very easy to start with almost serverless AWS ECS Fargate.&lt;/p&gt;
 
-&lt;h2 id=&quot;toubleshooting&quot;&gt;Toubleshooting&lt;/h2&gt;
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
 &lt;p&gt;1) When running docker container we specified port 80 so you host should have this port available for docker to bind to on you host. If it’s not then change it to something else.&lt;/p&gt;
 
 &lt;p&gt;2) If your host runs multiple containers they should listen on different ports and some kind if proxy should be running on host OS to direct requests to the proper container.&lt;/p&gt;
 
 &lt;p&gt;3) To get inside the container issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker exec -it flask_container /bin/bash&lt;/code&gt;. To get the exact container name issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker ps&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;4) To follow error and access logs issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs -f flask_container&lt;/code&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in developement mode:</summary></entry><entry><title type="html">Securing Flask web applications.</title><link href="http://localhost:4000/2018/07/11/securing-flask.html" rel="alternate" type="text/html" title="Securing Flask web applications." /><published>2018-07-11T00:00:00+02:00</published><updated>2018-07-11T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/11/securing-flask</id><content type="html" xml:base="http://localhost:4000/2018/07/11/securing-flask.html">&lt;p&gt;I’ve just recently finished a web security training and in this post I’d like to investigate security mechanisms of my beloved web framework - Flask.
+&lt;p&gt;4) To follow error and access logs issue &lt;code class=&quot;highlighter-rouge&quot;&gt;docker logs -f flask_container&lt;/code&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:</summary></entry><entry><title type="html">Securing Flask web applications.</title><link href="http://localhost:4000/2018/07/11/securing-flask.html" rel="alternate" type="text/html" title="Securing Flask web applications." /><published>2018-07-11T00:00:00+02:00</published><updated>2018-07-11T00:00:00+02:00</updated><id>http://localhost:4000/2018/07/11/securing-flask</id><content type="html" xml:base="http://localhost:4000/2018/07/11/securing-flask.html">&lt;p&gt;I’ve just recently finished a web security training and in this post I’d like to investigate security mechanisms of my beloved web framework - Flask.
 I’ll go through different types of possible vulnerabilities and the way they can be mitigated.&lt;/p&gt;
 
 &lt;h2 id=&quot;xss&quot;&gt;XSS&lt;/h2&gt;
