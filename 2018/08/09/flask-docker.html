@@ -94,7 +94,7 @@ vacuum <span class="o">=</span> <span class="nb">true
 
 <p>So running uwsgi app with <code class="highlighter-rouge">uwsgi --ini uwsgi.ini </code> will give long output indicating that uwsgi started 5 processes (see <code class="highlighter-rouge">processes=5</code> in the config). Development server runs only 1 process thus allowing only 1 request at a time. By increasing this number you will increase the number if simultaneous requests to Flask app, but that will require more RAM and there will be more processes with Python interpreter running.</p>
 
-<p>There is also a backlog for uwsgi meaning that if all workers (uwsgi processes) are buy with requests, excessive requests will be put in a queue of size 100 by default. Requests above that level will be dropped by uwsgi, but we will eventually have nginx in front of it with it’s own backlog.</p>
+<p>There is also a backlog for uwsgi meaning that if all workers (uwsgi processes) are busys with requests, excessive requests will be put in a queue of size 100 by default. Requests above that level will be dropped by uwsgi, but we will eventually have nginx in front of it with it’s own backlog.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>uWSGI] getting INI configuration from uwsgi.ini                                             
 <span class="k">***</span> Starting uWSGI 2.0.17.1 <span class="o">(</span>64bit<span class="o">)</span> on <span class="o">[</span>Fri Aug  3 22:29:18 2018] <span class="k">***</span>                        
@@ -287,6 +287,8 @@ uwsgi <span class="nt">--ini</span> uwsgi.ini
 <p>3) To get inside the container issue <code class="highlighter-rouge">docker exec -it flask_container /bin/bash</code>. To get the exact container name issue <code class="highlighter-rouge">docker ps</code></p>
 
 <p>4) To follow error and access logs issue <code class="highlighter-rouge">docker logs -f flask_container</code></p>
+
+<p>How do you run Flask in production? Drop me a message on LinkedIn https://www.linkedin.com/in/smirnovam/</p>
 
   </div><a class="u-url" href="/2018/08/09/flask-docker.html" hidden></a>
 </article>
