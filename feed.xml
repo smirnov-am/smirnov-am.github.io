@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-09T20:50:08+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Running Flask in production with Docker</title><link href="http://localhost:4000/2018/08/09/flask-docker.html" rel="alternate" type="text/html" title="Running Flask in production with Docker" /><published>2018-08-09T00:00:00+02:00</published><updated>2018-08-09T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/09/flask-docker</id><content type="html" xml:base="http://localhost:4000/2018/08/09/flask-docker.html">&lt;p&gt;Google top for running Flask with Docker is full of posts where Flask runs in debug mode.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-10T23:04:02+02:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Running Flask in production with Docker</title><link href="http://localhost:4000/2018/08/09/flask-docker.html" rel="alternate" type="text/html" title="Running Flask in production with Docker" /><published>2018-08-09T00:00:00+02:00</published><updated>2018-08-09T00:00:00+02:00</updated><id>http://localhost:4000/2018/08/09/flask-docker</id><content type="html" xml:base="http://localhost:4000/2018/08/09/flask-docker.html">&lt;p&gt;Google top for running Flask with Docker is full of posts where Flask runs in debug mode.
 That what logs look like when Flask is in development mode:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; * Serving Flask app &quot;app&quot; (lazy loading)
@@ -700,7 +700,7 @@ There are 2 approaches to extract topics (and/or keyphrases) from a text: superv
 &lt;p&gt;This is a multi-label, multi-class classification algorithm, where we may have following features as an input:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;text converted to &lt;a href=&quot;https://en.wikipedia.org/wiki/Bag-of-words_model&quot;&gt;bag-of-words&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;text if threat as a stream if vectors, which are pre-trained &lt;a href=&quot;https://en.wikipedia.org/wiki/Word_embedding&quot;&gt;word embeddings&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;text is threated as a stream of vectors, which are pre-trained &lt;a href=&quot;https://en.wikipedia.org/wiki/Word_embedding&quot;&gt;word embeddings&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;For bag-of-words we may use &lt;a href=&quot;http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html#evaluation-of-the-performance-on-the-test-set&quot;&gt;linear SVM&lt;/a&gt;
@@ -714,7 +714,7 @@ For word embeddings RNN are a &lt;a href=&quot;http://colah.github.io/posts/2014
   &lt;li&gt;large amount of data is needed to train classifiers&lt;/li&gt;
   &lt;li&gt;training dataset should be labeled&lt;/li&gt;
   &lt;li&gt;labels/topics are predefined&lt;/li&gt;
-  &lt;li&gt;RNN-LTSM is slow&lt;/li&gt;
+  &lt;li&gt;RNN-LTSM are slow&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Advantages:&lt;/p&gt;
@@ -889,7 +889,7 @@ while controlling for how popular item Y is. A lift value greater than 1 means t
 Populate &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_2&lt;/code&gt; with those candidates from &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_2&lt;/code&gt;, which support is &amp;gt;= &lt;code class=&quot;highlighter-rouge&quot;&gt;min_support&lt;/code&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;nth-step&quot;&gt;Nth step:&lt;/h3&gt;
-&lt;p&gt;Repeat step 2 until you can form candidates sets. Candidates for a next step are formed from a layer of a current step by unions of all possible pairs in layer set.(elements of a layer should be sets to support this). This is also known as self-join.
+&lt;p&gt;Repeat step 2 until you can form candidates sets. Candidates for a next step are formed from a layer of a current step by unions of all possible pairs in layer set (elements of a layer should be sets to support this). This is also known as self-join.
 Now we have filtered set of combinations of items and their respective support (support dictionary).&lt;/p&gt;
 
 &lt;p&gt;In each step we populate a support dictionary using itemsets as keys and their correspondent support as values.&lt;/p&gt;
@@ -907,8 +907,8 @@ Let’s fix a hyperparameters &lt;code class=&quot;highlighter-rouge&quot;&gt;mi
   &lt;li&gt;the order list is not used at all for counting the support of candidate itemsets after the first pass.&lt;/li&gt;
   &lt;li&gt;the candidate itemsets are generated the same way as in Apriori algorithm&lt;/li&gt;
   &lt;li&gt;rules are generated the same way after support dictionary is populated
-The only different is that in each layer &amp;gt; 1 a separate list C&lt;code class=&quot;highlighter-rouge&quot;&gt; is created.
-C&lt;/code&gt; hold transaction ids with correspondent itemsets from candidates on that layer that are in that particular transaction.&lt;/li&gt;
+The only different is that in each layer &amp;gt; 1 a separate list C’ is created.
+C’ hold transaction ids with corresponding itemsets from candidates on that layer that are in that particular transaction.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;For example, using order list from above first layer would yield such support dictionary:&lt;/p&gt;
@@ -934,7 +934,7 @@ item5 0.75
 &lt;p&gt;Using this additional list we will calculate support for candidates for &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_3&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;eclat&quot;&gt;Eclat&lt;/h2&gt;
-&lt;p&gt;Another way to speedup support calculation is to keep a list of transaction ids for every itemset at each layer. It speeds up support calculation even more. but these transaction lists can be large in size.&lt;/p&gt;
+&lt;p&gt;Another way to speedup support calculation is to keep a list of transaction ids for every itemset at each layer. It speeds up support calculation even more, but these transaction lists can be large in size.&lt;/p&gt;
 
 &lt;p&gt;Again using the same order list in first step, transaction ID list will be&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;item1 1, 3

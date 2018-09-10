@@ -35,7 +35,6 @@
         <div class="trigger">
           <a class="page-link" href="https://www.linkedin.com/in/smirnovam/">Linkedin</a>
           <a class="page-link" href="https://github.com/smirnov-am">GitHub</a>
-          <a class="page-link" href="https://tinyletter.com/smirnov-am">Newsletter</a>
         </div>
         </nav></div>
   </header><main class="page-content" aria-label="Content">
@@ -170,7 +169,7 @@ while controlling for how popular item Y is. A lift value greater than 1 means t
 Populate <code class="highlighter-rouge">layer_2</code> with those candidates from <code class="highlighter-rouge">candidates_2</code>, which support is &gt;= <code class="highlighter-rouge">min_support</code></p>
 
 <h3 id="nth-step">Nth step:</h3>
-<p>Repeat step 2 until you can form candidates sets. Candidates for a next step are formed from a layer of a current step by unions of all possible pairs in layer set.(elements of a layer should be sets to support this). This is also known as self-join.
+<p>Repeat step 2 until you can form candidates sets. Candidates for a next step are formed from a layer of a current step by unions of all possible pairs in layer set (elements of a layer should be sets to support this). This is also known as self-join.
 Now we have filtered set of combinations of items and their respective support (support dictionary).</p>
 
 <p>In each step we populate a support dictionary using itemsets as keys and their correspondent support as values.</p>
@@ -188,8 +187,8 @@ Let’s fix a hyperparameters <code class="highlighter-rouge">min_confidence</co
   <li>the order list is not used at all for counting the support of candidate itemsets after the first pass.</li>
   <li>the candidate itemsets are generated the same way as in Apriori algorithm</li>
   <li>rules are generated the same way after support dictionary is populated
-The only different is that in each layer &gt; 1 a separate list C<code class="highlighter-rouge"> is created.
-C</code> hold transaction ids with correspondent itemsets from candidates on that layer that are in that particular transaction.</li>
+The only different is that in each layer &gt; 1 a separate list C’ is created.
+C’ hold transaction ids with corresponding itemsets from candidates on that layer that are in that particular transaction.</li>
 </ul>
 
 <p>For example, using order list from above first layer would yield such support dictionary:</p>
@@ -215,7 +214,7 @@ item5 0.75
 <p>Using this additional list we will calculate support for candidates for <code class="highlighter-rouge">layer_3</code>.</p>
 
 <h2 id="eclat">Eclat</h2>
-<p>Another way to speedup support calculation is to keep a list of transaction ids for every itemset at each layer. It speeds up support calculation even more. but these transaction lists can be large in size.</p>
+<p>Another way to speedup support calculation is to keep a list of transaction ids for every itemset at each layer. It speeds up support calculation even more, but these transaction lists can be large in size.</p>
 
 <p>Again using the same order list in first step, transaction ID list will be</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>item1 1, 3
