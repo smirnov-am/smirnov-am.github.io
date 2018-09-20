@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Flask pagination macro | Alexey Smirnov</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Flask pagination macro" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In this post I will cover how to create a pagination with Jinja macro feature." />
+<meta property="og:description" content="In this post I will cover how to create a pagination with Jinja macro feature." />
+<link rel="canonical" href="http://localhost:4000/2018/09/20/flask-pagination-macro.html" />
+<meta property="og:url" content="http://localhost:4000/2018/09/20/flask-pagination-macro.html" />
+<meta property="og:site_name" content="Alexey Smirnov" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-20T00:00:00+02:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2018/09/20/flask-pagination-macro.html","description":"In this post I will cover how to create a pagination with Jinja macro feature.","headline":"Flask pagination macro","datePublished":"2018-09-20T00:00:00+02:00","dateModified":"2018-09-20T00:00:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/09/20/flask-pagination-macro.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Alexey Smirnov" /></head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Alexey Smirnov</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        <div class="trigger">
+          <a class="page-link" href="https://www.linkedin.com/in/smirnovam/">Linkedin</a>
+          <a class="page-link" href="https://github.com/smirnov-am">GitHub</a>
+        </div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Flask pagination macro</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-09-20T00:00:00+02:00" itemprop="datePublished">Sep 20, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>In this post I will cover how to create a pagination with Jinja macro feature.</p>
+
+<p><img src="https://github.com/smirnov-am/flask-pager/blob/master/demo.gif?raw=true" alt="demo" title="demo gif" /></p>
+
+<p>Requirements:</p>
+<ul>
+  <li>show preconfigured limited number of pages at once</li>
+  <li>collapse invisible pages under <code class="highlighter-rouge">...</code></li>
+  <li>provide previous/next navigation buttons</li>
+</ul>
+
+<h2 id="jinja-templates-for-bootstrap4">Jinja templates for Bootstrap4</h2>
+<p>I’ve created 3 tier structure of Jinja templates to use Bootstrap4.
+<strong>First</strong> - <code class="highlighter-rouge">bootstrap4_base.html</code> - loads css and js files from CDN and defines major blocks:</p>
+<ul>
+  <li><code class="highlighter-rouge">head</code> - holds content of the <code class="highlighter-rouge">&lt;head&gt;</code> tag and defines <code class="highlighter-rouge">title</code>, <code class="highlighter-rouge">metas</code>, <code class="highlighter-rouge">styles</code></li>
+  <li><code class="highlighter-rouge">body</code> - holds content of the <code class="highlighter-rouge">&lt;body&gt;</code> tag and defines <code class="highlighter-rouge">navbar</code>, <code class="highlighter-rouge">content</code>, <code class="highlighter-rouge">scripts</code></li>
+  <li><code class="highlighter-rouge">navbar</code> - for navigation bar</li>
+  <li><code class="highlighter-rouge">content</code> - for boostrap container (tag with <code class="highlighter-rouge">class="container"</code>)</li>
+  <li><code class="highlighter-rouge">scripts</code> - goes in the end of the body, <a href="https://stackoverflow.com/questions/383045/is-put-scripts-at-the-bottom-correct">here is why</a></li>
+</ul>
+
+<p>Blocks may be extended or/and overwritten in the later templates
+This template follows Bootstrap4 <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">intro guide</a></p>
+
+<p><strong>Second</strong> - <code class="highlighter-rouge">page_base.html</code> - creates navbar and extends <code class="highlighter-rouge">content</code> block.
+It shows all the flash messages (the ones invoked with flask <code class="highlighter-rouge">flash</code> function) and adds <code class="highlighter-rouge">page_content</code>.
+That one will be extended in the last template and holds actual content.</p>
+
+<p><strong>Third</strong> - <code class="highlighter-rouge">index.html</code> - will overwrite <code class="highlighter-rouge">title</code> block and extend <code class="highlighter-rouge">page_content</code></p>
+
+<p>Hierarchy of templates is achieved with using of <code class="highlighter-rouge">{% extends "&lt;parent_template.html" %}</code> block to refer to parent template.</p>
+
+<p>To extend a block - <code class="highlighter-rouge">scripts</code> for example - inside child template:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+{% block scripts %}
+    {{ super() }}
+    &lt;script&gt;
+        alert(1);
+    &lt;/script&gt;
+(% endblock %)
+
+</code></pre></div></div>
+<p>Drop <code class="highlighter-rouge">super</code> to just overwrite it.</p>
+
+<h2 id="jinja-pagination-macro">Jinja pagination macro</h2>
+<p>Macros are comparable with functions in regular programming languages. They are useful to put often used idioms into reusable functions to not repeat yourself (“DRY”).
+Macro is a bare block that starts with <code class="highlighter-rouge">{% macro function_name(formal_params) %}</code>. It holds the HTML, or rather templated Jinja code that will be reused.
+I’m putting it’s code into separate file - <code class="highlighter-rouge">_macros.html</code>.</p>
+
+<p>Usage:</p>
+<ol>
+  <li>import it with <code class="highlighter-rouge">{% import "_macros.html" as macros %}</code></li>
+  <li>call it with <code class="highlighter-rouge">{{ macros.function_name(actual_params) }}</code></li>
+</ol>
+
+<p>Bootstrap pagination follows that <a href="https://getbootstrap.com/docs/4.0/components/pagination/#working-with-icons">doc</a></p>
+
+<p>I’ve tried to put as little logic in the macro itself and do all the calculations in the flask view.
+My version needs 2 params:</p>
+<ol>
+  <li><code class="highlighter-rouge">endpoint</code> - the name of flask endpoint provided to <code class="highlighter-rouge">url_for</code> which builds the actual link to select page</li>
+  <li><code class="highlighter-rouge">pages</code> list if dictionaries, each one has
+    <ul>
+      <li><code class="highlighter-rouge">class</code> key to define if link is active, normal or disabled</li>
+      <li><code class="highlighter-rouge">page_label</code> show the page number or navigation icons</li>
+      <li><code class="highlighter-rouge">href</code> - additional param for <code class="highlighter-rouge">url_for</code> which will hold page</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Macro code:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">{</span><span class="o">%</span> <span class="n">macro</span> <span class="n">pagination_widget</span><span class="p">(</span><span class="n">pages</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;</span><span class="n">nav</span> <span class="n">aria</span><span class="o">-</span><span class="n">label</span><span class="o">=</span><span class="s">"Page navigation example"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">ul</span> <span class="n">class</span><span class="o">=</span><span class="s">"pagination"</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pages</span> <span class="o">%</span><span class="p">}</span>
+        <span class="o">&lt;</span><span class="n">li</span> <span class="n">class</span><span class="o">=</span><span class="s">"page-item {{p['class']}}"</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s">"{{ url_for(endpoint, page = p['href'], **kwargs) }}"</span>
+                <span class="n">class</span><span class="o">=</span><span class="s">"page-link"</span>
+                <span class="n">aria</span><span class="o">-</span><span class="n">label</span><span class="o">=</span><span class="p">{{</span><span class="n">p</span><span class="p">[</span><span class="s">'page'</span><span class="p">]}}</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">span</span> <span class="n">aria</span><span class="o">-</span><span class="n">hidden</span><span class="o">=</span><span class="s">"true"</span><span class="o">&gt;</span><span class="p">{{</span><span class="n">p</span><span class="p">[</span><span class="s">'page_label'</span><span class="p">]</span> <span class="o">|</span> <span class="n">safe</span><span class="p">}}</span><span class="o">&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">span</span> <span class="n">class</span><span class="o">=</span><span class="s">"sr-only"</span><span class="o">&gt;</span><span class="p">{{</span><span class="n">p</span><span class="p">[</span><span class="s">'page_label'</span><span class="p">]</span> <span class="o">|</span> <span class="n">safe</span><span class="p">}}</span><span class="o">&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+
+            <span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+    <span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">nav</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endmacro</span> <span class="o">%</span><span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="flask-endpoint">Flask endpoint</h3>
+<p>Endpoint code relies on a <code class="highlighter-rouge">Pager</code> class to prepare <code class="highlighter-rouge">pages</code>.
+It first needs to get the page number from URL parameters.
+The actual data I’m using is just a list of numbers up to a <code class="highlighter-rouge">count</code>.
+In real world it’s going to be a query to the database like <code class="highlighter-rouge">SELECT column from table LIMIT Y OFFSET X</code>.
+Where X - is a page size * current page (zero based), Y - is a page_size.</p>
+
+<blockquote>
+  <p>OFFSET may be slow with big numbers - it’s better to use <a href="https://blog.jooq.org/2013/10/26/faster-sql-paging-with-jooq-using-the-seek-method/">Sleek mode</a></p>
+</blockquote>
+
+<p>Flask endpoint:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@app.route</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'page'</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">300</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+
+    <span class="n">pager</span> <span class="o">=</span> <span class="n">Pager</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">pager</span><span class="o">.</span><span class="n">get_pages</span><span class="p">()</span>
+
+    <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'PAGE_SIZE'</span><span class="p">]</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'PAGE_SIZE'</span><span class="p">]</span>
+    <span class="n">data_to_show</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">limit</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">'index.html'</span><span class="p">,</span> <span class="n">pages</span><span class="o">=</span><span class="n">pages</span><span class="p">,</span> <span class="n">data_to_show</span><span class="o">=</span><span class="n">data_to_show</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="pager-class">Pager class</h3>
+<p>This class prepares a <code class="highlighter-rouge">pages</code> list for macro. To do the calculations it needs the number of all items and the current page. Page size and a number of visible pages are read from app config.</p>
+
+<p>Difficult part was to show exactly predefined number if links to another pages. Invisible pages are collapsed under <code class="highlighter-rouge">...</code>.</p>
+
+<h3 id="app-configuration">App configuration</h3>
+<p>App config contains two parameters:</p>
+<ol>
+  <li><code class="highlighter-rouge">PAGE_SIZE</code> - how many elements show in a page</li>
+  <li><code class="highlighter-rouge">VISIBLE_PAGE_COUNT</code> - how may links to pages how in pages inculding <code class="highlighter-rouge">...</code>s</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'PAGE_SIZE'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'VISIBLE_PAGE_COUNT'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+</code></pre></div></div>
+
+<p>The whole code is available at <a href="https://github.com/smirnov-am/flask-pager">GitHub</a></p>
+
+<p>Do you have another useful macro? Drop me a message on <a href="https://www.linkedin.com/in/smirnovam/">LinkedIn</a></p>
+
+  </div><a class="u-url" href="/2018/09/20/flask-pagination-macro.html" hidden></a>
+</article>
+
+      </div>
+    </main></body>
+
+</html>
