@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Multitenancy with Flask | Alexey Smirnov</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Multitenancy with Flask" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants." />
+<meta property="og:description" content="What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants." />
+<link rel="canonical" href="http://localhost:4000/2018/10/13/flask-multitenancy.html" />
+<meta property="og:url" content="http://localhost:4000/2018/10/13/flask-multitenancy.html" />
+<meta property="og:site_name" content="Alexey Smirnov" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-10-13T00:00:00+02:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2018/10/13/flask-multitenancy.html","description":"What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.","headline":"Multitenancy with Flask","datePublished":"2018-10-13T00:00:00+02:00","dateModified":"2018-10-13T00:00:00+02:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/10/13/flask-multitenancy.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Alexey Smirnov" /></head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Alexey Smirnov</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        <div class="trigger">
+          <a class="page-link" href="https://www.linkedin.com/in/smirnovam/">Linkedin</a>
+          <a class="page-link" href="https://github.com/smirnov-am">GitHub</a>
+        </div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Multitenancy with Flask</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-10-13T00:00:00+02:00" itemprop="datePublished">Oct 13, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="what-is-multitenancy">What is multitenancy</h3>
+<p>Consider a SaaS platform that provide access to multiple client organizations.
+These organizations - tenants - may have each its own database for safety and data protection reasons.
+It can be a database on a single RDBMS server or physically different servers.
+Usually additional central database (i.e., General) stores metadata and list of available tenants.</p>
+
+<p><img src="https://github.com/smirnov-am/flask-multitenancy/blob/master/description.png?raw=true" alt="description" /></p>
+
+<h3 id="flask-sqlalchemy">Flask-SQLAlchemy</h3>
+<p>Flask-SQLAlchemy provides interface only to one database.
+Flask app configuration defines <code class="highlighter-rouge">SQLALCHEMY_DATABASE_URI</code> gives connection info and database name.
+It possible to extend it to multiple tenant databases using <a href="http://flask-sqlalchemy.pocoo.org/2.3/binds/">binds</a></p>
+
+<h3 id="tenant-dependent-endpoint">Tenant dependent endpoint</h3>
+<p>Consider this endpoint that displays tenant users and gets tenant name
+as it’s parameter</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@app.route</span><span class="p">(</span><span class="s">"/&lt;tenant_name&gt;/users"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">tenant_name</span><span class="p">):</span>
+    <span class="n">tenant_session</span> <span class="o">=</span> <span class="n">get_tenant_session</span><span class="p">(</span><span class="n">tenant_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tenant_session</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">tenant_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="n">tenant_name</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">username</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">users</span><span class="p">]})</span>
+</code></pre></div></div>
+
+<p>Models used are very basic:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'users'</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Tenant</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'tenants'</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>For users it’s just id and username. These tables are in tenant database.
+And tenant model is in general database. I keep track of available tenants here so
+if query refers to unknown tenant it will give 404 error.</p>
+
+<h3 id="building-tenant-session">Building tenant session</h3>
+
+<p>To get tenant session</p>
+<ul>
+  <li>check if tenant name is in <code class="highlighter-rouge">tenants</code> table from General database</li>
+  <li>create a URI in <code class="highlighter-rouge">SQLALCHEMY_BINDS</code> dictionary that is in Flask app configuration - <code class="highlighter-rouge">current_app.config</code></li>
+  <li>get SQLAlchemy engine that reads that bind</li>
+  <li>form session from a session factory - <code class="highlighter-rouge">sessionmaker</code> - that uses the engine</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MYSQL_URI</span> <span class="o">=</span> <span class="s">'mysql+pymysql://user:pwd@localhost/{}?charset=utf8'</span>
+
+
+<span class="nd">@simple_cache</span>
+<span class="k">def</span> <span class="nf">get_known_tenants</span><span class="p">():</span>
+    <span class="n">tenants</span> <span class="o">=</span> <span class="n">Tenant</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tenants</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">prepare_bind</span><span class="p">(</span><span class="n">tenant_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tenant_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'SQLALCHEMY_BINDS'</span><span class="p">]:</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'SQLALCHEMY_BINDS'</span><span class="p">][</span><span class="n">tenant_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">MYSQL_URI</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tenant_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">'SQLALCHEMY_BINDS'</span><span class="p">][</span><span class="n">tenant_name</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">get_tenant_session</span><span class="p">(</span><span class="n">tenant_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tenant_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_known_tenants</span><span class="p">():</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">prepare_bind</span><span class="p">(</span><span class="n">tenant_name</span><span class="p">)</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_engine</span><span class="p">(</span><span class="n">current_app</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="n">tenant_name</span><span class="p">)</span>
+    <span class="n">session_maker</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">sessionmaker</span><span class="p">()</span>
+    <span class="n">session_maker</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">session_maker</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">session</span>
+</code></pre></div></div>
+
+<p>I check tenant availability at every request. This information doesn’t change often so it’s cached.</p>
+
+<h3 id="cache-slow-changing-data">Cache slow changing data</h3>
+
+<p>I’ll be using simple <a href="http://werkzeug.pocoo.org/docs/0.14/contrib/cache/">werkzeug cache</a>.
+Every process and uwsgi worker will get its own instance. To share the data between processes
+this cache can be easily extended to use external store like Redis/Memcached.</p>
+
+<p><code class="highlighter-rouge">Simple_cache</code> is a decorator using function name as a key like so:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cache</span> <span class="o">=</span> <span class="n">SimpleCache</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">simple_cache</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">function_name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">if</span> <span class="n">cache</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="n">function_name</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">function_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">cache</span><span class="o">.</span><span class="nb">set</span><span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+</code></pre></div></div>
+
+<h3 id="database-initialization">Database initialization</h3>
+
+<p>I’ve prepared a SQL dump to generate mock data <a href="###">here</a>. It creates all databases
+and tables with two tenants: TenantA and TenantB. Each has 2 users:</p>
+<ul>
+  <li>userA and userB for TenantA;</li>
+  <li>userA and userC for TenantB;</li>
+</ul>
+
+<p>It can be imported with mysql client</p>
+
+<p><code class="highlighter-rouge">mysql --host="&lt;host&gt;" --user="&lt;user&gt;" --password="&lt;password&gt;" &lt; all_databases.sql</code></p>
+
+<h3 id="results">Results</h3>
+
+<p><img src="https://github.com/smirnov-am/flask-multitenancy/blob/master/demo.gif?raw=true" alt="demo" /></p>
+
+
+  </div><a class="u-url" href="/2018/10/13/flask-multitenancy.html" hidden></a>
+</article>
+
+      </div>
+    </main></body>
+
+</html>
