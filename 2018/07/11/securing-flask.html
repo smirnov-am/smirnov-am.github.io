@@ -112,7 +112,7 @@ The following extensions for templates trigger autoescaping: .html, .htm, .xml, 
 
 <p>So because of the above exploit using code #3 will be escaped and never executed.</p>
 
-<p>Code #1 gives me <code class="highlighter-rouge">ERR_BLOCKED_BY_XSS_AUDITOR</code> error in Chrome Version 65.0.3325.181. This browser behaviour can be manipulated by the server with <code class="highlighter-rouge">X-XSS-Protection</code> header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">source</a></p>
+<p>Code #1 gives me <code class="highlighter-rouge">ERR_BLOCKED_BY_XSS_AUDITOR</code> error in Chrome Version 65.0.3325.181. This browser behavior can be manipulated by the server with <code class="highlighter-rouge">X-XSS-Protection</code> header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">source</a></p>
 
 <p>The only vulnerable part is href attribute in <code class="highlighter-rouge">a</code> tag.
 We have a following option to mitigate</p>
@@ -196,7 +196,7 @@ When you follow the link a page with the following script loads:</p>
 
 <h3 id="mitigation-1">Mitigation</h3>
 <p>I’ve used endpoint that changes the state of account only on POST request. That complicated hacker’s task a little bit as he needs user to visit his server with malicious code.
-If it was just GET user only need to click the link without loading the script from hacker’s server.</p>
+If it was just GET user only needs to click the link without loading the script from hacker’s server.</p>
 
 <p>Another security measure is to use tokens with each account state change endpoint.
 With every form user gets a random token (as a form’s hidden field) and when form is POSTed, the token is checked for validity and expiration.
@@ -243,7 +243,7 @@ An attacker may be able to read data for which they are not authorized, tamper w
 
 </code></pre></div></div>
 <p>I’ve tried to break all the rules here: building raw queries and concatenating query string with user input directly (I might have used <code class="highlighter-rouge">.format</code> as well).
-So when enetring <code class="highlighter-rouge">2222;DROP DATABASE;</code> in destination account input field I expected this particular line
+So when entering <code class="highlighter-rouge">2222;DROP DATABASE;</code> in destination account input field I expected this particular line
 <code class="highlighter-rouge">session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)</code>
 execute an update and then drop database.
 But it gave me that error <code class="highlighter-rouge">sqlite3.Warning: You can only execute one statement at a time.</code> and no changes were made to database.
@@ -295,7 +295,7 @@ The mitigation is explained in official Flask docs <a href="http://flask.pocoo.o
 <p>Essentially you need to sanitize filenames from file upload form. Another advice is avoid using user provided filenames at all and generate your own (hash of the datetime/username/etc) and store them on a separate subdomain (more on it later)</p>
 
 <h2 id="xss-in-uploaded-files">XSS in uploaded files</h2>
-<p>This is not particualrly related to Flask, but malicious javascript might appear not only in reflected output or stored in database (see general XSS attack), but it can also be embedded in images.
+<p>This is not particularly related to Flask, but malicious javascript might appear not only in reflected output or stored in database (see general XSS attack), but it can also be embedded in images.
 For example, <a href="https://marcoramilli.blogspot.com/2014/01/hacking-through-image-gif-turn.html">this blog post</a>
 uses that <a href="https://pastebin.com/6yUbfGX5">code</a> to embed javascript in GIF image file. CSP won’t help here - so the only way is to serve the images from separate subdomain (that’s what actually Facebook does)</p>
 
@@ -336,6 +336,7 @@ Another option for that flag is ‘lax’ which won’t allow sending cookies fr
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">response</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s">'key'</span><span class="p">,</span> <span class="s">'value'</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">httponly</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">samesite</span><span class="o">=</span><span class="s">'Lax'</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p>Have your Flask apps ever been hacked? Drop me a message on LinkedIn https://www.linkedin.com/in/smirnovam/</p>
 
   </div><a class="u-url" href="/2018/07/11/securing-flask.html" hidden></a>
 </article>

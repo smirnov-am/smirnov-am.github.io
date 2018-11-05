@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Background jobs with Flask | Alexey Smirnov</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Background jobs with Flask" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Basic request lifecycle with Flask goes like this: Flask get request parse parameters does calculations returns result" />
+<meta property="og:description" content="Basic request lifecycle with Flask goes like this: Flask get request parse parameters does calculations returns result" />
+<link rel="canonical" href="http://localhost:4000/2018/11/05/flask-background-tasks.html" />
+<meta property="og:url" content="http://localhost:4000/2018/11/05/flask-background-tasks.html" />
+<meta property="og:site_name" content="Alexey Smirnov" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-11-05T00:00:00+01:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2018/11/05/flask-background-tasks.html","description":"Basic request lifecycle with Flask goes like this: Flask get request parse parameters does calculations returns result","headline":"Background jobs with Flask","datePublished":"2018-11-05T00:00:00+01:00","dateModified":"2018-11-05T00:00:00+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/11/05/flask-background-tasks.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Alexey Smirnov" /></head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Alexey Smirnov</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        <div class="trigger">
+          <a class="page-link" href="https://www.linkedin.com/in/smirnovam/">Linkedin</a>
+          <a class="page-link" href="https://github.com/smirnov-am">GitHub</a>
+        </div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Background jobs with Flask</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-11-05T00:00:00+01:00" itemprop="datePublished">Nov 5, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Basic request lifecycle with Flask goes like this:</p>
+<ul>
+  <li>Flask get request</li>
+  <li>parse parameters</li>
+  <li>does calculations</li>
+  <li>returns result</li>
+</ul>
+
+<p>This synchronous task is fine when user needs the result of calculation immediately.
+Another use case is when the result is not relevant right now and user just wants to schedule
+an execution of the task asynchronously.</p>
+
+<p>Such scenarios include:</p>
+<ul>
+  <li>sending email</li>
+  <li>creating thumbnails from uploaded image</li>
+</ul>
+
+<p><img src="https://github.com/smirnov-am/flask-bg-tasks/blob/master/img1.png?raw=true" alt="sync vs async" /></p>
+
+<h2 id="common-implementation">Common implementation</h2>
+
+<p>Asynchronous tasks are usually implemented like this:</p>
+<ul>
+  <li>Flask schedules a task by putting a message into message broker (Redis, AWS SQS, RabbitMQ) upon request</li>
+  <li>The broker is made available to the pool of possibly separate machines - workers</li>
+  <li>Workers get messages from broker and execute tasks</li>
+</ul>
+
+<p>This approach has a number of advantages. Firstly, it’s sharing responsibility. Instances running Flask web server
+are doing only one job - serving requests. If the tasks are resource demanding Flask instances won’t suffer from
+high memory/CPU usage and will still server requests. Secondly, tasks are stored in message broker.
+If Flask instances die it won’t affect workers and task execution.</p>
+
+<p>Nothing comes for free. This structure has more points of failure then alternatives. Libraries serving
+brokers have bugs. Also it may looks like a over-engineering for simple tasks.</p>
+
+<p>Here are some good examples of such implementations: <a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs">RQ</a>,
+<a href="https://blog.miguelgrinberg.com/post/using-celery-with-flask">Celery</a></p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<h3 id="threads">Threads</h3>
+<p>Most basic approach is to run a task in a thread. For that to work this
+line should be added to uwsgi configuration file:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enable-threads <span class="o">=</span> <span class="nb">true</span>
+</code></pre></div></div>
+<blockquote>
+  <p>we run <a href="https://smirnov-am.github.io/2018/08/09/flask-docker.html">Flask with uwsg in production</a> of course</p>
+</blockquote>
+
+<p>Code <code class="highlighter-rouge">app.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">threaded_task</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s">'duration'</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/&lt;int:duration&gt;"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">threaded_task</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">duration</span><span class="p">,))</span>
+    <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s">'thread_name'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">thread</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s">'started'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>code <code class="highlighter-rouge">tasks.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">threaded_task</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Working... {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">duration</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Demo:</p>
+
+<p><img src="https://github.com/smirnov-am/flask-bg-tasks/blob/master/demo1.gif?raw=true" alt="demo1" /></p>
+
+<h3 id="uwsgi-thread">uWSGI thread</h3>
+<p>Creating and running thread may be delegated to uwsgi. So we don’t interact with
+threading module directly. For that there is a <code class="highlighter-rouge">thread</code> decorator available <code class="highlighter-rouge">from uwsgidecorators import thread</code> (<a href="https://uwsgi-docs.readthedocs.io/en/latest/PythonDecorators.html?highlight=thread#uwsgidecorators.thread">API docs</a>)</p>
+
+<p>Code <code class="highlighter-rouge">app.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">uwsgi_task</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/uwsgi_thread"</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s">'duration'</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/uwsgi_thread/&lt;int:duration&gt;"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">uwsgi_thread</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">uwsgi_task</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s">'started'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>code <code class="highlighter-rouge">tasks.py</code></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">uwsgidecorators</span> <span class="kn">import</span> <span class="n">thread</span>
+
+
+<span class="nd">@thread</span>
+<span class="k">def</span> <span class="nf">uwsgi_task</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Working in uwsgi thread... {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">duration</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Demo:</p>
+
+<p><img src="https://github.com/smirnov-am/flask-bg-tasks/blob/master/demo2.gif?raw=true" alt="demo1" /></p>
+
+<h3 id="uwsgi-spooler">uWSGI spooler</h3>
+<p>Above examples create a thread per request and can lead to some troubles when there
+are many of them. To control that a task may run in a <a href="https://uwsgi-docs.readthedocs.io/en/latest/Spooler.html?highlight=spooler">spooler</a> with controlled number of executors.
+This however requieres some configuration from uwsgi side (that is <code class="highlighter-rouge">uwsgi.ini</code>)</p>
+
+<ul>
+  <li><code class="highlighter-rouge">spooler = my_spools</code> - a path to a directory to store files representing tasks. Directory should be created beforehand.</li>
+  <li><code class="highlighter-rouge">spooler-import = tasks.py</code> - a module containing task’s code spooler workers will import</li>
+  <li><code class="highlighter-rouge">spooler-frequency = 1</code> - how ofter workers scan spool directory for tasks</li>
+  <li><code class="highlighter-rouge">spooler-processes = 10</code> - how many workers to run</li>
+</ul>
+
+<p>After running <code class="highlighter-rouge">uwsgi --ini uwsgi.ini</code> startup log shows created processes:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10609
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10610
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10611
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10612
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10613
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10614
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10615
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10616
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10617
+spawned the uWSGI spooler on <span class="nb">dir</span> /home/as/Desktop/blog/my_spools with pid 10618
+spawned uWSGI worker 1 <span class="o">(</span>pid: 10619, cores: 1<span class="o">)</span>
+spawned uWSGI worker 2 <span class="o">(</span>pid: 10620, cores: 1<span class="o">)</span>
+spawned uWSGI worker 3 <span class="o">(</span>pid: 10621, cores: 1<span class="o">)</span>
+spawned uWSGI worker 4 <span class="o">(</span>pid: 10622, cores: 1<span class="o">)</span>
+spawned uWSGI worker 5 <span class="o">(</span>pid: 10623, cores: 1<span class="o">)</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">tasks.py</code> code is straightforward and use <code class="highlighter-rouge">spool</code> decorator from uwsgi.
+The task function itself should return a predefined codes though:</p>
+<ul>
+  <li><code class="highlighter-rouge">uwsgi.SPOOL_OK</code> if all went well</li>
+  <li><code class="highlighter-rouge">uwsgi.SPOOL_RETRY</code> if a jobs needs to be retried (if it’s idempotent of course)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">uwsgi</span>
+<span class="kn">from</span> <span class="nn">uwsgidecorators</span> <span class="kn">import</span> <span class="n">spool</span>
+
+
+<span class="nd">@spool</span>
+<span class="k">def</span> <span class="nf">spool_task</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s">'duration'</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Working in uwsgi spool... {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">duration</span><span class="p">))</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">uwsgi</span><span class="o">.</span><span class="n">SPOOL_OK</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">uwsgi</span><span class="o">.</span><span class="n">SPOOL_RETRY</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">app.py</code> calls <code class="highlighter-rouge">spool_task</code> in the route, but I struggled a but with passing parameters.
+I was getting such error when passing them according to the docs:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ValueError: spooler callable dictionary must contains only bytes
+</code></pre></div></div>
+<p>So I came up with simple helper that converts keyword arguments to a dictionary with
+keys and values that have bytes only - <code class="highlighter-rouge">prepare_spooler_args</code>. <code class="highlighter-rouge">spool</code> decorator has a <code class="highlighter-rouge">pass_arguments</code> parameter - it may be a
+possible solution as well.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">threaded_task</span><span class="p">,</span> <span class="n">uwsgi_task</span><span class="p">,</span> <span class="n">spool_task</span><span class="p">,</span> <span class="n">uwsgi_tasks_task</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">prepare_spooler_args</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">args</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/uwsgi_spool"</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s">'duration'</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/uwsgi_spool/&lt;int:duration&gt;"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">uwsgi_spool</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">prepare_spooler_args</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
+    <span class="n">spool_task</span><span class="o">.</span><span class="n">spool</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s">'started'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Also <code class="highlighter-rouge">spool_task.spool</code> accepts an <code class="highlighter-rouge">at</code> parameter that tell spooler to
+run a task at a specified unix timestamp. To use it <code class="highlighter-rouge">uwsgi_spool</code> route code:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@app.route</span><span class="p">(</span><span class="s">"/uwsgi_spool"</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s">'duration'</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
+<span class="nd">@app.route</span><span class="p">(</span><span class="s">"/uwsgi_spool/&lt;int:duration&gt;"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">uwsgi_spool</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">at</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">+</span> <span class="mi">3</span> <span class="c"># delay by 3s</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">prepare_spooler_args</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">)</span>
+    <span class="n">spool_task</span><span class="o">.</span><span class="n">spool</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s">'started'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Demo:</p>
+
+<p><img src="https://github.com/smirnov-am/flask-bg-tasks/blob/master/demo3.gif?raw=true" alt="demo1" /></p>
+
+<h3 id="wrapping-up-spooler">Wrapping up spooler</h3>
+<p><code class="highlighter-rouge">uwsgi-tasks</code> library (<a href="https://pypi.org/project/uwsgi-tasks/">pypi</a>) wraps
+all the uwsgi spooler workings, especially argument passing. Also I found controlling retries as a useful feature
+Unfortunately after installing it previous example (bareback spooler) stopped working for me.</p>
+
+<h2 id="further-thoughts">Further thoughts.</h2>
+<p>uSWGI spooler is great for simple tasks. It becomes more robust with external spooler support and networking, but at that
+level it starts resemble a common approach with all it’s drawbacks.</p>
+
+<p>The whole code is available at <a href="https://github.com/smirnov-am/flask-bg-tasks">GitHub</a></p>
+
+<p>Do you use background jobs with Flask? Drop me a message on <a href="https://www.linkedin.com/in/smirnovam/">linkedin</a></p>
+
+
+  </div><a class="u-url" href="/2018/11/05/flask-background-tasks.html" hidden></a>
+</article>
+
+      </div>
+    </main></body>
+
+</html>
