@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Basic Financial Calculations | Alexey Smirnov</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Basic Financial Calculations" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In this post I’ll cover:" />
+<meta property="og:description" content="In this post I’ll cover:" />
+<link rel="canonical" href="http://localhost:4000/2018/12/24/basic-financial-calculations.html" />
+<meta property="og:url" content="http://localhost:4000/2018/12/24/basic-financial-calculations.html" />
+<meta property="og:site_name" content="Alexey Smirnov" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-12-24T00:00:00+01:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2018/12/24/basic-financial-calculations.html","description":"In this post I’ll cover:","headline":"Basic Financial Calculations","datePublished":"2018-12-24T00:00:00+01:00","dateModified":"2018-12-24T00:00:00+01:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/12/24/basic-financial-calculations.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Alexey Smirnov" /></head>
+<body><header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Alexey Smirnov</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+                <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+                <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+        <div class="trigger">
+          <a class="page-link" href="https://www.linkedin.com/in/smirnovam/">Linkedin</a>
+          <a class="page-link" href="https://github.com/smirnov-am">GitHub</a>
+        </div>
+        </nav></div>
+  </header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Basic Financial Calculations</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-12-24T00:00:00+01:00" itemprop="datePublished">Dec 24, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>In this post I’ll cover:</p>
+
+<ul>
+  <li>Net present value (NPV)</li>
+  <li>Internal rate of return (IRR)</li>
+  <li>Payment schedules and loan tables</li>
+  <li>Future value</li>
+  <li>Pension and accumulation problems</li>
+  <li>Continuously compounded interest</li>
+</ul>
+
+<h2 id="net-present-value">Net present value</h2>
+
+<p>Present value allows to answer a simple question “should I put my money in a bank or invest”. Let’s say I have $100 and bank gives 12% annual interest rate. Alternatively I can lend this money to a friend and he promises to pay $10 for 12 month. Moral aspect aside NPV gives an answer which alternative is more profitable.</p>
+
+<p>Second alternative can be described as a series of cash flows:</p>
+<ul>
+  <li>-$100 at month=0</li>
+  <li>+$10 at month=1</li>
+  <li>…</li>
+  <li>+$10 at month=12</li>
+</ul>
+
+<p>At each period value should be adjusted by the interest rate (also called the discount rate) using formula  <img src="http://www.sciweavers.org/tex2img.php?eq=%5Cfrac%7BCF_%7Bt%7D%20%7D%7B%20%281%20%2B%20r%29%5E%7Bt%7D%20%7D&amp;bc=White&amp;fc=Black&amp;im=jpg&amp;fs=12&amp;ff=arev&amp;edit=0" alt="npv" /></p>
+
+<p>This basic concept shows that $100 now is not the same as $100 promised in a year. $100 now is $110 in a year.</p>
+
+<p>To calculate discounted value I’ll convert annual discount (interest) rate to daily and use the number of days elapsed as <em>t</em>. The function accepts a dataframe with date column and a cash flow column.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">npv</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> 
+        <span class="n">annual_discount_rate</span><span class="p">,</span> 
+        <span class="n">cash_flow_column_name</span><span class="o">=</span><span class="s">'cash flow'</span><span class="p">,</span> 
+        <span class="n">date_column_name</span><span class="o">=</span><span class="s">'date'</span><span class="p">):</span>
+    <span class="n">date_start</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">date_column_name</span><span class="p">]</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
+    <span class="n">mapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_calculate_discounted</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">cash_flow_column_name</span><span class="p">],</span> 
+                                             <span class="n">annual_discount_rate</span><span class="p">,</span> 
+                                             <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">date_column_name</span><span class="p">]</span> <span class="o">-</span> <span class="n">date_start</span><span class="p">)</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataframe</span><span class="p">[[</span><span class="n">cash_flow_column_name</span><span class="p">,</span> <span class="n">date_column_name</span><span class="p">]]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">mapper</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">_calculate_discounted</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">days_passed</span><span class="p">):</span>
+    <span class="n">daily_interest_rate</span> <span class="o">=</span> <span class="n">convert_ir</span><span class="p">(</span><span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">from_period</span><span class="o">=</span><span class="s">'year'</span><span class="p">,</span> <span class="n">to_period</span><span class="o">=</span><span class="s">'day'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cf</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">daily_interest_rate</span><span class="p">)</span><span class="o">**</span><span class="n">days_passed</span>
+</code></pre></div></div>
+
+<p>Let’s calculate NPV of a lending to a friend:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'cash flow'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span><span class="p">,</span> 
+                            <span class="s">'date'</span><span class="p">:</span> <span class="n">dates</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">npv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="mf">14.011086147172053</span>
+</code></pre></div></div>
+
+<p>The calculated NPV of lending alternative is ~$14 which means that it is profitable. This value represents your wealth increment.  Companies use NPV
+to calculate if it’s, for example, viable to invest in a factory that will generate cash flows in a future or it’s better to put money elsewhere.</p>
+
+<p><code class="highlighter-rouge">npv</code> function can also operate with time-dated cash flows - that is when the cash flow are not evenly placed.</p>
+
+<h2 id="internal-rate-of-returns">Internal rate of returns</h2>
+
+<p>So I decided to lend to a friend. What is the effective interest rate for this alternative? Internal rate of returns 
+(IRR) answers that. The solution of the following equation for <em>r</em> gives IRR:
+    <img src="http://www.sciweavers.org/tex2img.php?eq=CF_%7B0%7D%20%2B%20%5Csum_%7Bt%3D1%7D%5E%7BN%7D%20%5Cfrac%7BCF_%7Bt%7D%20%7D%7B%281%20%2B%20r%29%5E%7Bt%7D%20%7D%20%3D%200&amp;bc=White&amp;fc=Black&amp;im=jpg&amp;fs=12&amp;ff=arev&amp;edit=0" alt="irr" /></p>
+
+<p>Effectively we are finding interest rate when NPV is 0.</p>
+
+<p>The function will accept the same dataframe as an input. I’m using scipy numerical <a href="https://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fsolve.html">solver</a> to find <em>r</em>. The solver accepts initial <em>guess</em> argument which helps to find the solution.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">irr</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cash_flow_column_name</span><span class="o">=</span><span class="s">'cash flow'</span><span class="p">,</span> <span class="n">date_column_name</span><span class="o">=</span><span class="s">'date'</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">npv</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">cash_flow_column_name</span><span class="o">=</span><span class="n">cash_flow_column_name</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">guess</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">irr</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="p">[</span><span class="mf">0.41354120272404077</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Lending to a friend has an effective interest rate of 41%</p>
+
+<p>Sometimes series of cash flows can have more than one IRR. We can play with <em>guess</em> to find both solutions.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'cash flow'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">145</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">275</span><span class="p">],</span>                              <span class="s">'date'</span><span class="p">:</span> <span class="n">dates</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">irr</span><span class="p">(</span><span class="n">df3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">irr</span><span class="p">(</span><span class="n">df3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span>
+<span class="p">([</span><span class="mf">0.08793680470699422</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.26585705483081506</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="flat-payment-schedules">Flat payment schedules</h2>
+
+<p>Let’s look at the lending problems from the friends point. He knows that with the cash flow he proposed he will be paying 41% annual interest rate. He wants to lower the interest rate to say 30% and calculates new flat payment scheme. Flat here means that he will pay constant amount each month for a <em>term</em> amount of months.</p>
+
+<p>First let’s calculate monthly payment. Function argument will be</p>
+<ul>
+  <li><em>principal</em> - the lending amount</li>
+  <li><em>annual_interest_rate</em> - agreed interest rate in a term of a year</li>
+  <li><em>term</em> - how many terms to pay</li>
+  <li><em>period</em> - unit of a <em>term</em></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pmt</span><span class="p">(</span><span class="n">principal</span><span class="p">,</span> <span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'year'</span><span class="p">):</span>
+    <span class="n">periodic_interest</span> <span class="o">=</span> <span class="n">convert_ir</span><span class="p">(</span><span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">from_period</span><span class="o">=</span><span class="s">'year'</span><span class="p">,</span> <span class="n">to_period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">payment</span> <span class="o">=</span> <span class="p">(</span><span class="n">principal</span><span class="o">*</span><span class="n">periodic_interest</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">periodic_interest</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">term</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">payment</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">pmt</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'month'</span><span class="p">)</span>
+<span class="mf">9.57859525723352</span>
+</code></pre></div></div>
+<p>So he will be paying ~$9.6 each month. Now he wants to know how fast he’s re-paying the interest and the principal. For that a loan table is used.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">flat_payments</span><span class="p">(</span><span class="n">principal</span><span class="p">,</span> <span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'year'</span><span class="p">):</span>
+    <span class="n">_pmt</span> <span class="o">=</span> <span class="n">pmt</span><span class="p">(</span><span class="n">principal</span><span class="p">,</span> <span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">current_principal</span> <span class="o">=</span> <span class="n">principal</span>
+    <span class="n">principal_col_name</span> <span class="o">=</span> <span class="s">'principal at the beginning of {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">payment_col_name</span> <span class="o">=</span> <span class="s">'payment at the end of {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">interest_col_name</span> <span class="o">=</span> <span class="s">'interest'</span>
+    <span class="n">return_principal_col_name</span> <span class="o">=</span> <span class="s">'return of principal'</span>
+    <span class="n">periodic_interest</span> <span class="o">=</span> <span class="n">convert_ir</span><span class="p">(</span><span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">from_period</span><span class="o">=</span><span class="s">'year'</span><span class="p">,</span> <span class="n">to_period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">term</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">period</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_t</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">principal_col_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_principal</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">payment_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_pmt</span>
+        <span class="n">current_interest</span> <span class="o">=</span> <span class="n">current_principal</span> <span class="o">*</span> <span class="n">periodic_interest</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">interest_col_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_interest</span><span class="p">)</span>
+        <span class="n">current_return_of_principal</span> <span class="o">=</span> <span class="n">_pmt</span> <span class="o">-</span> <span class="n">current_interest</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">return_principal_col_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_return_of_principal</span><span class="p">)</span>
+        <span class="n">current_principal</span> <span class="o">-=</span> <span class="n">current_return_of_principal</span>  
+    <span class="k">assert</span> <span class="nb">round</span><span class="p">(</span><span class="n">current_principal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">res_df</span> <span class="o">=</span> <span class="n">flat_payments</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'month'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">res_df</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s">"pipe"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s">"keys"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: right">month</th>
+      <th style="text-align: right">principal at the beginning of month</th>
+      <th style="text-align: right">payment at the end of month</th>
+      <th style="text-align: right">interest</th>
+      <th style="text-align: right">return of principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">100</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">2.21045</td>
+      <td style="text-align: right">7.36815</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">92.6318</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">2.04758</td>
+      <td style="text-align: right">7.53102</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">85.1008</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">1.88111</td>
+      <td style="text-align: right">7.69749</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">77.4033</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">1.71096</td>
+      <td style="text-align: right">7.86764</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4</td>
+      <td style="text-align: right">5</td>
+      <td style="text-align: right">69.5357</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">1.53705</td>
+      <td style="text-align: right">8.04155</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">5</td>
+      <td style="text-align: right">6</td>
+      <td style="text-align: right">61.4942</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">1.35929</td>
+      <td style="text-align: right">8.2193</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">6</td>
+      <td style="text-align: right">7</td>
+      <td style="text-align: right">53.2749</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">1.17761</td>
+      <td style="text-align: right">8.40098</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">7</td>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">44.8739</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">0.991912</td>
+      <td style="text-align: right">8.58668</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">9</td>
+      <td style="text-align: right">36.2872</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">0.802108</td>
+      <td style="text-align: right">8.77649</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">9</td>
+      <td style="text-align: right">10</td>
+      <td style="text-align: right">27.5107</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">0.608109</td>
+      <td style="text-align: right">8.97049</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">10</td>
+      <td style="text-align: right">11</td>
+      <td style="text-align: right">18.5402</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">0.409821</td>
+      <td style="text-align: right">9.16877</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">11</td>
+      <td style="text-align: right">12</td>
+      <td style="text-align: right">9.37144</td>
+      <td style="text-align: right">9.5786</td>
+      <td style="text-align: right">0.207151</td>
+      <td style="text-align: right">9.37144</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I’m using <a href="https://pypi.org/project/tabulate/">tabulate</a> to print dataframes in terminal.</p>
+
+<p>Last two columns - <em>interest</em> and <em>return of principal</em> - show how the payment is split between repaying interest and principal. At the end principal value should be 0 (see assert in function code). It’s interesting to know how much interest is re-payed because that amount sometimes is tax deductible.</p>
+
+<h2 id="future-value">Future value</h2>
+
+<p>Let’s imagine we put $10000 today for 10 years with annual interest rate 10%. How much money we will have in 10 years? Using this formula with r=0.1 ant t=10 will give us $2593.74
+    <img src="http://www.sciweavers.org/tex2img.php?eq=%7BDeposit%7D%2A%7B%281%20%2B%20r%29%5E%7Bt%7D%20%7D%20&amp;bc=White&amp;fc=Black&amp;im=jpg&amp;fs=12&amp;ff=arev&amp;edit=0" alt="npv" /></p>
+
+<p>Slightly more complex problem if we want to deposit some money during this 10 years. <em>Future value</em> will tell how much money we’ll have in the end of the period.</p>
+
+<p>The function accepts list of deposit amounts and, annual interest rate and a period at which deposits are made</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">fv</span><span class="p">(</span><span class="n">deposits</span><span class="p">,</span> <span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'year'</span><span class="p">):</span>
+    <span class="n">periodic_interest</span> <span class="o">=</span> <span class="n">convert_ir</span><span class="p">(</span><span class="n">annual_interest_rate</span><span class="p">,</span> <span class="n">from_period</span><span class="o">=</span><span class="s">'year'</span><span class="p">,</span> <span class="n">to_period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">future_value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">number_of_deposits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">deposits</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">deposit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">deposits</span><span class="p">):</span>
+        <span class="n">future_value</span> <span class="o">+=</span> <span class="n">deposit</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">periodic_interest</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">number_of_deposits</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">future_value</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fv</span><span class="p">([</span><span class="mi">1000</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)],</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'year'</span><span class="p">)</span>
+<span class="mf">17531.16706110001</span>
+</code></pre></div></div>
+<p>So depositing $1000 for 10 years will yield $17.5k given interest rate is 10%.</p>
+
+<h2 id="retirement-problem">Retirement problem</h2>
+
+<p>Consider a following exercise. Now I’m 31 and planning to retire at 55 (24 more years working). After retiring I’m planning to live at least 25 more years and will need, say, $50000 a year. To support my retirement I need to deposit money into bank account with know interest rate (say 5%). What’s the minimum amount do I need to deposit each year?</p>
+
+<p>This problem implies a number of cash flows: 24 terms with CF=<em>x</em> at each time, and 25 terms with CF=-50000. Present value of this cash flows should be 0. Solving this equation for <em>x</em> will give the minimum annual deposit. Minimum deposit is used here not in mathematical sense, but more in common sense - I’ll live more that 25 years after retirement, prices are also going up so I’ll need more that 50k yearly.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_retirement_cf_dataframe</span><span class="p">(</span><span class="n">deposit</span><span class="p">,</span> <span class="n">terms_of_deposit</span><span class="p">,</span> <span class="n">withdrawal</span><span class="p">,</span> <span class="n">terms_of_withdrawal</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s">'year'</span><span class="p">):</span>
+    <span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="n">deposit</span><span class="p">]</span><span class="o">*</span><span class="n">terms_of_deposit</span> <span class="o">+</span> <span class="p">[</span><span class="o">-</span><span class="n">withdrawal</span><span class="p">]</span><span class="o">*</span><span class="n">terms_of_withdrawal</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="n">terms_of_deposit</span> <span class="o">+</span> <span class="n">terms_of_withdrawal</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">period</span> <span class="o">+</span> <span class="s">'s'</span><span class="p">:</span><span class="n">i</span><span class="p">})</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">terms</span><span class="p">)]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'cash flow'</span><span class="p">:</span> <span class="n">cash_flows</span><span class="p">,</span> <span class="s">'date'</span><span class="p">:</span> <span class="n">dates</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">retirement_problem</span><span class="p">(</span><span class="n">terms_of_deposit</span><span class="p">,</span> 
+                       <span class="n">withdrawal</span><span class="p">,</span> 
+                       <span class="n">terms_of_withdrawal</span><span class="p">,</span> 
+                       <span class="n">annual_discount_rate</span><span class="p">,</span> 
+                       <span class="n">period</span><span class="o">=</span><span class="s">'year'</span><span class="p">):</span>
+    <span class="n">df_by_deposit</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">get_retirement_cf_dataframe</span><span class="p">,</span> 
+                            <span class="n">terms_of_deposit</span><span class="o">=</span><span class="n">terms_of_deposit</span><span class="p">,</span> 
+                            <span class="n">withdrawal</span><span class="o">=</span><span class="n">withdrawal</span><span class="p">,</span> 
+                            <span class="n">terms_of_withdrawal</span><span class="o">=</span><span class="n">terms_of_withdrawal</span><span class="p">,</span> 
+                            <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">deposit</span><span class="p">:</span> <span class="n">npv</span><span class="p">(</span><span class="n">retirement_dataframe_by_deposit</span><span class="p">(</span><span class="n">deposit</span><span class="p">),</span> <span class="n">annual_discount_rate</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">withdrawal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">retirement_problem</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="p">[</span><span class="mf">15822.327630785972</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>That’s pretty cool result - I need to deposit only ~$16k yearly for 24 years to be able to withdraw $50k for 25 years later. That’s compound interest working.</p>
+
+<h2 id="continuous-compounding">Continuous compounding</h2>
+
+<p>I’m using <code class="highlighter-rouge">convert_ir(r, from_period='year', to_period='day')</code> function to convert from annual interest rate to daily interest rate in some examples above.
+So if I have annual rate of 20%, quarterly rate is:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">convert_ir</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">from_period</span><span class="o">=</span><span class="s">'year'</span><span class="p">,</span> <span class="n">to_period</span><span class="o">=</span><span class="s">'quater'</span><span class="p">)</span>
+<span class="mf">0.04663513939210562</span>
+</code></pre></div></div>
+<p>And respective annual is:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">convert_ir</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">from_period</span><span class="o">=</span><span class="s">'year'</span><span class="p">,</span> <span class="n">to_period</span><span class="o">=</span><span class="s">'quater'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So if a bank offers 20% annual interest rate paid quarterly the effective annual interest rate is 18.6%. So if the number of interest payments increases - for example to every millisecond -  this is called continuous compounding. Let’s calculate annual interest rate continuously compounded given initial and end amounts.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_annual_rate_cc</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">amount_column_name</span><span class="o">=</span><span class="s">'amount'</span><span class="p">,</span> <span class="n">date_column_name</span><span class="o">=</span><span class="s">'date'</span><span class="p">):</span>
+    <span class="n">amount_first</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">amount_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">amount_last</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">amount_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">date_first</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">date_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">date_last</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">date_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">date_last</span><span class="p">,</span> <span class="n">date_first</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">years</span> <span class="o">+</span> <span class="n">delta</span><span class="o">.</span><span class="n">months</span><span class="o">/</span><span class="mi">12</span> <span class="o">+</span> <span class="n">delta</span><span class="o">.</span><span class="n">days</span><span class="o">/</span><span class="mi">365</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">amount_last</span><span class="o">/</span><span class="n">amount_first</span><span class="p">)</span><span class="o">/</span><span class="n">t</span>
+    <span class="k">return</span> <span class="n">r</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'amount'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="s">'date'</span><span class="p">:</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">+</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">months</span><span class="o">=</span><span class="mi">9</span><span class="p">)]})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s">"pipe"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s">"keys"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: right">amount</th>
+      <th style="text-align: left">date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">1000</td>
+      <td style="text-align: left">2018-12-24</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">1500</td>
+      <td style="text-align: left">2020-09-24</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">get_annual_rate_cc</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="mf">0.23169434749037965</span>
+</code></pre></div></div>
+
+<p>Continuous compounding is used in many financial calculations.</p>
+
+<h2 id="code">Code</h2>
+<p>I’m planning to gather all the financial modeling methods including the ones form this post in a repo <a href="https://github.com/smirnov-am/pyfinmod">here</a>. Feel free to reach out to me over <a href="https://www.linkedin.com/in/smirnovam/">LinkedIn</a> for amy question.</p>
+
+  </div><a class="u-url" href="/2018/12/24/basic-financial-calculations.html" hidden></a>
+</article>
+
+      </div>
+    </main></body>
+
+</html>
