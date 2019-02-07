@@ -1,4 +1,254 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-01-09T20:43:55+01:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Basic Financial Calculations with Python and Pandas</title><link href="http://localhost:4000/2018/12/24/basic-financial-calculations.html" rel="alternate" type="text/html" title="Basic Financial Calculations with Python and Pandas" /><published>2018-12-24T00:00:00+01:00</published><updated>2018-12-24T00:00:00+01:00</updated><id>http://localhost:4000/2018/12/24/basic-financial-calculations</id><content type="html" xml:base="http://localhost:4000/2018/12/24/basic-financial-calculations.html">&lt;p&gt;&lt;img src=&quot;/assets/img/pyfinmod1.png&quot; alt=&quot;mascot&quot; height=&quot;300px&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-02-07T11:34:07+01:00</updated><id>http://localhost:4000/</id><title type="html">Alexey Smirnov</title><subtitle></subtitle><entry><title type="html">Calculating enterprise value with Python and Pandas (part 1)</title><link href="http://localhost:4000/2019/02/07/company-evaluation-pt1.html" rel="alternate" type="text/html" title="Calculating enterprise value with Python and Pandas (part 1)" /><published>2019-02-07T00:00:00+01:00</published><updated>2019-02-07T00:00:00+01:00</updated><id>http://localhost:4000/2019/02/07/company-evaluation-pt1</id><content type="html" xml:base="http://localhost:4000/2019/02/07/company-evaluation-pt1.html">&lt;p&gt;&lt;img src=&quot;/assets/img/pyfinmod2.png&quot; alt=&quot;mascot&quot; height=&quot;300px&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;enterprise-value&quot;&gt;Enterprise Value&lt;/h1&gt;
+&lt;p&gt;Value of the enterprise may be used to find out whether price of company
+ equity - a share - is worth what market offers.
+ It’s also used in acquisitions to get the price of the company as a whole.&lt;/p&gt;
+
+&lt;p&gt;In this post I’ll cover 3 methods of Enterprise Value calculations:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;using accounting book&lt;/li&gt;
+  &lt;li&gt;efficient market approach&lt;/li&gt;
+  &lt;li&gt;discounted cash flows (DCF)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The latter one - DCF - is a complex topic. So here I’ll cover the first
+part - getting future cash flows from cash flow statement. WACC and
+resulting calculations as well as market engineering and sensitivity
+analysis will be covered in later posts.&lt;/p&gt;
+
+&lt;h2 id=&quot;methods-of-corporate-valuation&quot;&gt;Methods of corporate valuation&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-using-accounting-book&quot;&gt;1. Using accounting book&lt;/h3&gt;
+
+&lt;p&gt;The idea behind this method is to rewrite balance sheet in a way that all
+productive items are on the left side and financial items are on the right.
+Productive items include net working capital, property,
+&lt;a href=&quot;https://www.investopedia.com/terms/i/intangibleasset.asp&quot;&gt;intangible assets&lt;/a&gt;
+(copyright, goodwill) and other fixed assets.
+Net working capital is defined as &lt;strong&gt;accounts receivable&lt;/strong&gt; + &lt;strong&gt;inventories&lt;/strong&gt; -
+&lt;strong&gt;accounts payable&lt;/strong&gt; - &lt;strong&gt;taxes payable&lt;/strong&gt;. Liquid assets such as cash will go on the
+right side to net financial debt.&lt;/p&gt;
+
+&lt;p&gt;So on the right-hand - financial side - we will have net financial debt
+(all short and long term debt minus liquid cash), other liabilities such as
+pensions, equity.&lt;/p&gt;
+
+&lt;p&gt;After moving all the items both columns should be in balance -
+column sums are equal and represent company value.&lt;/p&gt;
+
+&lt;p&gt;I failed to find a reliable API to get company’s balance sheet so I made a Yahoo Finance parser.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.yahoo_finance&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'AAPL'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'balance-sheet'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The resulting dataframe with AAPL balance sheet is:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;row name&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;2018-09-29&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;2017-09-30&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;2016-09-24&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;2015-09-26&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Cash And Cash Equivalents&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.5913e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.0289e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.0484e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.112e+10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Short Term Investments&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;4.0388e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;5.3892e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;4.6671e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.0481e+10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Net Receivables&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;4.8995e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;3.5673e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.9299e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;3.0343e+10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Inventory&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;3.956e+09&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;4.855e+09&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.132e+09&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;2.349e+09&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Other Current Assets&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.2087e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.3936e+10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;8.283e+09&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.4691e+10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Total Current Assets&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.31339e+11&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.28645e+11&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.06869e+11&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;8.9378e+10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Long Term Investments&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.70799e+11&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.94714e+11&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.7043e+11&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.64065e+11&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;…&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;…&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;…&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;…&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;…&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;To calculate enterprise value &lt;code class=&quot;highlighter-rouge&quot;&gt;get_enterprise_value&lt;/code&gt; function can be used.
+And I found interesting thing about Yahoo Finance page that there is no
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Taxes Payable&lt;/code&gt; row and &lt;code class=&quot;highlighter-rouge&quot;&gt;Total Current Liabilities&lt;/code&gt; do not sum up
+to &lt;code class=&quot;highlighter-rouge&quot;&gt;Accounts Payable&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;Short/Current Long Term Debt&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;Other Current Liabilities&lt;/code&gt;. So my
+calculations might be not very precise.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.yahoo_finance&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.ev&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_enterprise_value&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'AAPL'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'balance-sheet'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get_enterprise_value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The result is:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;29&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;271960000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;298811000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;233939000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2015&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;26&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;202067000000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Also there is a function to calcualte net working capital:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.yahoo_finance&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.ev&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_net_working_capital&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'AAPL'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'balance-sheet'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get_net_working_capital&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;29&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;43167000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;41813000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14106000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2015&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;26&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13737000000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;2-efficient-market-approach&quot;&gt;2. Efficient market approach&lt;/h3&gt;
+
+&lt;p&gt;If the company is publicly traded we can calculate market cap: number of
+shares multiplied by the share price. This is equity. It’s different from
+the equity in the liabilities column from the balance sheet which
+represents the initial amount of money invested in a business
+(maybe not initial if the profits were reinvested).&lt;/p&gt;
+
+&lt;p&gt;Efficient market approach says that we need to substitute equity from
+rewritten balance sheet as in previous approach with the one defined by the market.
+Here lies the explanation of the name of the approach - market with many
+participants trading company’s shares who have same information give the most
+accurate evaluation of the company.&lt;/p&gt;
+
+&lt;p&gt;After doing the substitution new balance sheet is not in balance. In that
+case net working capital is recalculated to re-balance it. The new column sum is
+the company’s value&lt;/p&gt;
+
+&lt;p&gt;As we can see in September 2018 AAPL value was 271.960B according to the balance sheet.
+But market cap it as 1.086T.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.yahoo_finance&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pyfinmod.ev&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_enterprise_value_efficient_market&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;parser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YahooFinanceParser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'AAPL'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'balance-sheet'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get_enterprise_value_efficient_market&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1086&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1250764000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2016&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1191690000000&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2015&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;26&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1168712000000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This is a resulting enterprise value given market cap.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-discounted-cash-flows&quot;&gt;3. Discounted cash flows&lt;/h3&gt;
+
+&lt;p&gt;This approach aims to evaluate a company by its ability to generate money in future.
+It uses two terms:
+Future Cash Flows (&lt;a href=&quot;https://www.investopedia.com/terms/f/freecashflow.asp&quot;&gt;FCF&lt;/a&gt;)
+and Weighted Average Cost of Capital (&lt;a href=&quot;https://www.investopedia.com/terms/w/wacc.asp&quot;&gt;WACC&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;FCFs are defined as the cash created by the company’s operating activities.
+WACC is the risk-adjusted discount rate appropriate to the risk of the FCFs.
+And the value of the company is calculated as net present value of FCFs discounted
+at WACC.&lt;/p&gt;
+
+&lt;p&gt;There is one assumption to this approach is that cash flows occur approximately
+mid-year. In that case the formula fro enterprise value (EV) is:
+&lt;img src=&quot;http://www.sciweavers.org/tex2img.php?eq=EV%20%3D%20NPV%28FCF_%7Bi%7D%2C%20WACC%29%2A%281%20%2B%20WACC%29%5E%7B0.5%7D%20&amp;amp;bc=White&amp;amp;fc=Black&amp;amp;im=jpg&amp;amp;fs=12&amp;amp;ff=arev&amp;amp;edit=0&quot; alt=&quot;dcfev&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are two steps in getting FCFs:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;get historical FCFs either from pro forma or cash flow statements&lt;/li&gt;
+  &lt;li&gt;project FCFs to the future assuming growth percentages&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I’ll skip pro forma method for now&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;fcf-from-cash-flow-statement&quot;&gt;FCF from cash flow statement&lt;/h4&gt;
+&lt;p&gt;We need to add up these rows from cash flow statement:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Total Cash Flow From Operating Activities&lt;/li&gt;
+  &lt;li&gt;Total Cash Flows From Investing Activities&lt;/li&gt;
+  &lt;li&gt;Add back after-tax net interest&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The latter is calculated as (1 - &lt;strong&gt;Income tax rate&lt;/strong&gt;) * &lt;strong&gt;Cash paid for Interest&lt;/strong&gt;.
+&lt;strong&gt;Cash paid for interest&lt;/strong&gt; is absolute value of &lt;code class=&quot;highlighter-rouge&quot;&gt;Interest Expense&lt;/code&gt;.
+&lt;strong&gt;Income tax rate&lt;/strong&gt; equals &lt;code class=&quot;highlighter-rouge&quot;&gt;Income Tax Expense&lt;/code&gt; / (&lt;code class=&quot;highlighter-rouge&quot;&gt;Net Income&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;Income Tax Expense&lt;/code&gt;).&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Income Tax Expense&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Interest Expense&lt;/code&gt; are taken from  income statement.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Net Income&lt;/code&gt; is taken from cash flow statement.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from pyfinmod.ev import get_fcf_from_cscf
+balance_sheet_parser = YahooFinanceParser('AAPL', 'balance-sheet')
+balance_sheet = balance_sheet_parser.get_dataframe()
+
+income_statement_parser = YahooFinanceParser('AAPL', 'income-statement')
+income_statement = income_statement_parser.get_dataframe()
+
+get_fcf_from_cscf(income_statement, cash_flow)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2018-09-29    9.614571e+10
+2017-09-30    1.953155e+10
+2016-09-24    2.133789e+10
+2015-09-26    2.553172e+10
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the next posts I’ll cover WACC calculation and DCF method usage.
+Code is in the repo &lt;a href=&quot;https://github.com/smirnov-am/pyfinmod&quot;&gt;here&lt;/a&gt;.
+Feel free to reach out to me over &lt;a href=&quot;https://www.linkedin.com/in/smirnovam/&quot;&gt;LinkedIn&lt;/a&gt;
+for any questions or corrections.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Basic Financial Calculations with Python and Pandas</title><link href="http://localhost:4000/2018/12/24/basic-financial-calculations.html" rel="alternate" type="text/html" title="Basic Financial Calculations with Python and Pandas" /><published>2018-12-24T00:00:00+01:00</published><updated>2018-12-24T00:00:00+01:00</updated><id>http://localhost:4000/2018/12/24/basic-financial-calculations</id><content type="html" xml:base="http://localhost:4000/2018/12/24/basic-financial-calculations.html">&lt;p&gt;&lt;img src=&quot;/assets/img/pyfinmod1.png&quot; alt=&quot;mascot&quot; height=&quot;300px&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;In this post I’ll cover:&lt;/p&gt;
 
@@ -1844,311 +2094,4 @@ For word embeddings RNN are a &lt;a href=&quot;http://colah.github.io/posts/2014
 Top10 keyphrases are: &lt;code class=&quot;highlighter-rouge&quot;&gt;document&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;topics&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;keyphrase&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;graph&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;metshod&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;topicrank&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;word&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;vertices&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;keyphrase candidate&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;datasets&lt;/code&gt;, which is pretty close to what article is about.&lt;/p&gt;
 
 &lt;h2 id=&quot;deployment&quot;&gt;Deployment&lt;/h2&gt;
-&lt;p&gt;I’ve deployed my implementation of TopicRank as a AWS Lambda function that is being invoked from JavaScript directly &lt;a href=&quot;http://pytopicrank.s3-website-us-east-1.amazonaws.com/&quot;&gt;here&lt;/a&gt; (I’ve set &lt;code class=&quot;highlighter-rouge&quot;&gt;max_d=1.25&lt;/code&gt; there for no particular reason so results may vary)&lt;/p&gt;</content><author><name></name></author><summary type="html">Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</summary></entry><entry><title type="html">E-commerce recommendation systems: basket analysis. Performance comparison of most common algorithms.</title><link href="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html" rel="alternate" type="text/html" title="E-commerce recommendation systems: basket analysis. Performance comparison of most common algorithms." /><published>2018-04-08T00:00:00+02:00</published><updated>2018-04-08T00:00:00+02:00</updated><id>http://localhost:4000/2018/04/08/E-commerce-recommendation-systems</id><content type="html" xml:base="http://localhost:4000/2018/04/08/E-commerce-recommendation-systems.html">&lt;p&gt;Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.&lt;/p&gt;
-
-&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
-&lt;p&gt;Amazon is one of the most prominent organizations used recommendations to increase sales.
-According to &lt;a href=&quot;http://fortune.com/2012/07/30/amazons-recommendation-secret/&quot;&gt;fortune.com&lt;/a&gt; Amazon was able to increase sales by 29% in 2012 as a result of implementing recommendation system. 
-35% of Amazom’s revenue is generated by its recommendation engine &lt;a href=&quot;https://www.mckinsey.com/industries/retail/our-insights/how-retailers-can-keep-up-with-consumers&quot;&gt;(source)&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Amazon is using &lt;a href=&quot;https://www.computer.org/csdl/mags/ic/2017/03/mic2017030012.html&quot;&gt;collaborative filtering approach&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;However there is another approach to mine items that a frequently bought together - &lt;strong&gt;association rule mining&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;The difference is the unit of aggregation: collaborative filtering unit is user or items.&lt;/p&gt;
-
-&lt;p&gt;With user-to-user collaborative filtering approach algorithm finds a user which similar to you and suggests to buy the same he  bought. This is computationally difficult as there might be more users than items or users have very dissimilar interests.&lt;/p&gt;
-
-&lt;p&gt;With item-to-item collaborative filtering approach which is used by Amazon, algorithm finds a neighborhood of items that are bought/viewed by you and users that bought viewed the same item. Then items from that neighborhood are displayed as recommendations.&lt;/p&gt;
-
-&lt;p&gt;Association rule unit is a session (order), which makes this approach less personalized, as users and user purchase history is not taken into account.
-But it has some strong points:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;it’s extremely simple and fast.&lt;/li&gt;
-  &lt;li&gt;it will work with very small and sparse customer bases.&lt;/li&gt;
-  &lt;li&gt;knowledge of the customer beyond what products or services they currently have is not necessary.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;However, there is one major drawback that makes association rule algorithms less favored by e-commerce - inability to catch so called “long tail”. As online stores have a lot of items and some of them are bought rarely. But among these rare items there might be a pair that are of interested to specific group of people. Association rules are unlikely to finds them.&lt;/p&gt;
-
-&lt;p&gt;But these algorithms are useful for offline stores, where it’s not possible to track users and find application in other areas.&lt;/p&gt;
-
-&lt;h2 id=&quot;algorithms&quot;&gt;Algorithms&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;http://www.vldb.org/conf/1994/P487.PDF&quot;&gt;&lt;strong&gt;Apriori&lt;/strong&gt;&lt;/a&gt;: it was introduced in 1993 , more than 20 years ago. It remains one of the most important data mining algorithms, not because it is the fastest, but because it has influenced the development of many other algorithms &lt;a href=&quot;http://data-mining.philippe-fournier-viger.com/classic-data-mining-algorithm-1-apriori/&quot;&gt;(source)&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Apriori-TID&lt;/strong&gt;: is a variation of the Apriori algorithm. It was proposed in the same article as Apriori as an alternative implementation. It produces the same output, but does less scans 
-of the transaction database&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.slideshare.net/deepa15/eclat-37310304&quot;&gt;&lt;strong&gt;Eclat&lt;/strong&gt;&lt;/a&gt;: is faster than Apriori, but less memory efficient&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://dx.doi.org/10.1145/335191.335372&quot;&gt;&lt;strong&gt;FP-Growth&lt;/strong&gt;&lt;/a&gt;: most advanced and efficient implementation of frequent pattern mining&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;input-parameters&quot;&gt;Input parameters&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;order list&lt;/em&gt;: database of all orders (transactions). Each entry is a subset of all items that are being sold (here item count is dropped)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Example:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 {item1, item3, item4}
-2 {item2, item3, item5}
-3 {item1, item2, item3, item5}
-4 {item2, item5}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;list of all possible items on sale&lt;/em&gt;: optional parameter that can determined by scanning order list once&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Example: &lt;code class=&quot;highlighter-rouge&quot;&gt;items = {item1, item2, item3, item4, item5}&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;minimum support&lt;/em&gt;: minimum frequency for an item or itemset to count as frequent&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Example: &lt;code class=&quot;highlighter-rouge&quot;&gt;min_support=0.1&lt;/code&gt; means that we are interested in items or itemsets that appeared in minimum 10% of all orders&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;minimum confidence&lt;/em&gt;: parameter that says how likely item Y is purchased when item X is purchased, expressed as {X -&amp;gt; Y}. This is measured by the proportion of transactions with item X, in which item Y also appears&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;This can be calculated like so &lt;code class=&quot;highlighter-rouge&quot;&gt;confidence({X -&amp;gt; Y}) = support({X, Y}) / support(X)&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;minimum lift&lt;/em&gt; (optional as not used in many implementations): parameter that says how likely item Y is purchased when item X is purchased,
-while controlling for how popular item Y is. A lift value greater than 1 means that item Y is likely to be bought if item X is bought, while a value less than 1 means that item Y is unlikely to be bought if item X is bought&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Formula for lift is &lt;code class=&quot;highlighter-rouge&quot;&gt;lift({X -&amp;gt; Y}) = support({X, Y}) / (support(X) * support(Y))&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;output&quot;&gt;Output:&lt;/h2&gt;
-&lt;p&gt;A list of rules in a form (&lt;code class=&quot;highlighter-rouge&quot;&gt;from_itemset&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;to_itemset&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;confidence&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;lift&lt;/code&gt;), where &lt;code class=&quot;highlighter-rouge&quot;&gt;from_itemset&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;to_itemset&lt;/code&gt; are subsets of items on sale.&lt;/p&gt;
-
-&lt;h2 id=&quot;making-a-recommendation&quot;&gt;Making a recommendation&lt;/h2&gt;
-
-&lt;p&gt;Recommendation can be made, for example at a checkout, when user has item1 and item2 in the shopping cart. In that case &lt;code class=&quot;highlighter-rouge&quot;&gt;from_itemset = {item1, item2}&lt;/code&gt; and using the list of rules we may find respective
-&lt;code class=&quot;highlighter-rouge&quot;&gt;to_itemset&lt;/code&gt; with maximum confidence and/or lift.&lt;/p&gt;
-
-&lt;h2 id=&quot;apriori-algorithm&quot;&gt;Apriori algorithm.&lt;/h2&gt;
-&lt;h3 id=&quot;1st-step&quot;&gt;1st step:&lt;/h3&gt;
-&lt;p&gt;Let the &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_1&lt;/code&gt; set to contain all individual items.&lt;/p&gt;
-
-&lt;p&gt;Now let’s calculate support for each &lt;code class=&quot;highlighter-rouge&quot;&gt;candidate&lt;/code&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_1&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Populate &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_1&lt;/code&gt; set with those candidates, which support is &amp;gt;= &lt;code class=&quot;highlighter-rouge&quot;&gt;min_support&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;2nd-step&quot;&gt;2nd step:&lt;/h3&gt;
-&lt;p&gt;Let the &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_2&lt;/code&gt; be populated with all pairs from &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_1&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;For example, if &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_1 = {item1, item3, item4}&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;then &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_2 = [{item1, item3}, {item1, item4}, {item3, item4}]&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Now let’s calculate support for each &lt;code class=&quot;highlighter-rouge&quot;&gt;candidate&lt;/code&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_2&lt;/code&gt; as in previous step by going through each order in order list.
-Populate &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_2&lt;/code&gt; with those candidates from &lt;code class=&quot;highlighter-rouge&quot;&gt;candidates_2&lt;/code&gt;, which support is &amp;gt;= &lt;code class=&quot;highlighter-rouge&quot;&gt;min_support&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;nth-step&quot;&gt;Nth step:&lt;/h3&gt;
-&lt;p&gt;Repeat step 2 until you can form candidates sets. Candidates for a next step are formed from a layer of a current step by unions of all possible pairs in layer set (elements of a layer should be sets to support this). This is also known as self-join.
-Now we have filtered set of combinations of items and their respective support (support dictionary).&lt;/p&gt;
-
-&lt;p&gt;In each step we populate a support dictionary using itemsets as keys and their correspondent support as values.&lt;/p&gt;
-
-&lt;h3 id=&quot;association-rules&quot;&gt;Association rules&lt;/h3&gt;
-&lt;p&gt;Next step is to calculate all association rules.
-Let’s fix a hyperparameters &lt;code class=&quot;highlighter-rouge&quot;&gt;min_confidence&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;min_lift&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;For all sets &lt;code class=&quot;highlighter-rouge&quot;&gt;L&lt;/code&gt; in support dictionary let’s create all non-empty subsets &lt;code class=&quot;highlighter-rouge&quot;&gt;S&lt;/code&gt; of &lt;code class=&quot;highlighter-rouge&quot;&gt;L&lt;/code&gt;, and evaluate confidence and lift for a rule &lt;code class=&quot;highlighter-rouge&quot;&gt;{S -&amp;gt; L-S}&lt;/code&gt; and save rules, whose parameters are greater of equal then minimal.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;In a notion {X -&amp;gt; Y}, X is called from-itemset, and Y - to-itemset.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;apriori-tid&quot;&gt;Apriori-TID&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;the order list is not used at all for counting the support of candidate itemsets after the first pass.&lt;/li&gt;
-  &lt;li&gt;the candidate itemsets are generated the same way as in Apriori algorithm&lt;/li&gt;
-  &lt;li&gt;rules are generated the same way after support dictionary is populated
-The only different is that in each layer &amp;gt; 1 a separate list C’ is created.
-C’ hold transaction ids with corresponding itemsets from candidates on that layer that are in that particular transaction.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For example, using order list from above first layer would yield such support dictionary:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;item1 0.5
-item2 0.75
-item3 0.75 
-item5 0.75
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Second layer candidates set is:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{item1, item2} 0.25
-{item1, item3} 0.5 *
-{item1, item5} 0.25
-{item2, item3} 0.5 *
-{item2, item5} 0.75 *
-{item3, item5} 0.5 *
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;So &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_2&lt;/code&gt; will consist from itemsets with &lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt;. And at this step we create a separate data structure to hold transaction IDs for these sets that made it to &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_2&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 {item1, item3}
-2 {item2, item3} {item2, item5} {item3, item5}
-3 {item1, item2} {item1, item3} {item1, item5} {item2, item3} {item2, item5} {item3, item5}
-4 {item2, item5}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Using this additional list we will calculate support for candidates for &lt;code class=&quot;highlighter-rouge&quot;&gt;layer_3&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;eclat&quot;&gt;Eclat&lt;/h2&gt;
-&lt;p&gt;Another way to speedup support calculation is to keep a list of transaction ids for every itemset at each layer. It speeds up support calculation even more, but these transaction lists can be large in size.&lt;/p&gt;
-
-&lt;p&gt;Again using the same order list in first step, transaction ID list will be&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;item1 1, 3
-item2 2, 3, 4
-item3 1, 2, 3
-item4 1
-item5 2, 3, 4
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;item4 won’t be included in the next layer, and this list can help us to calculate lists for all possible pairs for the next step:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{item1 item2} 3
-{item1 item3} 1, 3
-{item1 item4} 1
-{item1 item5} 3
-{item2 item3} 2, 3
-...etc
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;fp-growth&quot;&gt;FP-Growth&lt;/h2&gt;
-&lt;p&gt;This one is different from Apriori-like algorithms in a way that candidate itemsets are not generated explicitly. FP-growth uses a suffix tree (FP-tree) structure to encode transactions thus speeds up support calculation.&lt;/p&gt;
-
-&lt;h2 id=&quot;tests&quot;&gt;Tests&lt;/h2&gt;
-&lt;p&gt;Dataset was taken from http://archive.ics.uci.edu/ml/datasets/Online+Retail &lt;em&gt;Daqing Chen, Sai Liang Sain, and Kun Guo, Data mining for the online retail industry: A case study of RFM model-based customer segmentation using data mining, Journal of Database Marketing and Customer Strategy Management, Vol. 19, No. 3, pp. 197â€“208, 2012 (Published online before print: 27 August 2012. doi: 10.1057/dbm.2012.17).&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;preprocessing&quot;&gt;Preprocessing&lt;/h3&gt;
-&lt;p&gt;As each row contains &lt;code class=&quot;highlighter-rouge&quot;&gt;InvoiceNo&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;StockCode&lt;/code&gt;, let’s group items by &lt;code class=&quot;highlighter-rouge&quot;&gt;InvoiceNo&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import csv
-from collections import defaultdict
-
-order_list = defaultdict(list)
-
-with open('data.csv', encoding=&quot;iso-8859-1&quot;) as f:
-    csv_reader = csv.DictReader(f)
-    for row in csv_reader:
-        order_list[row['InvoiceNo']].append(row['StockCode'])
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Some stats of the dataset:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;number of orders: 25900&lt;/li&gt;
-  &lt;li&gt;4070 items on sale&lt;/li&gt;
-  &lt;li&gt;minimum order: 1 item&lt;/li&gt;
-  &lt;li&gt;maximum order: 1114 items&lt;/li&gt;
-  &lt;li&gt;mean order size: ~21 items&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;python-implementation&quot;&gt;Python implementation&lt;/h3&gt;
-&lt;p&gt;I’ve implemented all 4 aforementioned algorithms &lt;a href=&quot;https://github.com/smirnov-am/pyfreqpm&quot;&gt;here&lt;/a&gt;. 
-FP-Growth needs some more testing though, so I’ve used &lt;a href=&quot;https://spark.apache.org/docs/2.3.0/mllib-frequent-pattern-mining.html&quot;&gt;Apache Spark&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Running times with &lt;code class=&quot;highlighter-rouge&quot;&gt;min_support=0.03&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;min_confidence=0.5&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;min_lift=1.0&lt;/code&gt; are:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Algorithm&lt;/th&gt;
-      &lt;th&gt;run time, s&lt;/th&gt;
-      &lt;th&gt;memmory used, MB&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;apriori-gen&lt;/td&gt;
-      &lt;td&gt;210&lt;/td&gt;
-      &lt;td&gt;50&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;apriori-tid&lt;/td&gt;
-      &lt;td&gt;35&lt;/td&gt;
-      &lt;td&gt;202&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;eclat&lt;/td&gt;
-      &lt;td&gt;*&lt;/td&gt;
-      &lt;td&gt;8000&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;fp-growth&lt;/td&gt;
-      &lt;td&gt;8&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;* Eclat generated long id lists and it depleted 8GB RAM very fast in my docker container, so I never ended this test.&lt;/p&gt;
-
-&lt;h3 id=&quot;generated-rules&quot;&gt;Generated rules&lt;/h3&gt;
-&lt;p&gt;All algorithms showed same 3 rules, with 2nd and 3rd beign the same pair.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;from_itemset&lt;/th&gt;
-      &lt;th&gt;to_itemset&lt;/th&gt;
-      &lt;th&gt;confidence&lt;/th&gt;
-      &lt;th&gt;lift&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;22386&lt;/td&gt;
-      &lt;td&gt;85099B&lt;/td&gt;
-      &lt;td&gt;0.67&lt;/td&gt;
-      &lt;td&gt;8.2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;22697&lt;/td&gt;
-      &lt;td&gt;22699&lt;/td&gt;
-      &lt;td&gt;0.74&lt;/td&gt;
-      &lt;td&gt;17.1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;22699&lt;/td&gt;
-      &lt;td&gt;22697&lt;/td&gt;
-      &lt;td&gt;0.7&lt;/td&gt;
-      &lt;td&gt;17.1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;22386 = JUMBO BAG PINK POLKADOT&lt;/p&gt;
-
-&lt;p&gt;85099B = JUMBO BAG RED RETROSPOT&lt;/p&gt;
-
-&lt;p&gt;22697 = GREEN REGENCY TEACUP AND SAUCER&lt;/p&gt;
-
-&lt;p&gt;22699 = ROSES REGENCY TEACUP AND SAUCER&lt;/p&gt;
-
-&lt;p&gt;Not very impressive findings, so it worth trying to experiment with different input parameters.
-But based on them we can recommend someone buying “JUMBO BAG PINK POLKADOT” to get a “JUMBO BAG RED RETROSPOT” as well. Same goes for teacups.&lt;/p&gt;
-
-&lt;h2 id=&quot;another-usages-of-frequent-pattern-mining&quot;&gt;Another usages of frequent pattern mining&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.300.4808&amp;amp;rep=rep1&amp;amp;type=pdf&quot;&gt;Network traffic&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.ijeert.org/pdf/v3-i10/9.pdf&quot;&gt;Web pages&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://pdfs.semanticscholar.org/5662/e754f611c34c01e3126c3df63a4ce6e78cb3.pdf&quot;&gt;Image classification&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://academic.oup.com/bib/article/16/2/216/245744&quot;&gt;Bio informatics&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;What approach for recommendation system are you using? Drop me a message on LinkedIn https://www.linkedin.com/in/smirnovam/&lt;/p&gt;</content><author><name></name></author><summary type="html">Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.</summary></entry></feed>
+&lt;p&gt;I’ve deployed my implementation of TopicRank as a AWS Lambda function that is being invoked from JavaScript directly &lt;a href=&quot;http://pytopicrank.s3-website-us-east-1.amazonaws.com/&quot;&gt;here&lt;/a&gt; (I’ve set &lt;code class=&quot;highlighter-rouge&quot;&gt;max_d=1.25&lt;/code&gt; there for no particular reason so results may vary)&lt;/p&gt;</content><author><name></name></author><summary type="html">Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</summary></entry></feed>
