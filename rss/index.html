@@ -1,4 +1,185 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title><![CDATA[smirnov-am.github.io]]></title><description><![CDATA[smirnov-am.github.io]]></description><link>http://localhost:2368/</link><image><url>http://localhost:2368/favicon.png</url><title>smirnov-am.github.io</title><link>http://localhost:2368/</link></image><generator>Ghost 2.21</generator><lastBuildDate>Thu, 27 Jun 2019 20:16:23 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Calculating enterprise value with Python and Pandas (part 1). FCF]]></title><description><![CDATA[<h1 id="enterprise-value">Enterprise Value</h1><p>Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It's also used in acquisitions to get the price of the company as a whole.</p><p>In this post I'll cover 3 methods of</p>]]></description><link>http://localhost:2368/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</link><guid isPermaLink="false">5cc4b3cc79d5490c32257609</guid><category><![CDATA[Financial Modelling]]></category><dc:creator><![CDATA[Alexey Smirnov]]></dc:creator><pubDate>Tue, 19 Feb 2019 19:55:00 GMT</pubDate><media:content url="http://localhost:2368/content/images/2019/04/pyfinmod2--1-.png" medium="image"/><content:encoded><![CDATA[<h1 id="enterprise-value">Enterprise Value</h1><img src="http://localhost:2368/content/images/2019/04/pyfinmod2--1-.png" alt="Calculating enterprise value with Python and Pandas (part 1). FCF"><p>Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It's also used in acquisitions to get the price of the company as a whole.</p><p>In this post I'll cover 3 methods of Enterprise Value calculations:</p><ul><li>using accounting book</li><li>efficient market approach</li><li>discounted cash flows (DCF)</li></ul><p>The latter one - DCF - is a complex topic. So here I'll cover the first part - getting future the cash flows from cash flow statement. WACC, resulting calculations as well as market engineering and sensitivity analysis will be covered in later posts.</p><h2 id="methods-of-corporate-valuation">Methods of corporate valuation</h2><h3 id="1-using-an-accounting-book">1. Using an accounting book</h3><p>The idea behind this method is to rewrite the balance sheet in a way that all productive items are on the left side and financial items are on the right. Productive items include net working capital, property, <a href="https://www.investopedia.com/terms/i/intangibleasset.asp">intangible assets</a> (copyright, goodwill) and other fixed assets.<br>Net working capital is defined as <strong>accounts receivable</strong> + <strong>inventories</strong> - <strong>accounts payable</strong> - <strong>taxes payable</strong>. Liquid assets such as cash will go on the right side to net financial debt.</p><p>So on the right-hand - financial side - we will have net financial debt (all short and long term debt minus liquid cash), other liabilities such as pensions, equity.</p><p>After moving all the items both columns should be in balance - column sums are equal and represent company value.</p><p>I failed to find a reliable API to get the company's balance sheet so I made a Yahoo Finance parser.</p><!--kg-card-begin: code--><pre><code>from pyfinmod.yahoo_finance import YahooFinanceParser
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title><![CDATA[smirnov-am.github.io]]></title><description><![CDATA[smirnov-am.github.io]]></description><link>http://localhost:2368/</link><image><url>http://localhost:2368/favicon.png</url><title>smirnov-am.github.io</title><link>http://localhost:2368/</link></image><generator>Ghost 2.21</generator><lastBuildDate>Sun, 30 Jun 2019 20:11:11 GMT</lastBuildDate><atom:link href="http://localhost:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Unittesting decorators]]></title><description><![CDATA[<p>I'll start with a simple example of a class I want to put under test. A <code>Car</code> class uses <code>Engine</code> and instantiates it internally</p><!--kg-card-begin: markdown--><pre><code class="language-python">class Engine:
+    def start(self):
+        interact_with_outside_world()
+        print('Engine started')
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()
+    def drive(self):
+        self.engine.start(</code></pre>]]></description><link>http://localhost:2368/unittesting-decorators/</link><guid isPermaLink="false">5d18b57adc96e708c93ce655</guid><category><![CDATA[python]]></category><dc:creator><![CDATA[Alexey Smirnov]]></dc:creator><pubDate>Sun, 30 Jun 2019 20:10:41 GMT</pubDate><media:content url="http://localhost:2368/content/images/2019/06/unit_testing.png" medium="image"/><content:encoded><![CDATA[<img src="http://localhost:2368/content/images/2019/06/unit_testing.png" alt="Unittesting decorators"><p>I'll start with a simple example of a class I want to put under test. A <code>Car</code> class uses <code>Engine</code> and instantiates it internally</p><!--kg-card-begin: markdown--><pre><code class="language-python">class Engine:
+    def start(self):
+        interact_with_outside_world()
+        print('Engine started')
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()
+    def drive(self):
+        self.engine.start()
+</code></pre>
+<!--kg-card-end: markdown--><p>Let's write a unittest for <code>Car</code> class. By definition, unittest shouldn't be allowed to interact with the outside world (connect . to DB, etc). There are 2 ways to solve that.<br><br>First is to subclass <code>Car</code></p><!--kg-card-begin: markdown--><pre><code class="language-python">class TestEngine:
+    def start(self):
+        pretend_to_interact_with_outside_world()
+        print('Engine started')
+
+class TestCar(Car):
+    def __init__(self):
+        super().__init__()
+        self.engine = TestEngine()
+</code></pre>
+<!--kg-card-end: markdown--><p>Sometimes this is a viable solution. But <code>Engine</code> is still instantiated and can access real resources inside its constructor. This approach is described <a href="https://www.youtube.com/watch?v=EiOglTERPEo&amp;feature=youtu.be&amp;t=20m35s">here</a>.<br> </p><p>Dependency injection is more flexible.It is a powerful pattern that allows separate the construction of  the object of its use. The object should not be responsible for instantiating dependencies which supports Single Responsibility Principle.</p><!--kg-card-begin: markdown--><pre><code class="language-python">class Car:
+    def __init__(self, engine):
+        self.engine = engine
+    def drive(self):
+        self.engine.start()
+
+# production code
+engine = Engine()
+car = Car(engine)
+
+
+# unittest
+def test_car():
+    test_engine = TestEngine()
+    test_car = Car(test_engine)
+    ...
+</code></pre>
+<!--kg-card-end: markdown--><p>Here we can init the <code>Engine</code> outside the <code>Car</code> and provide instance of the real one in our code and test instance in unittest.</p><h3 id="decorator">Decorator</h3><p>Decorators are a nice Python feature I've been using to organize caching. Let's create a decorator that will cache the result of a calculation in Redis. First let's create an interface to Redis as well as stub interface for unittests:<br><br><em>interfaces.py</em></p><!--kg-card-begin: markdown--><pre><code class="language-python">from abc import ABCMeta, abstractmethod
+import redis
+
+
+class CacheInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def get(self, key):
+        pass
+
+    @abstractmethod
+    def set(self, key, value):
+        pass
+
+
+class RedisInterface(CacheInterface):
+    def __init__(self, redis_client=None):
+        if not redis_client:
+            self.redis_client = redis.StrictRedis(host='localhost',
+                                                  port=6379,
+                                                  socket_timeout=1)
+        else:
+            self.redis_client = redis_client
+
+    def get(self, key):
+        print(f'Accessing Redis for key={key}')
+        value = self.redis_client.get(key)
+        if value:
+            value = value.decode('utf-8')
+        return value
+
+    def set(self, key, value):
+        print(f'Setting Redis key={key} with value={value}')
+        if value:
+            res = self.redis_client.set(key, value)
+            return res
+
+
+class TestCacheInterface(CacheInterface):
+    def __init__(self):
+        self.data = {}
+
+    def get(self, key):
+        print(f'Accessing local dict for key={key}')
+        return self.data.get(key)
+
+    def set(self, key, value):
+        print(f'Setting local dict key={key} with value={value}')
+        self.data[key] = value
+
+</code></pre>
+<!--kg-card-end: markdown--><p>The two classes <code>RedisInterface</code> and <code>TestCacheInterface</code> have the same interface (enforced by using <code>ABCmeta</code>) so can be substituted between each other (Polymorphism! Yay!).<br><br>Now let's create a decorator using a class syntax:<br><em>caching.py</em></p><!--kg-card-begin: markdown--><pre><code class="language-python">from functools import wraps
+from interfaces import RedisInterface
+
+
+class cache:
+    def __init__(self):
+        print('Initializing decorator')
+        self.caching_interface = RedisInterface()
+
+    def __call__(self, func):
+        print('Running decorator __call__')
+
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            cache_key = f'{func.__name__}{args}{kwargs}'
+            result = self.caching_interface.get(cache_key)
+            if result:
+                return result
+            result = func(*args, **kwargs)
+            self.caching_interface.set(cache_key, result)
+            return result
+
+        return wrapped
+</code></pre>
+<!--kg-card-end: markdown--><p>Now this decorator can be used with a function that calculates square root of a number using Newton's method<br><br><em>caching.py</em> cont'd</p><!--kg-card-begin: markdown--><pre><code class="language-python">@cache()
+def newton_sqrt(number, iters=500):
+    a = float(number)
+    for i in range(iters):
+        number = 0.5 * (number + a / number)
+    return number
+
+
+if __name__ == '__main__':
+    print('Starting main')
+    print(newton_sqrt(42))
+    print(newton_sqrt(42))
+</code></pre>
+<!--kg-card-end: markdown--><p>The result is:</p><!--kg-card-begin: markdown--><pre><code class="language-Initializing">Initializing decorator
+Running decorator __call__
+Starting main
+Accessing Redis for key=newton_sqrt(42,){}
+Setting Redis key=newton_sqrt(42,){} with value=6.48074069840786
+6.48074069840786
+Accessing Redis for key=newton_sqrt(42,){}
+6.48074069840786
+</code></pre>
+<!--kg-card-end: markdown--><p>The problem with a decorator is that it's <code>__init__</code> and and <code>__call__</code> methods are called upon import. That is, even if I don't run the <code>newton_sqrt(42)</code> inside the <code>main</code> there is a <code>cache</code> instance somewhere in memory and the <code>newton_sqrt</code> is decorated ( <code>__call__</code> being invoked)<br><br>It looks like it would be hard to inject testing cache interface into this caching class. The cached function os already decorated, and there is no place to use dependency injection.<br><br>I've ended up using monkey patching for that. But accessing the instance of the decorator is impossible, so I've used <a href="https://www.python.org/dev/peps/pep-0232/">function attributes</a>. Since the decorated (or any function) is a class in Python it can have an attribute assigned this points to cache decorator instance.<br><br>For it I changed the decorator class:</p><!--kg-card-begin: markdown--><pre><code class="language-python">class cache:
+    def __init__(self):
+        self.caching_interface = RedisInterface()
+
+    def __call__(self, func):
+        func.cache_decorator_instance = self
+
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            cache_key = f'{func.__name__}{args}{kwargs}'
+            result = func.cache_decorator_instance.caching_interface.get(cache_key)
+            if result:
+                return result
+            result = func(*args, **kwargs)
+            func.cache_decorator_instance.caching_interface.set(cache_key, result)
+            return result
+
+        return wrapped
+</code></pre>
+<!--kg-card-end: markdown--><p><br>Now the class can be easily tested:<br><br><em>test_caching.py</em></p><!--kg-card-begin: markdown--><pre><code>from caching import newton_sqrt
+from interfaces import TestCacheInterface
+from pytest import approx
+from math import sqrt
+
+
+def test_caching():
+    newton_sqrt.cache_decorator_instance.caching_interface = TestCacheInterface()
+    assert newton_sqrt(42) == approx(sqrt(42), abs=1e-6)
+
+</code></pre>
+<!--kg-card-end: markdown--><p><br>The result of the test:</p><!--kg-card-begin: markdown--><pre><code>test_caching.py .
+Accessing local dict for key=newton_sqrt(42,){}
+Setting local dict key=newton_sqrt(42,){} with value=6.48074069840786
+                                                        [100%]
+
+=========================== 1 passed in 0.02 seconds ===========================
+Process finished with exit code 0
+</code></pre>
+<!--kg-card-end: markdown-->]]></content:encoded></item><item><title><![CDATA[Calculating enterprise value with Python and Pandas (part 1). FCF]]></title><description><![CDATA[<h1 id="enterprise-value">Enterprise Value</h1><p>Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It's also used in acquisitions to get the price of the company as a whole.</p><p>In this post I'll cover 3 methods of</p>]]></description><link>http://localhost:2368/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</link><guid isPermaLink="false">5cc4b3cc79d5490c32257609</guid><category><![CDATA[Financial Modelling]]></category><dc:creator><![CDATA[Alexey Smirnov]]></dc:creator><pubDate>Tue, 19 Feb 2019 19:55:00 GMT</pubDate><media:content url="http://localhost:2368/content/images/2019/04/pyfinmod2--1-.png" medium="image"/><content:encoded><![CDATA[<h1 id="enterprise-value">Enterprise Value</h1><img src="http://localhost:2368/content/images/2019/04/pyfinmod2--1-.png" alt="Calculating enterprise value with Python and Pandas (part 1). FCF"><p>Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It's also used in acquisitions to get the price of the company as a whole.</p><p>In this post I'll cover 3 methods of Enterprise Value calculations:</p><ul><li>using accounting book</li><li>efficient market approach</li><li>discounted cash flows (DCF)</li></ul><p>The latter one - DCF - is a complex topic. So here I'll cover the first part - getting future the cash flows from cash flow statement. WACC, resulting calculations as well as market engineering and sensitivity analysis will be covered in later posts.</p><h2 id="methods-of-corporate-valuation">Methods of corporate valuation</h2><h3 id="1-using-an-accounting-book">1. Using an accounting book</h3><p>The idea behind this method is to rewrite the balance sheet in a way that all productive items are on the left side and financial items are on the right. Productive items include net working capital, property, <a href="https://www.investopedia.com/terms/i/intangibleasset.asp">intangible assets</a> (copyright, goodwill) and other fixed assets.<br>Net working capital is defined as <strong>accounts receivable</strong> + <strong>inventories</strong> - <strong>accounts payable</strong> - <strong>taxes payable</strong>. Liquid assets such as cash will go on the right side to net financial debt.</p><p>So on the right-hand - financial side - we will have net financial debt (all short and long term debt minus liquid cash), other liabilities such as pensions, equity.</p><p>After moving all the items both columns should be in balance - column sums are equal and represent company value.</p><p>I failed to find a reliable API to get the company's balance sheet so I made a Yahoo Finance parser.</p><!--kg-card-begin: code--><pre><code>from pyfinmod.yahoo_finance import YahooFinanceParser
 
 parser = YahooFinanceParser('AAPL', 'balance-sheet')
 parser.get_dataframe()
