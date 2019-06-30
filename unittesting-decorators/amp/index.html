@@ -35,7 +35,7 @@ allowed to interact with the outside world (connect . to DB, etc). There " />
     <meta property="og:url" content="http://localhost:2368/unittesting-decorators/" />
     <meta property="og:image" content="http://localhost:2368/content/images/2019/06/unit_testing.png" />
     <meta property="article:published_time" content="2019-06-30T20:10:41.000Z" />
-    <meta property="article:modified_time" content="2019-06-30T20:10:41.000Z" />
+    <meta property="article:modified_time" content="2019-06-30T20:19:05.000Z" />
     <meta property="article:tag" content="python" />
     
     <meta name="twitter:card" content="summary_large_image" />
@@ -95,7 +95,7 @@ allowed to interact with the outside world (connect . to DB, etc). There " />
     "headline": "Unittesting decorators",
     "url": "http://localhost:2368/unittesting-decorators/",
     "datePublished": "2019-06-30T20:10:41.000Z",
-    "dateModified": "2019-06-30T20:10:41.000Z",
+    "dateModified": "2019-06-30T20:19:05.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "http://localhost:2368/content/images/2019/06/unit_testing.png",
@@ -280,9 +280,9 @@ Setting Redis key=newton_sqrt(42,){} with value=6.48074069840786
 Accessing Redis for key=newton_sqrt(42,){}
 6.48074069840786
 </code></pre>
-<p>The problem with a decorator is that it's <code>__init__</code> and and <code>__call__</code> methods are called upon import. That is, even if I don't run the <code>newton_sqrt(42)</code> inside the <code>main</code> there is a <code>cache</code> instance somewhere in memory and the <code>newton_sqrt</code> is decorated ( <code>__call__</code> being invoked)<br /><br />It looks like it would be hard to inject testing cache interface into this caching class. The cached function os already decorated, and there is no place to use dependency injection.<br /><br />I've ended up using monkey patching for that. But accessing the instance of the decorator is impossible, so I've used <a href="https://www.python.org/dev/peps/pep-0232/">function attributes</a>. Since the decorated (or any function) is a class in Python it can have an attribute assigned this points to cache decorator instance.<br /><br />For it I changed the decorator class:</p><pre><code class="language-python">class cache:
+<p>The problem with a decorator is that it's <code>__init__</code> and and <code>__call__</code> methods are called upon import. That is, even if I don't run the <code>newton_sqrt(42)</code> inside the <code>main</code> there is a <code>cache</code> instance somewhere in memory and the <code>newton_sqrt</code> is decorated ( <code>__call__</code> being invoked)<br /><br />It looks like it would be hard to inject testing cache interface into this caching class. The cached function is already decorated, and there is no place to use dependency injection.<br /><br />I've ended up using monkey patching for that. But accessing the instance of the decorator is impossible, so I've used <a href="https://www.python.org/dev/peps/pep-0232/">function attributes</a>. Since the decorated (or any function) is a class in Python it can have an attribute assigned this points to cache decorator instance.<br /><br />For it I changed the decorator class:</p><pre><code class="language-python">class cache:
     def __init__(self):
-        self.caching_interface = RedisInterface()
+        self.interface = RedisInterface()
 
     def __call__(self, func):
         func.cache_decorator_instance = self
@@ -290,11 +290,11 @@ Accessing Redis for key=newton_sqrt(42,){}
         @wraps(func)
         def wrapped(*args, **kwargs):
             cache_key = f'{func.__name__}{args}{kwargs}'
-            result = func.cache_decorator_instance.caching_interface.get(cache_key)
+            result = func.cache_instance.caching_interface.get(cache_key)
             if result:
                 return result
             result = func(*args, **kwargs)
-            func.cache_decorator_instance.caching_interface.set(cache_key, result)
+            func.cache_instance.interface.set(cache_key, result)
             return result
 
         return wrapped
@@ -306,7 +306,7 @@ from math import sqrt
 
 
 def test_caching():
-    newton_sqrt.cache_decorator_instance.caching_interface = TestCacheInterface()
+    newton_sqrt.cache_instance.interface = TestCacheInterface()
     assert newton_sqrt(42) == approx(sqrt(42), abs=1e-6)
 
 </code></pre>
