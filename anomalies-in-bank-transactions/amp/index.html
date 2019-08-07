@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html ⚡>
+<head>
+    <meta charset="utf-8">
+
+    <title>Anomalies in bank transactions</title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://smirnov-am.github.io/anomalies-in-bank-transactions/" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="smirnov-am.github.io" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Anomalies in bank transactions" />
+    <meta property="og:description" content="Recently I&#x27;ve noticed suspicious transactions in my history that were initiated
+by some shady company that provides as the put it &quot;opportunity to shop with
+discount&quot; for their subscribers. Some web-shop had small font checkbox that
+initiated this subscription. Looks like the whole business model of such
+companies based on people who don&#x27;t check their transaction histories often.
+Needless to say, there were no subscription confirmation email, monthly bill or
+- most importantly - discounts I was s" />
+    <meta property="og:url" content="https://smirnov-am.github.io/anomalies-in-bank-transactions/" />
+    <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/08/hand-keyboard-secured-34203.jpg" />
+    <meta property="article:published_time" content="2019-08-07T19:03:00.000Z" />
+    <meta property="article:modified_time" content="2019-08-07T19:56:27.000Z" />
+    <meta property="article:tag" content="machine learning" />
+    <meta property="article:tag" content="python" />
+    <meta property="article:tag" content="Security" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Anomalies in bank transactions" />
+    <meta name="twitter:description" content="Recently I&#x27;ve noticed suspicious transactions in my history that were initiated
+by some shady company that provides as the put it &quot;opportunity to shop with
+discount&quot; for their subscribers. Some web-shop had small font checkbox that
+initiated this subscription. Looks like the whole business model of such
+companies based on people who don&#x27;t check their transaction histories often.
+Needless to say, there were no subscription confirmation email, monthly bill or
+- most importantly - discounts I was s" />
+    <meta name="twitter:url" content="https://smirnov-am.github.io/anomalies-in-bank-transactions/" />
+    <meta name="twitter:image" content="https://smirnov-am.github.io/content/images/2019/08/hand-keyboard-secured-34203.jpg" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Alexey Smirnov" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="machine learning, python, Security" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="1333" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "smirnov-am.github.io",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://smirnov-am.github.io/favicon.ico",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Alexey Smirnov",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "https://smirnov-am.github.io/author/alexey/",
+        "sameAs": []
+    },
+    "headline": "Anomalies in bank transactions",
+    "url": "https://smirnov-am.github.io/anomalies-in-bank-transactions/",
+    "datePublished": "2019-08-07T19:03:00.000Z",
+    "dateModified": "2019-08-07T19:56:27.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://smirnov-am.github.io/content/images/2019/08/hand-keyboard-secured-34203.jpg",
+        "width": 2000,
+        "height": 1333
+    },
+    "keywords": "machine learning, python, Security",
+    "description": "Recently I&#x27;ve noticed suspicious transactions in my history that were initiated\nby some shady company that provides as the put it &quot;opportunity to shop with\ndiscount&quot; for their subscribers. Some web-shop had small font checkbox that\ninitiated this subscription. Looks like the whole business model of such\ncompanies based on people who don&#x27;t check their transaction histories often.\nNeedless to say, there were no subscription confirmation email, monthly bill or\n- most importantly - discounts I was s",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://smirnov-am.github.io/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 2.21" />
+    <link rel="alternate" type="application/rss+xml" title="smirnov-am.github.io" href="https://smirnov-am.github.io/rss/" />
+
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,600,400" />
+    <style amp-custom>html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}h1{margin:0.67em 0;font-size:2em}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{position:relative;vertical-align:baseline;font-size:75%;line-height:0}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}amp-img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace, monospace;font-size:1em}button,input,optgroup,select,textarea{margin:0;color:inherit;font:inherit}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{margin:0 2px;padding:0.35em 0.625em 0.75em;border:1px solid #c0c0c0}legend{padding:0;border:0}textarea{overflow:auto}optgroup{font-weight:bold}table{border-spacing:0;border-collapse:collapse}td,th{padding:0}html{max-height:100%;height:100%;font-size:62.5%;-webkit-tap-highlight-color:rgba(0, 0, 0, 0)}body{max-height:100%;height:100%;color:#3a4145;background:#f4f8fb;letter-spacing:0.01rem;font-family:"Merriweather", serif;font-size:1.8rem;line-height:1.75em;text-rendering:geometricPrecision;-webkit-font-feature-settings:"kern" 1;-moz-font-feature-settings:"kern" 1;-o-font-feature-settings:"kern" 1}::-moz-selection{background:#d6edff}::selection{background:#d6edff}h1,h2,h3,h4,h5,h6{margin:0 0 0.3em 0;color:#2e2e2e;font-family:"Open Sans", sans-serif;line-height:1.15em;text-rendering:geometricPrecision;-webkit-font-feature-settings:"dlig" 1, "liga" 1, "lnum" 1, "kern" 1;-moz-font-feature-settings:"dlig" 1, "liga" 1, "lnum" 1, "kern" 1;-o-font-feature-settings:"dlig" 1, "liga" 1, "lnum" 1, "kern" 1}h1{text-indent:-2px;letter-spacing:-1px;font-size:2.6rem}h2{letter-spacing:0;font-size:2.4rem}h3{letter-spacing:-0.6px;font-size:2.1rem}h4{font-size:1.9rem}h5{font-size:1.8rem}h6{font-size:1.8rem}a{color:#4a4a4a}a:hover{color:#111}p,ul,ol,dl{margin:0 0 2.5rem 0;font-size:1.5rem;text-rendering:geometricPrecision;-webkit-font-feature-settings:"liga" 1, "onum" 1, "kern" 1;-moz-font-feature-settings:"liga" 1, "onum" 1, "kern" 1;-o-font-feature-settings:"liga" 1, "onum" 1, "kern" 1}ol,ul{padding-left:2em}ol ol,ul ul,ul ol,ol ul{margin:0 0 0.4em 0;padding-left:2em}dl dt{float:left;clear:left;overflow:hidden;margin-bottom:1em;width:180px;text-align:right;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-bottom:1em;margin-left:200px}li{margin:0.4em 0}li li{margin:0}hr{display:block;margin:1.75em 0;padding:0;height:1px;border:0;border-top:#efefef 1px solid}blockquote{box-sizing:border-box;margin:1.75em 0 1.75em 0;padding:0 0 0 1.75em;border-left:#4a4a4a 0.4em solid;-moz-box-sizing:border-box}blockquote p{margin:0.8em 0;font-style:italic}blockquote small{display:inline-block;margin:0.8em 0 0.8em 1.5em;color:#ccc;font-size:0.9em}blockquote small:before{content:"\2014 \00A0"}blockquote cite{font-weight:700}blockquote cite a{font-weight:normal}mark{background-color:#fdffb6}code,tt{padding:1px 3px;border:#e3edf3 1px solid;background:#f7fafb;border-radius:2px;white-space:pre-wrap;font-family:Inconsolata, monospace, sans-serif;font-size:0.85em;font-feature-settings:"liga" 0;-webkit-font-feature-settings:"liga" 0;-moz-font-feature-settings:"liga" 0}pre{overflow:auto;box-sizing:border-box;margin:0 0 1.75em 0;padding:10px;width:100%;border:#e3edf3 1px solid;background:#f7fafb;border-radius:3px;white-space:pre;font-family:Inconsolata, monospace, sans-serif;font-size:0.9em;-moz-box-sizing:border-box}pre code,pre tt{padding:0;border:none;background:transparent;white-space:pre-wrap;font-size:inherit}kbd{display:inline-block;margin-bottom:0.4em;padding:1px 8px;border:#ccc 1px solid;background:#f4f4f4;border-radius:4px;box-shadow:0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 0 #fff inset;color:#666;text-shadow:#fff 0 1px 0;font-size:0.9em;font-weight:700}table{box-sizing:border-box;margin:1.75em 0;max-width:100%;width:100%;background-color:transparent;-moz-box-sizing:border-box}table th,table td{padding:8px;border-top:#efefef 1px solid;vertical-align:top;text-align:left;line-height:20px}table th{color:#000}table caption + thead tr:first-child th,table caption + thead tr:first-child td,table colgroup + thead tr:first-child th,table colgroup + thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td{border-top:0}table tbody + tbody{border-top:#efefef 2px solid}table table table{background-color:#fff}table tbody > tr:nth-child(odd) > td,table tbody > tr:nth-child(odd) > th{background-color:#f6f6f6}table.plain tbody > tr:nth-child(odd) > td,table.plain tbody > tr:nth-child(odd) > th{background:transparent}iframe,amp-iframe,.fluid-width-video-wrapper{display:block;margin:1.75em 0}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper amp-iframe{margin:0}textarea,select,input{margin:0 0 5px 0;padding:6px 9px;width:260px;outline:0;border:#e7eef2 1px solid;background:#fff;border-radius:4px;box-shadow:none;font-family:"Open Sans", sans-serif;font-size:1.6rem;line-height:1.4em;font-weight:100;-webkit-appearance:none}textarea{min-width:250px;min-height:80px;max-width:340px;width:100%;height:auto}input[type="text"]:focus,input[type="email"]:focus,input[type="search"]:focus,input[type="tel"]:focus,input[type="url"]:focus,input[type="password"]:focus,input[type="number"]:focus,input[type="date"]:focus,input[type="month"]:focus,input[type="week"]:focus,input[type="time"]:focus,input[type="datetime"]:focus,input[type="datetime-local"]:focus,textarea:focus{outline:none;outline-width:0;border:#bbc7cc 1px solid;background:#fff}select{width:270px;height:30px;line-height:30px}.clearfix:before,.clearfix:after{content:" ";display:table}.clearfix:after{clear:both}.clearfix{zoom:1}.main-header{position:relative;display:table;overflow:hidden;box-sizing:border-box;width:100%;height:50px;background:#5ba4e5 no-repeat center center;background-size:cover;text-align:left;-webkit-box-sizing:border-box;-moz-box-sizing:border-box}.content{background:#fff;padding-top:15px}.blog-title,.content{margin:auto;max-width:600px}.blog-title a{display:block;padding-right:16px;padding-left:16px;height:50px;color:#fff;text-decoration:none;font-family:"Open Sans", sans-serif;font-size:16px;line-height:50px;font-weight:600}.post{position:relative;margin-top:0;margin-right:16px;margin-left:16px;padding-bottom:0;max-width:100%;border-bottom:#ebf2f6 1px solid;word-wrap:break-word;font-size:0.95em;line-height:1.65em}.post-header{margin-bottom:1rem}.post-title{margin-bottom:0}.post-title a{text-decoration:none}.post-meta{display:block;margin:3px 0 0 0;color:#9eabb3;font-family:"Open Sans", sans-serif;font-size:1.3rem;line-height:2.2rem}.post-meta a{color:#9eabb3;text-decoration:none}.post-meta a:hover{text-decoration:underline}.post-meta .author{margin:0;font-size:1.3rem;line-height:1.3em}.post-date{display:inline-block;text-transform:uppercase;white-space:nowrap;font-size:1.2rem;line-height:1.2em}.post-image{margin:0;padding-top:3rem;padding-bottom:30px;border-top:1px #E8E8E8 solid}.post-content amp-img,.post-content amp-anim{position:relative;left:50%;display:block;padding:0;min-width:0;max-width:112%;width:calc(100% + 32px);height:auto;transform:translateX(-50%);-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%)}.footnotes{font-size:1.3rem;line-height:1.6em;font-style:italic}.footnotes li{margin:0.6rem 0}.footnotes p{margin:0}.footnotes p a:last-child{text-decoration:none}.site-footer{position:relative;margin:0 auto 20px auto;padding:1rem 15px;max-width:600px;color:rgba(0,0,0,0.5);font-family:"Open Sans", sans-serif;font-size:1.1rem;line-height:1.75em}.site-footer a{color:rgba(0,0,0,0.5);text-decoration:none;font-weight:bold}.site-footer a:hover{border-bottom:#bbc7cc 1px solid}.poweredby{display:block;float:right;width:45%;text-align:right}.copyright{display:block;float:left;width:45%}</style>
+
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+
+    
+
+</head>
+
+<body class="amp-template">
+    <header class="main-header">
+        <nav class="blog-title">
+            <a href="https://smirnov-am.github.io">smirnov-am.github.io</a>
+        </nav>
+    </header>
+
+    <main class="content" role="main">
+        <article class="post">
+
+            <header class="post-header">
+                <h1 class="post-title">Anomalies in bank transactions</h1>
+                <section class="post-meta">
+                    <p class="author">by <a href="/author/alexey/">Alexey Smirnov</a></p>
+                    <time class="post-date" datetime="2019-08-07">2019-08-07</time>
+                </section>
+            </header>
+            <figure class="post-image">
+                <amp-img src="https://smirnov-am.github.io/content/images/2019/08/hand-keyboard-secured-34203.jpg" width="600" height="400" layout="responsive"></amp-img>
+            </figure>
+            <section class="post-content">
+
+                <p>Recently I've noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it "opportunity to shop with discount" for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don't check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.</p><p>After that, I decided to investigate methods to detect suspicious transactions. Of course, banks do that themselves and I'm not supposed to see any in my history. Anyway, I'll cover Low-pass filter, Benford's law, SVM, LOF and IsolationForest.</p><h2 id="input-data">Input data</h2><p>I'm using one of the largest banks in the Netherlands - ABN AMRO. I was able to download transaction history from their online banking platform in Excel format - very nice of them.<br />First of all transaction history contains credits - no need to take them into account. Debits are negative in history, so I convert them to positive numbers.</p><p>The tricky part is a date. There are <code>transactiondate</code> and <code>valuedate</code> columns in history. Also, some transactions have date and time in their description. It may come handy when I'll be doing feature engineering for machine learning. For now, I'll just extract date from <code>transactiondate</code> column  with <code>python-dateutil</code><br />parser. Here is the code to converting export from online banking to the usable dataframe</p><pre><code class="language-python">import pandas as pd
+from dateutil.parser import parse
+
+df = pd.read_excel('/home/as/Desktop/abn.xls')
+df['date'] = df['transactiondate'].apply(lambda x: parse(str(x)))
+df.drop(['accountNumber', 'mutationcode', 'transactiondate',
+         'valuedate', 'startsaldo', 'endsaldo'], axis=1, inplace=True)
+df['amount'] = df['amount'].apply(abs)
+df.set_index('date', inplace=True)
+df.head()
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th>amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>10</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>27.2</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>19.04</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>36.17</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>5.4</td>
+</tr>
+</tbody>
+</table>
+<h2 id="low-pass-filter">Low-pass filter</h2><p>Now I have a time-series - amount vs date. Applying moving average to is effectively is a low-pass filter that smoothes the series. I've decided to try windows of 7 and 30 days. This running average is not constant and has a standard deviation. And the idea behind this method is to find transactions that more than N standard deviation away from the smoothed line (let N=2).</p><pre><code class="language-python">df['avg_7d'] = df['amount'].rolling('7D').mean()
+df['avg_30d'] = df['amount'].rolling('30D').mean()
+
+df['resudual_avg_7d'] = df['amount'] - df['avg_7d']
+df['resudual_avg_30d'] = df['amount'] - df['avg_30d']
+
+std_7d = df['resudual_avg_7d'].std()
+std_30d = df['resudual_avg_30d'].std()
+
+df['outlier_7d'] = df.apply(lambda row: row['amount'] if abs(row['resudual_avg_7d']) &gt; 2*std_7d else None, axis=1)
+df['outlier_30d'] = df.apply(lambda row: row['amount'] if abs(row['resudual_avg_30d']) &gt; 2*std_30d else None, axis=1)
+</code></pre>
+<p>Looks like outliers based on 7D moving average are the same as for 30D window</p><pre><code class="language-python">all((df[(df.outlier_30d &gt; 0) &amp; (df.outlier_7d &gt; 0)]).index == (df[df.outlier_30d &gt; 0]).index)
+</code></pre>
+<p>Let's visualize the time-series and the result. I'm using a log scale because the amounts have order magnitude difference</p><pre><code class="language-python">import plotly
+import plotly.graph_objs as go
+
+plotly.offline.init_notebook_mode(connected=True)
+
+data = [go.Scatter(x=df.index, y=df.amount, name='amount', mode = 'markers', marker={'size': 2}),
+        go.Scatter(x=df.index, y=df.avg_7d, name='avg 7D'),
+        go.Scatter(x=df.index, y=df.avg_30d, name='avg 30D'),
+        go.Scatter(x=df.index, y=df.outlier_7d,
+                   name='outliers 7D',
+                   mode = 'markers',
+                   marker = dict(size = 5,
+                                 color = 'rgba(152, 0, 0, .8)',
+                                 line = dict(width = 2,
+                                             color = 'rgb(0, 0, 0)')),
+                   text=df.description)]
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True
+    ),
+    yaxis=dict(
+        type='log',
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+<figure class="kg-card kg-image-card"></figure><p>The big red dots show the outliers. They are:</p><p><strong>- </strong>big purchases I've made</p><p><strong>- </strong>rent</p><p><strong>- </strong>1EUR chocolate bars from a wending machine during the week I've spent 10K</p><p>Not much, but at least I've learned how to use <code>plotly</code> here.</p><h2 id="benford-s-law">Benford's law</h2><blockquote>In the 2016 movie The Accountant, Ben Affleck’s character uses Benford’s Law to expose the theft of funds from a robotics company.</blockquote><p>According to that law, a leading significant digit in a series of naturally occurring numbers is likely to be small. There distribution of the first digits in a series of number can be described with a known <a href="https://wikimedia.org/api/rest_v1/media/math/render/svg/26461e7841d135d327aa7d0f914236862e890e7b">formula</a>.</p><p>First I'm going to multiply an amount column by 100, so purchases less than a euro will also participate in the party. Then I'm creating a column with just the first digit of the amount</p><pre><code>df['amount'] = df['amount'].apply(lambda x: 100*x)
+df['first_digit'] = df['amount'].apply(lambda x: str(x)[0])
+</code></pre>
+<p>Then I use <code>numpy</code> to get a histogram of the first digits to plot against known distribution.</p><pre><code>import numpy as np
+bins = [1,2,3,4,5,6,7,8,9]
+count, division = np.histogram(df["first_digit"], bins=bins, density=True)
+</code></pre>
+<p>The Benford's law distribution</p><pre><code>from math import log10
+benford = [log10(1 + 1/d) for d in bins]
+</code></pre>
+<p>Now the visualization:</p><pre><code>data = [go.Bar(x=bins, y=count, name='amount'),
+        go.Scatter(x=bins, y=benford, name='Benford law')]
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True
+    ),
+    yaxis=dict(
+
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+<figure class="kg-card kg-image-card"></figure><p>The actual distribution is more or less follows that law. More transactions are starting with 8 and 1. And less starting with 4 and 9. According to Wiki:</p><blockquote>Distributions that would not be expected to obey Benford's Law ... : Where numbers are influenced by human thought: e.g. prices set by psychological thresholds ($1.99)</blockquote><p>Also from this analysis, it's not obvious how to extract suspicious transactions.</p><h2 id="machine-learning-approaches">Machine learning approaches</h2><p>There are a couple of algorithms implemented in <a href="https://scikit-learn.org/0.20/auto_examples/plot_anomaly_comparison.html">scikit-learn</a> for anomaly detection. All of them expect to have a list of samples in some feature space. The above data frame has date column with is not a good feature - it's difficult to use it as a coordinate and calculate distances with it. But it can be used to generate features:</p><p><strong>- </strong>day of the month</p><p><strong>- </strong>day of the week</p><p><strong>- </strong>week of the month (which is just a linear transformation from the day of the month)</p><p>There are also lagging features that can be formed from the amounts:</p><p><strong>- </strong>average of the last X days</p><p><strong>- </strong>value of the amount on T-1 (skip for simplicity)</p><p>So the feature engineering looks like this:</p><pre><code>df['weekday'] = df.apply(lambda row: row.name.weekday(), axis=1)
+df['day'] = df.apply(lambda row: row.name.day,  axis=1)
+df['prev_amount'] = df['amount'].shift(1)
+df.dropna(inplace=True)
+</code></pre>
+<p>The resulted training set:</p><table>
+<thead>
+<tr>
+<th>date</th>
+<th>amount</th>
+<th>avg_30d</th>
+<th>weekday</th>
+<th>day</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>10</td>
+<td>10</td>
+<td>5</td>
+<td>9</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>27.2</td>
+<td>18.6</td>
+<td>5</td>
+<td>9</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>19.04</td>
+<td>18.7467</td>
+<td>5</td>
+<td>9</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>36.17</td>
+<td>23.1025</td>
+<td>5</td>
+<td>9</td>
+</tr>
+<tr>
+<td>2018-06-09 00:00:00</td>
+<td>5.4</td>
+<td>19.562</td>
+<td>5</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>And as for the most ML algorithms the samples should be scaled to have zero mean, unit variance. But since the samples are having anomalies:</p><blockquote>If your data contains many outliers, scaling using the mean and variance of the data is likely to not work very well. In these cases, you can use <code>robust_scale</code></blockquote><pre><code>from sklearn import preprocessing
+X = df[['amount', 'avg_30d', 'weekday', 'day']].values
+X = preprocessing.robust_scale(X)
+</code></pre>
+<h2 id="svm">SVM</h2><p>Usually, SVM is used for classification in supervised learning - that is when there is labeled data. SVM finds a hyperplane that acts as a border between classes. There is one algorithm that can be used on unlabelled data - One Class SVM. It finds the smallest hypersphere that the samples allowing for some outliers. The idea is to find a function that is positive for regions with a high density of points, and negative for small densities.<br />One of the hyperparameters of the <code>scikit-learn</code> implementation is <code>nu</code> - the fraction of outliers to expect. I'm putting 5%, but when I've tried default 50% half of the transactions were marked as an outlier.</p><pre><code>from sklearn import svm
+outliers_fraction = 0.05
+clf = svm.OneClassSVM(nu=outliers_fraction, kernel="rbf")
+y_pred_outliers = clf.fit_predict(X)
+df['outlier_svm'] = y_pred_outliers == -1
+</code></pre>
+<h2 id="lof">LOF</h2><p>Scikit-learn has a clear explanation of the algorithm:</p><blockquote>The anomaly score of each sample is called Local Outlier Factor. It measures the local deviation of density of a given sample with respect to its neighbors. It is local in that the anomaly score depends on how isolated the object is with respect to the surrounding neighborhood. More precisely, locality is given by k-nearest neighbors, whose distance is used to estimate the local density. By comparing the local density of a sample to the local densities of its neighbors, one can identify samples that have a substantially lower density than their neighbors. These are considered outliers.</blockquote><p>The algorithm also except a hyperparameter of how many outliers to detect.</p><pre><code>from sklearn.neighbors import LocalOutlierFactor
+
+clf_lof = LocalOutlierFactor(contamination=outliers_fraction)
+y_pred_outliers_lof = clf_lof.fit_predict(X)
+df['outlier_lof'] = y_pred_outliers_lof == -1
+</code></pre>
+<h2 id="ensemble">Ensemble</h2><p>The one from ensemble learning algorithms is IsolationForest</p><blockquote>The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.<br />Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node.<br />This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.<br />Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies.</blockquote><pre><code>from sklearn.ensemble import IsolationForest
+
+clf_forest = IsolationForest(behaviour="new", contamination=outliers_fraction)
+y_pred_outliers_forest = clf_forest.fit_predict(X)
+df['outlier_forest'] = y_pred_outliers_forest == -1
+</code></pre>
+<h2 id="results">Results</h2><p>One way to display the result is just to show it in time-series:</p><pre><code class="language-python">outliers_svm = df.loc[df['outlier_svm'], ['amount']]
+outliers_lof = df.loc[df['outlier_lof'], ['amount']]
+outliers_forest = df.loc[df['outlier_forest'], ['amount']]
+data = [go.Scatter(x=df.index,
+                   y=df.amount,
+                   name='amount',
+                   mode = 'markers',
+                   marker={'size': 2}),
+        go.Scatter(x=outliers_svm.index,
+                   y=outliers_svm.amount,
+                   name='outliers svm',
+                   mode = 'markers',
+                   marker = dict(size = 5)),
+        go.Scatter(x=outliers_lof.index, y=outliers_lof.amount,
+                   name='outliers lof',
+                   mode = 'markers',
+                   marker = dict(symbol="cross", size = 5)),
+        go.Scatter(x=outliers_forest.index, y=outliers_forest.amount,
+                   name='outliers forest',
+                   mode = 'markers',
+                   marker = dict(symbol="square-cross", size = 5, color='red'))
+       ]
+
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True
+    ),
+    yaxis=dict(
+        type='log',
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+<figure class="kg-card kg-image-card"></figure><p>Another one is to apply dimensionality reduction and plot in simple 2D<br />(maybe it makes sense to do PCA before running classification?)</p><pre><code class="language-python">from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+X_two_dim = pca.fit_transform(X)
+
+df2 = pd.DataFrame(X_two_dim, columns=['x', 'y'], index=df.index)
+df2['outlier_svm'] = df.outlier_svm
+df2['outlier_lof'] = df.outlier_lof
+df2['outlier_forest'] = df.outlier_forest
+
+data = [go.Scatter(x=df2.x, y=df2.y, name='amount', mode = 'markers', marker={'size': 2}),
+        go.Scatter(x=df2[df2.outlier_svm == 1].x, y=df2[df2.outlier_svm == 1].y, name='outlier_svm', mode = 'markers', marker={'size': 5}),
+        go.Scatter(x=df2[df2.outlier_lof == 1].x, y=df2[df2.outlier_lof == 1].y, name='outlier_lof', mode = 'markers', marker={'size': 5}),
+        go.Scatter(x=df2[df2.outlier_forest == 1].x, y=df2[df2.outlier_forest == 1].y, name='outlier_forest', mode = 'markers', marker={'size': 5}),
+       ]
+
+layout = go.Layout(
+    xaxis=dict(
+                type='log',
+        autorange=True
+    ),
+    yaxis=dict(
+
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+<figure class="kg-card kg-image-card"></figure><p>Of course, these algorithms are not an end-to-end solution for fraud detection in bank transactions. There are much more signals that can be used</p><p><strong>- </strong>whether a transaction was done from a terminal or online bank</p><p><strong>- </strong>if the recipient of the transaction a known account</p><p><strong>- </strong>where was the transaction was made - in or outside of  the country</p><p>Also, they failed to find the transactions from the introduction to this post. But to solve that problem I'm building an <a href="https://afplakkenonline.nl/">app</a>. </p>
+
+            </section>
+
+        </article>
+    </main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="https://smirnov-am.github.io">smirnov-am.github.io</a> &copy; 2019</section>
+        <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+    </footer>
+</body>
+</html>
