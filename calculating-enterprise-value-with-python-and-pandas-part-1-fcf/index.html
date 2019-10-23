@@ -35,7 +35,7 @@ getting future the cash flows from cash flow sta" />
     <meta property="og:url" content="https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/" />
     <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/04/pyfinmod2--1-.png" />
     <meta property="article:published_time" content="2019-02-19T19:55:00.000Z" />
-    <meta property="article:modified_time" content="2019-04-29T17:39:41.000Z" />
+    <meta property="article:modified_time" content="2019-10-23T16:37:05.000Z" />
     <meta property="article:tag" content="Financial Modelling" />
     
     <meta name="twitter:card" content="summary_large_image" />
@@ -91,7 +91,7 @@ getting future the cash flows from cash flow sta" />
     "headline": "Calculating enterprise value with Python and Pandas (part 1). FCF",
     "url": "https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/",
     "datePublished": "2019-02-19T19:55:00.000Z",
-    "dateModified": "2019-04-29T17:39:41.000Z",
+    "dateModified": "2019-10-23T16:37:05.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://smirnov-am.github.io/content/images/2019/04/pyfinmod2--1-.png",
@@ -179,7 +179,7 @@ getting future the cash flows from cash flow sta" />
 
             <section class="post-full-content">
                 <div class="post-content">
-                    <h1 id="enterprise-value">Enterprise Value</h1><p>Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It's also used in acquisitions to get the price of the company as a whole.</p><p>In this post I'll cover 3 methods of Enterprise Value calculations:</p><ul><li>using accounting book</li><li>efficient market approach</li><li>discounted cash flows (DCF)</li></ul><p>The latter one - DCF - is a complex topic. So here I'll cover the first part - getting future the cash flows from cash flow statement. WACC, resulting calculations as well as market engineering and sensitivity analysis will be covered in later posts.</p><h2 id="methods-of-corporate-valuation">Methods of corporate valuation</h2><h3 id="1-using-an-accounting-book">1. Using an accounting book</h3><p>The idea behind this method is to rewrite the balance sheet in a way that all productive items are on the left side and financial items are on the right. Productive items include net working capital, property, <a href="https://www.investopedia.com/terms/i/intangibleasset.asp">intangible assets</a> (copyright, goodwill) and other fixed assets.<br>Net working capital is defined as <strong>accounts receivable</strong> + <strong>inventories</strong> - <strong>accounts payable</strong> - <strong>taxes payable</strong>. Liquid assets such as cash will go on the right side to net financial debt.</p><p>So on the right-hand - financial side - we will have net financial debt (all short and long term debt minus liquid cash), other liabilities such as pensions, equity.</p><p>After moving all the items both columns should be in balance - column sums are equal and represent company value.</p><p>I failed to find a reliable API to get the company's balance sheet so I made a Yahoo Finance parser.</p><!--kg-card-begin: code--><pre><code>from pyfinmod.yahoo_finance import YahooFinanceParser
+                    <h1 id="enterprise-value">Enterprise Value</h1><p>Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It's also used in acquisitions to get the price of the company as a whole.</p><p>In this post I'll cover 3 methods of Enterprise Value calculations:</p><ul><li>using accounting book</li><li>efficient market approach</li><li>discounted cash flows (DCF)</li></ul><p>The latter one - DCF - is a complex topic. So here I'll cover the first part - getting future the cash flows from cash flow statement. WACC, resulting calculations as well as market engineering and sensitivity analysis will be covered in later posts.</p><blockquote>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></blockquote><h2 id="methods-of-corporate-valuation">Methods of corporate valuation</h2><h3 id="1-using-an-accounting-book">1. Using an accounting book</h3><p>The idea behind this method is to rewrite the balance sheet in a way that all productive items are on the left side and financial items are on the right. Productive items include net working capital, property, <a href="https://www.investopedia.com/terms/i/intangibleasset.asp">intangible assets</a> (copyright, goodwill) and other fixed assets.<br>Net working capital is defined as <strong>accounts receivable</strong> + <strong>inventories</strong> - <strong>accounts payable</strong> - <strong>taxes payable</strong>. Liquid assets such as cash will go on the right side to net financial debt.</p><p>So on the right-hand - financial side - we will have net financial debt (all short and long term debt minus liquid cash), other liabilities such as pensions, equity.</p><p>After moving all the items both columns should be in balance - column sums are equal and represent company value.</p><p>I failed to find a reliable API to get the company's balance sheet so I made a Yahoo Finance parser.</p><!--kg-card-begin: code--><pre><code>from pyfinmod.yahoo_finance import YahooFinanceParser
 
 parser = YahooFinanceParser('AAPL', 'balance-sheet')
 parser.get_dataframe()
@@ -421,7 +421,7 @@ get_fcf_from_cscf(income_statement, cash_flow)
             </header>
 
             <section class="post-card-excerpt">
-                <p>In this post I'll cover:Net present value (NPV)Internal rate of return (IRR)Payment schedules and loan tablesFuture valuePension and accumulation problemsContinuously compounded interestNet present valuePresent value allows to answer a simple</p>
+                <p>In this post I'll cover:Net present value (NPV)Internal rate of return (IRR)Payment schedules and loan tablesFuture valuePension and accumulation problemsContinuously compounded interestImprove Python code quality by running flake8 on pull</p>
             </section>
 
         </a>
@@ -588,7 +588,7 @@ $(document).ready(function () {
 </script>
 
 
-    
+    testsetset
 
 </body>
 </html>

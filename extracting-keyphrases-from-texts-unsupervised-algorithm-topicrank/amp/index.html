@@ -20,17 +20,18 @@ that represent the main topics of a document.
 There are 2 approaches to extract topics (and/or keyphrases) from a text:
 supervised and unsupervised.
 
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Supervised approach
 This is a multi-label, multi-class classification algorithm, where we may have
 following features as an input:
 
  * text converted to bag-of-words
-   [https://en.wikipedia.org/wiki/Bag-of-words_model]
- * text is treated as a stream of vectors, which " />
+   " />
     <meta property="og:url" content="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/" />
     <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/04/words-bg.png" />
     <meta property="article:published_time" content="2018-04-16T17:17:00.000Z" />
-    <meta property="article:modified_time" content="2019-04-27T17:20:26.000Z" />
+    <meta property="article:modified_time" content="2019-10-23T16:34:56.000Z" />
     <meta property="article:tag" content="machine learning" />
     <meta property="article:tag" content="NLP" />
     <meta property="article:tag" content="python" />
@@ -42,13 +43,14 @@ that represent the main topics of a document.
 There are 2 approaches to extract topics (and/or keyphrases) from a text:
 supervised and unsupervised.
 
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Supervised approach
 This is a multi-label, multi-class classification algorithm, where we may have
 following features as an input:
 
  * text converted to bag-of-words
-   [https://en.wikipedia.org/wiki/Bag-of-words_model]
- * text is treated as a stream of vectors, which " />
+   " />
     <meta name="twitter:url" content="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/" />
     <meta name="twitter:image" content="https://smirnov-am.github.io/content/images/2019/04/words-bg.png" />
     <meta name="twitter:label1" content="Written by" />
@@ -87,7 +89,7 @@ following features as an input:
     "headline": "Extracting keyphrases from texts: unsupervised algorithm TopicRank",
     "url": "https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/",
     "datePublished": "2018-04-16T17:17:00.000Z",
-    "dateModified": "2019-04-27T17:20:26.000Z",
+    "dateModified": "2019-10-23T16:34:56.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://smirnov-am.github.io/content/images/2019/04/words-bg.png",
@@ -95,7 +97,7 @@ following features as an input:
         "height": 356
     },
     "keywords": "machine learning, NLP, python",
-    "description": "Keyphrase extraction is the task of identifying single or multi-word expressions\nthat represent the main topics of a document.\nThere are 2 approaches to extract topics (and/or keyphrases) from a text:\nsupervised and unsupervised.\n\nSupervised approach\nThis is a multi-label, multi-class classification algorithm, where we may have\nfollowing features as an input:\n\n * text converted to bag-of-words\n   [https://en.wikipedia.org/wiki/Bag-of-words_model]\n * text is treated as a stream of vectors, which ",
+    "description": "Keyphrase extraction is the task of identifying single or multi-word expressions\nthat represent the main topics of a document.\nThere are 2 approaches to extract topics (and/or keyphrases) from a text:\nsupervised and unsupervised.\n\n&gt; Improve Python code quality by running flake8 on pull requests \nhttps://github.com/apps/tongschar\nSupervised approach\nThis is a multi-label, multi-class classification algorithm, where we may have\nfollowing features as an input:\n\n * text converted to bag-of-words\n   ",
     "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://smirnov-am.github.io/"
@@ -138,7 +140,7 @@ following features as an input:
             </figure>
             <section class="post-content">
 
-                <p>Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document.<br />There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</p><h3 id="supervised-approach">Supervised approach</h3><p>This is a multi-label, multi-class classification algorithm, where we may have following features as an input:</p><ul><li>text converted to <a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a></li><li>text is treated as a stream of vectors, which are pre-trained <a href="https://en.wikipedia.org/wiki/Word_embedding">word embeddings</a></li></ul><p>For bag-of-words we may use <a href="http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html#evaluation-of-the-performance-on-the-test-set">linear SVM</a> as a classifier.<br />For word embeddings RNN are a <a href="http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/">better fit</a></p><p>Later, when the model is trained it may be used to classify unseen text.</p><p>Limitations:</p><ul><li>large amount of data is needed to train classifiers</li><li>training dataset should be labeled</li><li>labels/topics are predefined</li><li>RNN-LTSM are slow</li></ul><p>Advantages:</p><ul><li>good accuracy</li><li>extracted entities are not keyphrases from the text itself, but more general topics</li></ul><h3 id="unsupervised-learning">Unsupervised learning</h3><p><a href="http://www.aclweb.org/anthology/I13-1062">Adrien Bougouin</a> proposed a method to extract keyphrases that represent topics of the document without prior model training.</p><p>I've tried to implement his algorithm <a href="https://github.com/smirnov-am/pytopicrank">here</a> which goes like this:</p><ul><li>tokenize text and identify part-of-speech of each token</li><li>identify longest sequences of adjectives and nouns - they constitute keyphrases</li><li>convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression</li><li>find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:</li><li>use average strategy</li><li>identify cluster by max depth of 0.74 (good explanation if HAC can be found <a href="https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters">here</a></li><li>use clusters as graph vertices and sum of distances between each keyphare of topic pairs as edge weight</li><li>apply PageRank to identify most prominent topics (implemented in <code>networkx</code>)</li></ul><p>For topN topics extract most significant keyphrases that represent this topic. Possible strategies:</p><ul><li>use a keyphrase which is closer to the beginning of the text</li><li>use center of the cluster from p.4</li><li>use most frequent</li></ul><p>Limitations:</p><ul><li>topics are represented by words from the text itself</li></ul><p>Advantages:</p><ul><li>fast</li><li>no training needed</li><li>unlike <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">LDA</a> topics are easily interpreted by humans</li></ul><h2 id="tests">Tests</h2><p>Let's try to analyze key phrases of original article on TopicsRank.<br />Top10 keyphrases are: <code>document</code>, <code>topics</code>, <code>keyphrase</code>, <code>graph</code>, <code>metshod</code>, <code>topicrank</code>, <code>word</code>, <code>vertices</code> <code>keyphrase candidate</code>, <code>datasets</code>, which is pretty close to what article is about.</p><h2 id="deployment">Deployment</h2><p>I've deployed my implementation of TopicRank as a AWS Lambda function that is being invoked from JavaScript directly <a href="http://pytopicrank.s3-website-us-east-1.amazonaws.com/">here</a> (I've set <code>max_d=1.25</code> there for no particular reason so results may vary)</p>
+                <p>Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document.<br />There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</p><blockquote>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></blockquote><h3 id="supervised-approach">Supervised approach</h3><p>This is a multi-label, multi-class classification algorithm, where we may have following features as an input:</p><ul><li>text converted to <a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a></li><li>text is treated as a stream of vectors, which are pre-trained <a href="https://en.wikipedia.org/wiki/Word_embedding">word embeddings</a></li></ul><p>For bag-of-words we may use <a href="http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html#evaluation-of-the-performance-on-the-test-set">linear SVM</a> as a classifier.<br />For word embeddings RNN are a <a href="http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/">better fit</a></p><p>Later, when the model is trained it may be used to classify unseen text.</p><p>Limitations:</p><ul><li>large amount of data is needed to train classifiers</li><li>training dataset should be labeled</li><li>labels/topics are predefined</li><li>RNN-LTSM are slow</li></ul><p>Advantages:</p><ul><li>good accuracy</li><li>extracted entities are not keyphrases from the text itself, but more general topics</li></ul><h3 id="unsupervised-learning">Unsupervised learning</h3><p><a href="http://www.aclweb.org/anthology/I13-1062">Adrien Bougouin</a> proposed a method to extract keyphrases that represent topics of the document without prior model training.</p><p>I've tried to implement his algorithm <a href="https://github.com/smirnov-am/pytopicrank">here</a> which goes like this:</p><ul><li>tokenize text and identify part-of-speech of each token</li><li>identify longest sequences of adjectives and nouns - they constitute keyphrases</li><li>convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression</li><li>find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:</li><li>use average strategy</li><li>identify cluster by max depth of 0.74 (good explanation if HAC can be found <a href="https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters">here</a></li><li>use clusters as graph vertices and sum of distances between each keyphare of topic pairs as edge weight</li><li>apply PageRank to identify most prominent topics (implemented in <code>networkx</code>)</li></ul><p>For topN topics extract most significant keyphrases that represent this topic. Possible strategies:</p><ul><li>use a keyphrase which is closer to the beginning of the text</li><li>use center of the cluster from p.4</li><li>use most frequent</li></ul><p>Limitations:</p><ul><li>topics are represented by words from the text itself</li></ul><p>Advantages:</p><ul><li>fast</li><li>no training needed</li><li>unlike <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">LDA</a> topics are easily interpreted by humans</li></ul><h2 id="tests">Tests</h2><p>Let's try to analyze key phrases of original article on TopicsRank.<br />Top10 keyphrases are: <code>document</code>, <code>topics</code>, <code>keyphrase</code>, <code>graph</code>, <code>metshod</code>, <code>topicrank</code>, <code>word</code>, <code>vertices</code> <code>keyphrase candidate</code>, <code>datasets</code>, which is pretty close to what article is about.</p><h2 id="deployment">Deployment</h2><p>I've deployed my implementation of TopicRank as a AWS Lambda function that is being invoked from JavaScript directly <a href="http://pytopicrank.s3-website-us-east-1.amazonaws.com/">here</a> (I've set <code>max_d=1.25</code> there for no particular reason so results may vary)</p>
 
             </section>
 

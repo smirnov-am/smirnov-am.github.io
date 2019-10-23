@@ -25,7 +25,7 @@ Needless to say, there were no subscription confirmation email, monthly bill or
     <meta property="og:url" content="https://smirnov-am.github.io/anomalies-in-bank-transactions/" />
     <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/08/hand-keyboard-secured-34203.jpg" />
     <meta property="article:published_time" content="2019-08-07T19:03:00.000Z" />
-    <meta property="article:modified_time" content="2019-08-07T19:56:27.000Z" />
+    <meta property="article:modified_time" content="2019-10-23T16:37:45.000Z" />
     <meta property="article:tag" content="machine learning" />
     <meta property="article:tag" content="python" />
     <meta property="article:tag" content="Security" />
@@ -77,7 +77,7 @@ Needless to say, there were no subscription confirmation email, monthly bill or
     "headline": "Anomalies in bank transactions",
     "url": "https://smirnov-am.github.io/anomalies-in-bank-transactions/",
     "datePublished": "2019-08-07T19:03:00.000Z",
-    "dateModified": "2019-08-07T19:56:27.000Z",
+    "dateModified": "2019-10-23T16:37:45.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://smirnov-am.github.io/content/images/2019/08/hand-keyboard-secured-34203.jpg",
@@ -128,7 +128,7 @@ Needless to say, there were no subscription confirmation email, monthly bill or
             </figure>
             <section class="post-content">
 
-                <p>Recently I've noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it "opportunity to shop with discount" for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don't check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.</p><p>After that, I decided to investigate methods to detect suspicious transactions. Of course, banks do that themselves and I'm not supposed to see any in my history. Anyway, I'll cover Low-pass filter, Benford's law, SVM, LOF and IsolationForest.</p><h2 id="input-data">Input data</h2><p>I'm using one of the largest banks in the Netherlands - ABN AMRO. I was able to download transaction history from their online banking platform in Excel format - very nice of them.<br />First of all transaction history contains credits - no need to take them into account. Debits are negative in history, so I convert them to positive numbers.</p><p>The tricky part is a date. There are <code>transactiondate</code> and <code>valuedate</code> columns in history. Also, some transactions have date and time in their description. It may come handy when I'll be doing feature engineering for machine learning. For now, I'll just extract date from <code>transactiondate</code> column  with <code>python-dateutil</code><br />parser. Here is the code to converting export from online banking to the usable dataframe</p><pre><code class="language-python">import pandas as pd
+                <p>Recently I've noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it "opportunity to shop with discount" for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don't check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.</p><p>After that, I decided to investigate methods to detect suspicious transactions. Of course, banks do that themselves and I'm not supposed to see any in my history. Anyway, I'll cover Low-pass filter, Benford's law, SVM, LOF and IsolationForest.</p><blockquote>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></blockquote><h2 id="input-data">Input data</h2><p>I'm using one of the largest banks in the Netherlands - ABN AMRO. I was able to download transaction history from their online banking platform in Excel format - very nice of them.<br />First of all transaction history contains credits - no need to take them into account. Debits are negative in history, so I convert them to positive numbers.</p><p>The tricky part is a date. There are <code>transactiondate</code> and <code>valuedate</code> columns in history. Also, some transactions have date and time in their description. It may come handy when I'll be doing feature engineering for machine learning. For now, I'll just extract date from <code>transactiondate</code> column  with <code>python-dateutil</code><br />parser. Here is the code to converting export from online banking to the usable dataframe</p><pre><code class="language-python">import pandas as pd
 from dateutil.parser import parse
 
 df = pd.read_excel('/home/as/Desktop/abn.xls')

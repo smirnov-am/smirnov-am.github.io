@@ -28,15 +28,16 @@
  * Pension and accumulation problems
  * Continuously compounded interest
 
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Net present value
 Present value allows to answer a simple question &quot;should I put my money in a
 bank or invest&quot;. Let&#x27;s say I have $100 and the bank gives a 12% annual interest
-rate. Alternatively, I can lend this money to a friend and he promises to pay
-$10 for 12 months. The moral aspec" />
+rate. Altern" />
     <meta property="og:url" content="https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/" />
     <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/04/pyfinmod1.png" />
     <meta property="article:published_time" content="2018-12-24T19:48:00.000Z" />
-    <meta property="article:modified_time" content="2019-04-29T18:30:23.000Z" />
+    <meta property="article:modified_time" content="2019-10-23T16:36:53.000Z" />
     <meta property="article:tag" content="Financial Modelling" />
     <meta property="article:tag" content="python" />
     
@@ -51,11 +52,12 @@ $10 for 12 months. The moral aspec" />
  * Pension and accumulation problems
  * Continuously compounded interest
 
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Net present value
 Present value allows to answer a simple question &quot;should I put my money in a
 bank or invest&quot;. Let&#x27;s say I have $100 and the bank gives a 12% annual interest
-rate. Alternatively, I can lend this money to a friend and he promises to pay
-$10 for 12 months. The moral aspec" />
+rate. Altern" />
     <meta name="twitter:url" content="https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/" />
     <meta name="twitter:image" content="https://smirnov-am.github.io/content/images/2019/04/pyfinmod1.png" />
     <meta name="twitter:label1" content="Written by" />
@@ -94,7 +96,7 @@ $10 for 12 months. The moral aspec" />
     "headline": "Basic Financial Calculations with Python and Pandas",
     "url": "https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/",
     "datePublished": "2018-12-24T19:48:00.000Z",
-    "dateModified": "2019-04-29T18:30:23.000Z",
+    "dateModified": "2019-10-23T16:36:53.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://smirnov-am.github.io/content/images/2019/04/pyfinmod1.png",
@@ -102,7 +104,7 @@ $10 for 12 months. The moral aspec" />
         "height": 2012
     },
     "keywords": "Financial Modelling, python",
-    "description": "In this post I&#x27;ll cover:\n\n * Net present value (NPV)\n * Internal rate of return (IRR)\n * Payment schedules and loan tables\n * Future value\n * Pension and accumulation problems\n * Continuously compounded interest\n\nNet present value\nPresent value allows to answer a simple question &quot;should I put my money in a\nbank or invest&quot;. Let&#x27;s say I have $100 and the bank gives a 12% annual interest\nrate. Alternatively, I can lend this money to a friend and he promises to pay\n$10 for 12 months. The moral aspec",
+    "description": "In this post I&#x27;ll cover:\n\n * Net present value (NPV)\n * Internal rate of return (IRR)\n * Payment schedules and loan tables\n * Future value\n * Pension and accumulation problems\n * Continuously compounded interest\n\n&gt; Improve Python code quality by running flake8 on pull requests \nhttps://github.com/apps/tongschar\nNet present value\nPresent value allows to answer a simple question &quot;should I put my money in a\nbank or invest&quot;. Let&#x27;s say I have $100 and the bank gives a 12% annual interest\nrate. Altern",
     "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://smirnov-am.github.io/"
@@ -182,7 +184,7 @@ $10 for 12 months. The moral aspec" />
 
             <section class="post-full-content">
                 <div class="post-content">
-                    <p>In this post I'll cover:</p><ul><li>Net present value (NPV)</li><li>Internal rate of return (IRR)</li><li>Payment schedules and loan tables</li><li>Future value</li><li>Pension and accumulation problems</li><li>Continuously compounded interest</li></ul><h2 id="net-present-value">Net present value</h2><p>Present value allows to answer a simple question "should I put my money in a bank or invest". Let's say I have $100 and the bank gives a 12% annual interest rate. Alternatively, I can lend this money to a friend and he promises to pay $10 for 12 months. The moral aspect aside NPV gives an answer which alternative is more profitable.</p><p>The second alternative can be described as a series of cash flows:</p><ul><li>-$100 at month=0</li><li>+$10 at month=1</li><li>...</li><li>+$10 at month=12</li></ul><p>At each period value should be adjusted by the interest rate (also called the discount rate) using formula</p><!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="https://smirnov-am.github.io/content/images/2019/04/2019-04-29-19.27.19.jpg" class="kg-image"></figure><!--kg-card-end: image--><p>This basic concept shows that $100 now is not the same as $100 promised in a year. $100 now is $110 in a year.</p><p>To calculate the discounted value I'll convert annual discount (interest) rate to daily and use the number of days elapsed as <em>t</em>. The function accepts a dataframe with a date column and a cash flow column.</p><!--kg-card-begin: code--><pre><code>def npv(dataframe, 
+                    <p>In this post I'll cover:</p><ul><li>Net present value (NPV)</li><li>Internal rate of return (IRR)</li><li>Payment schedules and loan tables</li><li>Future value</li><li>Pension and accumulation problems</li><li>Continuously compounded interest</li></ul><blockquote>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></blockquote><h2 id="net-present-value">Net present value</h2><p>Present value allows to answer a simple question "should I put my money in a bank or invest". Let's say I have $100 and the bank gives a 12% annual interest rate. Alternatively, I can lend this money to a friend and he promises to pay $10 for 12 months. The moral aspect aside NPV gives an answer which alternative is more profitable.</p><p>The second alternative can be described as a series of cash flows:</p><ul><li>-$100 at month=0</li><li>+$10 at month=1</li><li>...</li><li>+$10 at month=12</li></ul><p>At each period value should be adjusted by the interest rate (also called the discount rate) using formula</p><!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="https://smirnov-am.github.io/content/images/2019/04/2019-04-29-19.27.19.jpg" class="kg-image"></figure><!--kg-card-end: image--><p>This basic concept shows that $100 now is not the same as $100 promised in a year. $100 now is $110 in a year.</p><p>To calculate the discounted value I'll convert annual discount (interest) rate to daily and use the number of days elapsed as <em>t</em>. The function accepts a dataframe with a date column and a cash flow column.</p><!--kg-card-begin: code--><pre><code>def npv(dataframe, 
         annual_discount_rate, 
         cash_flow_column_name='cash flow', 
         date_column_name='date'):
@@ -548,7 +550,7 @@ def retirement_problem(terms_of_deposit,
             </header>
 
             <section class="post-card-excerpt">
-                <p>This simple app for streaming cpu utilization to a web page. I'm using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.Flask appI'm following a flask-socketio</p>
+                <p>This simple app for streaming cpu utilization to a web page. I'm using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.Improve Python code quality by</p>
             </section>
 
         </a>
@@ -715,7 +717,7 @@ $(document).ready(function () {
 </script>
 
 
-    
+    testsetset
 
 </body>
 </html>

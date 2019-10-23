@@ -22,16 +22,17 @@
     <meta property="og:description" content="Python&#x27;s float  type is a natural first step to represent monetary amounts in
 the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 
+
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Doubles contain 53 bits of precision. When the machine is trying to represent
 the fractional part (mantissa) of a given number it finds a bit sequence b1, b2,
 .. b53  so that a sum: b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53  is close to
-the number as possible. So, values such as 0.1 cannot be exactly represented.
-
-Let&#x27;s see how it can hi" />
+t" />
     <meta property="og:url" content="https://smirnov-am.github.io/representing-money-in-python/" />
     <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/09/alvaro-reyes-MEldcHumbu8-unsplash.jpg" />
     <meta property="article:published_time" content="2019-09-15T16:30:10.000Z" />
-    <meta property="article:modified_time" content="2019-09-15T16:30:10.000Z" />
+    <meta property="article:modified_time" content="2019-10-23T16:38:23.000Z" />
     <meta property="article:tag" content="python" />
     
     <meta name="twitter:card" content="summary_large_image" />
@@ -39,12 +40,13 @@ Let&#x27;s see how it can hi" />
     <meta name="twitter:description" content="Python&#x27;s float  type is a natural first step to represent monetary amounts in
 the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 
+
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Doubles contain 53 bits of precision. When the machine is trying to represent
 the fractional part (mantissa) of a given number it finds a bit sequence b1, b2,
 .. b53  so that a sum: b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53  is close to
-the number as possible. So, values such as 0.1 cannot be exactly represented.
-
-Let&#x27;s see how it can hi" />
+t" />
     <meta name="twitter:url" content="https://smirnov-am.github.io/representing-money-in-python/" />
     <meta name="twitter:image" content="https://smirnov-am.github.io/content/images/2019/09/alvaro-reyes-MEldcHumbu8-unsplash.jpg" />
     <meta name="twitter:label1" content="Written by" />
@@ -83,7 +85,7 @@ Let&#x27;s see how it can hi" />
     "headline": "Representing money in Python",
     "url": "https://smirnov-am.github.io/representing-money-in-python/",
     "datePublished": "2019-09-15T16:30:10.000Z",
-    "dateModified": "2019-09-15T16:30:10.000Z",
+    "dateModified": "2019-10-23T16:38:23.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://smirnov-am.github.io/content/images/2019/09/alvaro-reyes-MEldcHumbu8-unsplash.jpg",
@@ -91,7 +93,7 @@ Let&#x27;s see how it can hi" />
         "height": 1333
     },
     "keywords": "python",
-    "description": "Python&#x27;s float  type is a natural first step to represent monetary amounts in\nthe code. Almost all platforms map Python floats to IEEE-754 “double precision”.\n\nDoubles contain 53 bits of precision. When the machine is trying to represent\nthe fractional part (mantissa) of a given number it finds a bit sequence b1, b2,\n.. b53  so that a sum: b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53  is close to\nthe number as possible. So, values such as 0.1 cannot be exactly represented.\n\nLet&#x27;s see how it can hi",
+    "description": "Python&#x27;s float  type is a natural first step to represent monetary amounts in\nthe code. Almost all platforms map Python floats to IEEE-754 “double precision”.\n\n\n&gt; Improve Python code quality by running flake8 on pull requests \nhttps://github.com/apps/tongschar\nDoubles contain 53 bits of precision. When the machine is trying to represent\nthe fractional part (mantissa) of a given number it finds a bit sequence b1, b2,\n.. b53  so that a sum: b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53  is close to\nt",
     "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://smirnov-am.github.io/"
@@ -171,7 +173,7 @@ Let&#x27;s see how it can hi" />
 
             <section class="post-full-content">
                 <div class="post-content">
-                    <p>Python's <code>float</code> type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.<br><br>Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence <code>b1, b2, .. b53</code> so that a sum: <code>b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53</code> is close to the number as possible. So, values such as 0.1 cannot be exactly represented.<br><br>Let's see how it can hinder money operations. A banana costs $1.01, I'm lowering the price to $0.99 and want to calculate lost revenue if I sell quintillion bananas (one with 18 zeros):</p><!--kg-card-begin: markdown--><pre><code class="language-python">format((1.01 - 0.99)*1e18, '.2f')
+                    <p>Python's <code>float</code> type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.<br></p><blockquote>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></blockquote><p>Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence <code>b1, b2, .. b53</code> so that a sum: <code>b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53</code> is close to the number as possible. So, values such as 0.1 cannot be exactly represented.<br><br>Let's see how it can hinder money operations. A banana costs $1.01, I'm lowering the price to $0.99 and want to calculate lost revenue if I sell quintillion bananas (one with 18 zeros):</p><!--kg-card-begin: markdown--><pre><code class="language-python">format((1.01 - 0.99)*1e18, '.2f')
 &gt;&gt;&gt;  '20000000000000016.00'
 </code></pre>
 <!--kg-card-end: markdown--><p>I expected a 2 with 16 zeros, but there are an additional 16 dollars. It will take a lot of time to sell so many bananas, but the calculation is wrong anyway.<br></p><p><strong>Integers</strong><br>One of the possible solutions is to use integer. So $1.01 is represented as 101, and<br>0.99 as 99 (simply multiplying everything by 100).</p><!--kg-card-begin: markdown--><pre><code class="language-python">format((101 - 99)*1e18 / 100, '.2f')
@@ -503,7 +505,7 @@ $(document).ready(function () {
 </script>
 
 
-    
+    testsetset
 
 </body>
 </html>

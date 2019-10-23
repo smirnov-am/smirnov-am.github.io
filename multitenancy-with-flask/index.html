@@ -27,13 +27,14 @@ It can be a database on a single RDBMS server or physically different servers.
 Usually additional central database (i.e., General) stores metadata and list of
 available tenants.
 
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Flask-SQLAlchemy
-Flask-SQLAlchemy provides interface only to one database.
-Flask app configuration defines SQLALCHEMY_" />
+F" />
     <meta property="og:url" content="https://smirnov-am.github.io/multitenancy-with-flask/" />
     <meta property="og:image" content="https://smirnov-am.github.io/content/images/2019/04/social-housing-landlords-tenants-scotland-act-2014-tenancy-short-secure-law-lawyer-eviction.jpg" />
     <meta property="article:published_time" content="2018-10-26T17:59:00.000Z" />
-    <meta property="article:modified_time" content="2019-04-27T19:33:25.000Z" />
+    <meta property="article:modified_time" content="2019-10-23T16:36:10.000Z" />
     <meta property="article:tag" content="Flask" />
     <meta property="article:tag" content="python" />
     
@@ -47,9 +48,10 @@ It can be a database on a single RDBMS server or physically different servers.
 Usually additional central database (i.e., General) stores metadata and list of
 available tenants.
 
+&gt; Improve Python code quality by running flake8 on pull requests 
+https://github.com/apps/tongschar
 Flask-SQLAlchemy
-Flask-SQLAlchemy provides interface only to one database.
-Flask app configuration defines SQLALCHEMY_" />
+F" />
     <meta name="twitter:url" content="https://smirnov-am.github.io/multitenancy-with-flask/" />
     <meta name="twitter:image" content="https://smirnov-am.github.io/content/images/2019/04/social-housing-landlords-tenants-scotland-act-2014-tenancy-short-secure-law-lawyer-eviction.jpg" />
     <meta name="twitter:label1" content="Written by" />
@@ -88,7 +90,7 @@ Flask app configuration defines SQLALCHEMY_" />
     "headline": "Multitenancy with Flask",
     "url": "https://smirnov-am.github.io/multitenancy-with-flask/",
     "datePublished": "2018-10-26T17:59:00.000Z",
-    "dateModified": "2019-04-27T19:33:25.000Z",
+    "dateModified": "2019-10-23T16:36:10.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://smirnov-am.github.io/content/images/2019/04/social-housing-landlords-tenants-scotland-act-2014-tenancy-short-secure-law-lawyer-eviction.jpg",
@@ -96,7 +98,7 @@ Flask app configuration defines SQLALCHEMY_" />
         "height": 474
     },
     "keywords": "Flask, python",
-    "description": "What is multitenancy\nConsider a SaaS platform that provide access to multiple client organizations.\nThese organizations - tenants - may have each its own database for safety and\ndata protection reasons.\nIt can be a database on a single RDBMS server or physically different servers.\nUsually additional central database (i.e., General) stores metadata and list of\navailable tenants.\n\nFlask-SQLAlchemy\nFlask-SQLAlchemy provides interface only to one database.\nFlask app configuration defines SQLALCHEMY_",
+    "description": "What is multitenancy\nConsider a SaaS platform that provide access to multiple client organizations.\nThese organizations - tenants - may have each its own database for safety and\ndata protection reasons.\nIt can be a database on a single RDBMS server or physically different servers.\nUsually additional central database (i.e., General) stores metadata and list of\navailable tenants.\n\n&gt; Improve Python code quality by running flake8 on pull requests \nhttps://github.com/apps/tongschar\nFlask-SQLAlchemy\nF",
     "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://smirnov-am.github.io/"
@@ -176,7 +178,7 @@ Flask app configuration defines SQLALCHEMY_" />
 
             <section class="post-full-content">
                 <div class="post-content">
-                    <h3 id="what-is-multitenancy">What is multitenancy</h3><p>Consider a SaaS platform that provide access to multiple client organizations.<br>These organizations - tenants - may have each its own database for safety and data protection reasons.<br>It can be a database on a single RDBMS server or physically different servers.<br>Usually additional central database (i.e., General) stores metadata and list of available tenants.</p><!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="https://smirnov-am.github.io/content/images/2019/04/description.png" class="kg-image"></figure><!--kg-card-end: image--><h3 id="flask-sqlalchemy">Flask-SQLAlchemy</h3><p>Flask-SQLAlchemy provides interface only to one database.<br>Flask app configuration defines <code>SQLALCHEMY_DATABASE_URI</code> gives connection info and database name.<br>It possible to extend it to multiple tenant databases using <a href="http://flask-sqlalchemy.pocoo.org/2.3/binds/">binds</a></p><h3 id="tenant-dependent-endpoint">Tenant dependent endpoint</h3><p>Consider this endpoint that displays tenant users and gets tenant name<br>as its parameter</p><!--kg-card-begin: code--><pre><code>@app.route("/&lt;tenant_name&gt;/users")
+                    <h3 id="what-is-multitenancy">What is multitenancy</h3><p>Consider a SaaS platform that provide access to multiple client organizations.<br>These organizations - tenants - may have each its own database for safety and data protection reasons.<br>It can be a database on a single RDBMS server or physically different servers.<br>Usually additional central database (i.e., General) stores metadata and list of available tenants.</p><!--kg-card-begin: image--><figure class="kg-card kg-image-card"><img src="https://smirnov-am.github.io/content/images/2019/04/description.png" class="kg-image"></figure><!--kg-card-end: image--><blockquote>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></blockquote><h3 id="flask-sqlalchemy">Flask-SQLAlchemy</h3><p>Flask-SQLAlchemy provides interface only to one database.<br>Flask app configuration defines <code>SQLALCHEMY_DATABASE_URI</code> gives connection info and database name.<br>It possible to extend it to multiple tenant databases using <a href="http://flask-sqlalchemy.pocoo.org/2.3/binds/">binds</a></p><h3 id="tenant-dependent-endpoint">Tenant dependent endpoint</h3><p>Consider this endpoint that displays tenant users and gets tenant name<br>as its parameter</p><!--kg-card-begin: code--><pre><code>@app.route("/&lt;tenant_name&gt;/users")
 def index(tenant_name):
     tenant_session = get_tenant_session(tenant_name)
     if not tenant_session:
@@ -362,7 +364,7 @@ def simple_cache(f):
             </header>
 
             <section class="post-card-excerpt">
-                <p>In this post I will cover how to create a pagination with Jinja macro feature.Requirements:show preconfigured limited number of pages at oncecollapse invisible pages under ...provide previous/next navigation buttonsJinja templates</p>
+                <p>In this post I will cover how to create a pagination with Jinja macro feature.Requirements:show preconfigured limited number of pages at oncecollapse invisible pages under ...provide previous/next navigation buttonsImprove Python</p>
             </section>
 
         </a>
@@ -529,7 +531,7 @@ $(document).ready(function () {
 </script>
 
 
-    
+    testsetset
 
 </body>
 </html>
