@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Securing Flask web applications",
+        "headline" : "Securing Flask web applications",
+        "description" : "I\x26rsquo;ve just recently finished a web security training and in this post I\x26rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I\x26rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.\nXSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source\nExploit Consider a form asking for a user input.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2018",
+        "datePublished": "2018-07-11 15:26:00 \x2b0000 UTC",
+        "dateModified" : "2018-07-11 15:26:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/securing-flask-web-applications\/",
+        "wordCount" : "1806",
+        "keywords" : [ "Python","Flask","Security","Blog" ]
+    }
+    </script>
+
+<title>Securing Flask web applications | Alexey Smirnov</title>
+
+<meta property='og:title' content='Securing Flask web applications - Alexey Smirnov'>
+<meta property='og:description' content='I&rsquo;ve just recently finished a web security training and in this post I&rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
+XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
+Exploit Consider a form asking for a user input.'>
+<meta property='og:url' content='https://smirnov-am.github.io/securing-flask-web-applications/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/flask11.jpg'><meta property='article:published_time' content='2018-07-11T15:26:00Z'/><meta property='article:modified_time' content='2018-07-11T15:26:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/securing-flask-web-applications/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/flask">#Flask</a>
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/security">#Security</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">July 11, 2018</h2>
+    <h1 class="title">Securing Flask web applications</h1>
+    
+    <div class="content">
+      
+
+<p>I&rsquo;ve just recently finished a web security training and in this post I&rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.</p>
+
+<h2 id="xss">XSS</h2>
+
+<p>Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. <a href="https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29" target="_blank">source</a></p>
+
+<h3 id="exploit">Exploit</h3>
+
+<p>Consider a form asking for a user input.</p>
+
+<pre><code>&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt;
+  &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt;
+  &lt;input type=&quot;submit&quot;&gt;
+&lt;/form&gt;
+
+</code></pre>
+
+<p>And a template to show tweets by other users where user input from above form passed unprocessed:</p>
+
+<pre><code>&lt;title&gt;Hello from flask twitter&lt;/title&gt;
+{% for tweet in tweets %}
+  &lt;h1 class={{tweet}}&gt;{{ tweet }}!&lt;/h1&gt;
+  &lt;a href=&quot;{{tweet}}&quot;&gt;Like&lt;/a&gt;
+{% endfor %}
+
+</code></pre>
+
+<p>With the Flask app looking like this:</p>
+
+<pre><code>from flask import Flask, request, render_template, make_response
+app = Flask(__name__)
+
+tweets = []
+
+
+@app.route('/', methods=['GET', 'POST'])
+def tweet_feed():
+    if request.method == 'POST':
+        tweet = request.form['tweet']
+        tweets.append(tweet)
+    return render_template('tweet_feed.html', tweets=tweets)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5005, debug=True)
+
+</code></pre>
+
+<p>The tweet posted by user will be used as <code>h1</code> class attribute and inside the tag and also as <code>a</code> href attribute.</p>
+
+<p>A hacker may post malicious code and when another users will open the page with tweets that code may be executed by their browsers:</p>
+
+<ol>
+<li><code>&quot; onload=alert(1)</code> - if this appears in class attribute it will close the double quote and add a callback to onload event for this DOM.</li>
+<li><code>javascript:alert(1);</code> - if this javascript URI appears in href attribute, browser will execute a code when user clicks.</li>
+<li><code>&lt;script&gt;alert(1)&lt;/script&gt;</code> - if this appears anywhere on the page the script will be executed.</li>
+</ol>
+
+<p>The script may not just show an alert message, but for example do an AJAX call to another endpoint on this site (i.e. password change).  This allows the attacker to perform any action as the user on this website.</p>
+
+<h3 id="mitigation">Mitigation</h3>
+
+<p>When rendering templates Flask configures Jinja2 to automatically escape all values unless explicitly told otherwise. Auto-escaping is not enabled for all templates. The following extensions for templates trigger auto-escaping: .html, .htm, .xml, .xhtml. Templates loaded from a string will have auto-escaping disabled.</p>
+
+<p>So because of the above exploit using code #3 will be escaped and never executed.</p>
+
+<p>Code #1 gives me <code>ERR_BLOCKED_BY_XSS_AUDITOR</code> error in Chrome Version 65.0.3325.181. This browser behavior can be manipulated by the server with <code>X-XSS-Protection</code> header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection" target="_blank">source</a></p>
+
+<p>The only vulnerable part is href attribute in <code>a</code> tag.We have a following option to mitigate</p>
+
+<ul>
+<li>do not use user input with <code>href</code></li>
+<li>use <code>{{ url_for('endpoint')}}</code> when rendering template. This has additional benefit of automatically building proper URLs if endpoint path changes.</li>
+
+<li><p>use <code>Content-Security-Policy</code> header in response:</p>
+
+<pre><code>@app.route('/', methods=['GET', 'POST'])
+def tweet_feed():
+if request.method == 'POST':
+    tweet = request.form['tweet']
+    tweets.append(tweet)
+response = make_response(render_template('tweet_feed.html', tweets=tweets))
+response.headers['Content-Security-Policy'] = &quot;default-src 'self'&quot;
+return response
+
+</code></pre></li>
+</ul>
+
+<p>Content Security Policy (CSP) is security mechanism aimed at protecting from XSS and Clickjacking attacks. CSP allows you to specify trusted origins of loading resources such as Javascript, fonts, CSS and others. And also ban the execution of the built-in Javascript code. <a href="https://web-security.guru/en/web-security/content-security-policy" target="_blank">source</a></p>
+
+<p><code>default-src 'self'</code> in <code>Content-Security-Policy</code> header in server response instructs browser to load and execute scripts from the same source - your server, which is identified by protocol (http/https), hostname and port triplet. It also disables inline scripts like the one from malicious code #3.</p>
+
+<p>Another types of XSS are the ones where malicious code is embedded in uploaded file (text, images). I&rsquo;ll address them in File upload section later</p>
+
+<h2 id="csrf">CSRF</h2>
+
+<p>Cross-Site Request Forgery is an attack that allows an attacker to make requests to various sites under victim user. If the victim comes to a site containing a malicious code, a request is sent from her username to another service (social network) performing a destructive action.Unlike XSS the malicious code is stored on hacker controlled server where user is tricked to visit.</p>
+
+<h2 id="exploit-1">Exploit</h2>
+
+<p>Consider a online bank transfer page. You may access it by logging beforehand with the authentication information stored in cookie files.</p>
+
+<pre><code>&lt;!doctype html&gt;
+&lt;title&gt;Hello from Flask&lt;/title&gt;
+&lt;h1&gt;Account balance {% raw %}${{ balance }}{% endraw %}&lt;/h1&gt;
+
+&lt;h2&gt;New transfer&lt;/h2&gt;
+&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt;
+  &lt;input type=&quot;text&quot; name=&quot;destination_account&quot; placeholder=&quot;Destination account&quot;&gt;&lt;br&gt;
+  &lt;input type=&quot;number&quot; name=&quot;amount&quot;&gt;&lt;br&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Transfer&quot;&gt;
+&lt;/form&gt;
+
+</code></pre>
+
+<p>With Flaks app looking like this:</p>
+
+<pre><code>from flask import Flask, request, render_template
+app = Flask(__name__)
+
+account_balance = 1000
+
+
+@app.route('/', methods=['GET', 'POST'])
+def transfer():
+    global account_balance
+    if request.method == 'POST':
+        transferred_amount = request.form['amount']
+        if transferred_amount.isdigit():
+            account_balance -= int(transferred_amount)
+    response = make_response(render_template('transfer.html', balance=account_balance))
+    return response
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5005, debug=True)
+
+</code></pre>
+
+<p>Now an attacker may trick you to follow a link to his website (I&rsquo;m getting a lot of &lsquo;Your transaction is approved, Follow this link for details&rsquo; spam messages recently). When you follow the link a page with the following script loads:</p>
+
+<pre><code>&lt;form method=&quot;POST&quot; action=&quot;http://0.0.0.0:5005/&quot; id=&quot;hacker_form&quot;&gt;
+   &lt;input type=&quot;text&quot; name=&quot;destination_account&quot; value=&quot;123123123&quot;/&gt;
+   &lt;input type=&quot;number&quot; name=&quot;amount&quot; value=&quot;1000&quot;/&gt;
+   &lt;input type=&quot;submit&quot; value=&quot;Transfer&quot;&gt;
+&lt;/form&gt;
+&lt;script&gt;document.getElementById(&quot;hacker_form&quot;).submit()&lt;/script&gt;
+
+</code></pre>
+
+<p>So when sending this form to bank app at <a href="http://0.0.0.0:5005/" target="_blank">http://0.0.0.0:5005/</a> authorization cookie will be also sent along. Thus user authorized bank to transfer $10000 to Account #123123123</p>
+
+<h3 id="mitigation-1">Mitigation</h3>
+
+<p>I&rsquo;ve used endpoint that changes the state of account only on POST request. That complicated hacker&rsquo;s task a little bit as he needs user to visit his server with malicious code. If it was just GET user only needs to click the link without loading the script from hacker&rsquo;s server.</p>
+
+<p>Another security measure is to use tokens with each account state change endpoint. With every form user gets a random token (as a form&rsquo;s hidden field) and when form is POSTed, the token is checked for validity and expiration. In Flask this is implemented in <a href="http://flask-wtf.readthedocs.io/en/stable/" target="_blank">Flask-WTF plugin</a></p>
+
+<p>Outline</p>
+
+<ol>
+<li>GET requests should not change the state of the system</li>
+<li>Check <code>Origin</code> and/or <code>Referer</code> request header in server code to match real server name</li>
+<li>Use CSRF-tokens</li>
+</ol>
+
+<h2 id="sql-injection">SQL Injection</h2>
+
+<p>SQL Injection occurs when attacker-controlled input is inserted into a SQL query without proper validation or sanitization. This often occurs when using string formatting or concatenation to build queries. An attacker may be able to read data for which they are not authorized, tamper with or destroy data, or possibly even write files or execute code on the database server. The impact is dependent on the exact scenario, but is generally quite severe.</p>
+
+<h3 id="exploit-2">Exploit</h3>
+
+<p>Consider bank transfer form from the above example with the following Flask app (I&rsquo;m using SQLAlchemy here and trying to put things simple, but usually it&rsquo;s not how you manage database session in Flask app)</p>
+
+<pre><code>from flask import Flask, request, render_template, make_response, redirect, url_for
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+
+app = Flask(__name__)
+Base = declarative_base()
+engine = create_engine('sqlite:///123.db', echo=True)
+
+@app.route('/', methods=['GET', 'POST'])
+def transfer():
+    session = sessionmaker(bind=engine)()
+    account_balance_query = session.execute('SELECT balance from accounts WHERE number=1111')
+    account_balance = int(account_balance_query.fetchone()[0])
+    if request.method == 'POST':
+        transferred_amount = request.form['amount']
+        destination_account = request.form['destination_account']
+        session.execute('UPDATE accounts SET balance = balance - ' + transferred_amount + ' WHERE number=1111')
+        session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)
+        session.commit()
+        session.close()
+        return redirect(url_for('transfer'))
+    response = make_response(render_template('transfer.html', balance=account_balance))
+    session.close()
+    return response
+
+
+</code></pre>
+
+<p>I&rsquo;ve tried to break all the rules here: building raw queries and concatenating query string with user input directly (I might have used <code>.format</code> as well). So when entering <code>2222;DROP DATABASE;</code> in destination account input field I expected this particular line<code>session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)</code>execute an update and then drop database. But it gave me that error <code>sqlite3.Warning: You can only execute one statement at a time.</code> and no changes were made to database. Not all drivers have that protection, while <a href="http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html" target="_blank">some</a> allow multiple statement to be executed like so.</p>
+
+<h3 id="mitigation-2">Mitigation</h3>
+
+<p>The proper way to avoid that is to use ORMs. In that case the Flask app will be like this:</p>
+
+<pre><code>from flask import Flask, request, render_template, make_response, redirect, url_for
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+
+app = Flask(__name__)
+Base = declarative_base()
+engine = create_engine('sqlite:///123.db', echo=True)
+
+
+class Account(Base):
+    __tablename__ = 'accounts'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    number = Column(String(64))
+    balance = Column(Integer)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def transfer():
+    session = sessionmaker(bind=engine)()
+    account = session.query(Account).filter_by(number='1111').one()
+    if request.method == 'POST':
+        transferred_amount = int(request.form['amount'])
+        account.balance -= transferred_amount
+        destination_account_number = request.form['destination_account']
+        destination_account = session.query(Account).filter_by(number=destination_account_number).one()
+        destination_account.balance += transferred_amount
+        session.commit()
+        session.close()
+        return redirect(url_for('transfer'))
+    session.close()
+    response = make_response(render_template('transfer.html', balance=account.balance))
+    return response
+
+</code></pre>
+
+<h2 id="directory-traversal">Directory traversal</h2>
+
+<p>Directory traversal may happen when for example an attacker uploads a file with a filename like <code>../../../etc/passwd</code>. If he guessed the number of <code>..</code> right he might overwrite the file (given that uwsgi or Flask is running as root, but it may be any other file like <code>~/bash.rc</code>). The mitigation is explained in official Flask docs <a href="http://flask.pocoo.org/docs/1.0/patterns/fileuploads/" target="_blank">here</a></p>
+
+<p>Essentially you need to sanitize filenames from file upload form. Another advice is avoid using user provided filenames at all and generate your own (hash of the datetime/username/etc) and store them on a separate subdomain (more on it later)</p>
+
+<h2 id="xss-in-uploaded-files">XSS in uploaded files</h2>
+
+<p>This is not particularly related to Flask, but malicious javascript might appear not only in reflected output or stored in database (see general XSS attack), but it can also be embedded in images.For example, <a href="https://marcoramilli.blogspot.com/2014/01/hacking-through-image-gif-turn.html" target="_blank">this blog post</a> uses that <a href="https://pastebin.com/6yUbfGX5" target="_blank">code</a> to embed javascript in GIF image file. CSP won&rsquo;t help here - so the only way is to serve the images from separate subdomain (that&rsquo;s what actually Facebook does)</p>
+
+<p>Another thing related to files is how to you actually serve them. A pdf document uploaded by an attacker may have malicious code so if that file is server to another users it&rsquo;s better to add <code>Content-Disposition: attachment</code> header to server response so browser will download it instead of showing right away.</p>
+
+<h2 id="cookie-protection">Cookie protection</h2>
+
+<p>Cookie files are used for a lot of things along with storing session or authentication data.There are some methods to protect them from exposing to an attacker</p>
+
+<h3 id="secure">Secure</h3>
+
+<p>Cookies are sent with every request in clear text:</p>
+
+<pre><code>GET /index.html HTTP/1.1
+Host: www.example.org
+Cookie: session=XXXXXXX
+
+</code></pre>
+
+<p>It means that if an attacker that controls network equipment between you and server (or your ISP) can easily read it. Setting cookie <code>secure</code> flag will instruct browser to send a cookie only over protected HTTPS connection.</p>
+
+<h3 id="http-only">HTTP Only</h3>
+
+<p><code>HttpOnly</code> flag will instruct browser to hide cookie content from javascript code. In case of XSS attack it will prevent an attacker from accessing sensitive data stored in it.</p>
+
+<h3 id="samesite">SameSite</h3>
+
+<p>In the CSRF example the critical part of the attack was that user&rsquo;s cookie was send from attacker controlled site. It can be mitigated by setting <code>SameSite=strict</code>. Another option for that flag is &lsquo;lax&rsquo; which won&rsquo;t allow sending cookies from another sites when doing requests other than <code>GET</code>.</p>
+
+<p>Flask by default uses <code>session</code> cookie and its flags are set by configuring <code>app</code>:</p>
+
+<pre><code>app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+
+</code></pre>
+
+<p>User defined cookies are set with response:</p>
+
+<pre><code>response.set_cookie('key', 'value', secure=True, httponly=True, samesite='Lax')
+
+</code></pre>
+
+<p>Have your Flask apps ever been hacked? Drop me a message on LinkedIn <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">https://www.linkedin.com/in/smirnovam/</a></p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/">E-commerce recommendation systems: basket analysis. Performance comparison of most common algorithms.</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

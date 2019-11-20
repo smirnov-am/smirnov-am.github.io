@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Unittesting decorators",
+        "headline" : "Unittesting decorators",
+        "description" : "I\x26rsquo;ll start with a simple example of a class I want to put under test. A Car class uses Engine and instantiates it internally\nclass Engine: def start(self): interact_with_outside_world() print(\x27Engine started\x27) class Car: def __init__(self): self.engine = Engine() def drive(self): self.engine.start()  Let\x26rsquo;s write a unittest for Car class. By definition, unittest shouldn\x26rsquo;t be allowed to interact with the outside world (connect . to DB, etc). There are 2 ways to solve that.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2019",
+        "datePublished": "2019-06-30 18:10:41 \x2b0000 UTC",
+        "dateModified" : "2019-06-30 18:10:41 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/unittesting-decorators\/",
+        "wordCount" : "732",
+        "keywords" : [ "Python","Blog" ]
+    }
+    </script>
+
+<title>Unittesting decorators | Alexey Smirnov</title>
+
+<meta property='og:title' content='Unittesting decorators - Alexey Smirnov'>
+<meta property='og:description' content='I&rsquo;ll start with a simple example of a class I want to put under test. A Car class uses Engine and instantiates it internally
+class Engine: def start(self): interact_with_outside_world() print(&#39;Engine started&#39;) class Car: def __init__(self): self.engine = Engine() def drive(self): self.engine.start()  Let&rsquo;s write a unittest for Car class. By definition, unittest shouldn&rsquo;t be allowed to interact with the outside world (connect . to DB, etc). There are 2 ways to solve that.'>
+<meta property='og:url' content='https://smirnov-am.github.io/unittesting-decorators/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/06/unit_testing.png'><meta property='article:published_time' content='2019-06-30T18:10:41Z'/><meta property='article:modified_time' content='2019-06-30T18:10:41Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/unittesting-decorators/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+
+
+
+      
+    </div>
+    <h2 class="subtitle is-6">June 30, 2019</h2>
+    <h1 class="title">Unittesting decorators</h1>
+    
+    <div class="content">
+      
+
+<p>I&rsquo;ll start with a simple example of a class I want to put under test. A <code>Car</code> class uses <code>Engine</code> and instantiates it internally</p>
+
+<pre><code class="language-python">class Engine:
+    def start(self):
+        interact_with_outside_world()
+        print('Engine started')
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()
+    def drive(self):
+        self.engine.start()
+</code></pre>
+
+<p>Let&rsquo;s write a unittest for <code>Car</code> class. By definition, unittest shouldn&rsquo;t be allowed to interact with the outside world (connect . to DB, etc). There are 2 ways to solve that. First is to subclass <code>Car</code></p>
+
+<pre><code class="language-python">class TestEngine:
+    def start(self):
+        pretend_to_interact_with_outside_world()
+        print('Engine started')
+
+class TestCar(Car):
+    def __init__(self):
+        super().__init__()
+        self.engine = TestEngine()
+</code></pre>
+
+<p>Sometimes this is a viable solution. But <code>Engine</code> is still instantiated and can access real resources inside its constructor. This approach is described <a href="https://www.youtube.com/watch?v=EiOglTERPEo&amp;feature=youtu.be&amp;t=20m35s" target="_blank">here</a>.</p>
+
+<p>Dependency injection is more flexible.It is a powerful pattern that allows separate the construction of  the object of its use. The object should not be responsible for instantiating dependencies which supports Single Responsibility Principle.</p>
+
+<pre><code class="language-python">class Car:
+    def __init__(self, engine):
+        self.engine = engine
+    def drive(self):
+        self.engine.start()
+
+# production code
+engine = Engine()
+car = Car(engine)
+
+
+# unittest
+def test_car():
+    test_engine = TestEngine()
+    test_car = Car(test_engine)
+    ...
+</code></pre>
+
+<p>Here we can init the <code>Engine</code> outside the <code>Car</code> and provide instance of the real one in our code and test instance in unittest.</p>
+
+<h3 id="decorator">Decorator</h3>
+
+<p>Decorators are a nice Python feature I&rsquo;ve been using to organize caching. Let&rsquo;s create a decorator that will cache the result of a calculation in Redis. First let&rsquo;s create an interface to Redis as well as stub interface for unittests:<em>interfaces.py</em></p>
+
+<pre><code class="language-python">from abc import ABCMeta, abstractmethod
+import redis
+
+
+class CacheInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def get(self, key):
+        pass
+
+    @abstractmethod
+    def set(self, key, value):
+        pass
+
+
+class RedisInterface(CacheInterface):
+    def __init__(self, redis_client=None):
+        if not redis_client:
+            self.redis_client = redis.StrictRedis(host='localhost',
+                                                  port=6379,
+                                                  socket_timeout=1)
+        else:
+            self.redis_client = redis_client
+
+    def get(self, key):
+        print(f'Accessing Redis for key={key}')
+        value = self.redis_client.get(key)
+        if value:
+            value = value.decode('utf-8')
+        return value
+
+    def set(self, key, value):
+        print(f'Setting Redis key={key} with value={value}')
+        if value:
+            res = self.redis_client.set(key, value)
+            return res
+
+
+class TestCacheInterface(CacheInterface):
+    def __init__(self):
+        self.data = {}
+
+    def get(self, key):
+        print(f'Accessing local dict for key={key}')
+        return self.data.get(key)
+
+    def set(self, key, value):
+        print(f'Setting local dict key={key} with value={value}')
+        self.data[key] = value
+
+</code></pre>
+
+<p>The two classes <code>RedisInterface</code> and <code>TestCacheInterface</code> have the same interface (enforced by using <code>ABCmeta</code>) so can be substituted between each other (Polymorphism! Yay!). Now let&rsquo;s create a decorator using a class syntax:<em>caching.py</em></p>
+
+<pre><code class="language-python">from functools import wraps
+from interfaces import RedisInterface
+
+
+class cache:
+    def __init__(self):
+        print('Initializing decorator')
+        self.caching_interface = RedisInterface()
+
+    def __call__(self, func):
+        print('Running decorator __call__')
+
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            cache_key = f'{func.__name__}{args}{kwargs}'
+            result = self.caching_interface.get(cache_key)
+            if result:
+                return result
+            result = func(*args, **kwargs)
+            self.caching_interface.set(cache_key, result)
+            return result
+
+        return wrapped
+</code></pre>
+
+<p>Now this decorator can be used with a function that calculates square root of a number using Newton&rsquo;s method<em>caching.py</em> cont&rsquo;d</p>
+
+<pre><code class="language-python">@cache()
+def newton_sqrt(number, iters=500):
+    a = float(number)
+    for i in range(iters):
+        number = 0.5 * (number + a / number)
+    return number
+
+
+if __name__ == '__main__':
+    print('Starting main')
+    print(newton_sqrt(42))
+    print(newton_sqrt(42))
+</code></pre>
+
+<p>The result is:</p>
+
+<pre><code class="language-Initializing">Initializing decorator
+Running decorator __call__
+Starting main
+Accessing Redis for key=newton_sqrt(42,){}
+Setting Redis key=newton_sqrt(42,){} with value=6.48074069840786
+6.48074069840786
+Accessing Redis for key=newton_sqrt(42,){}
+6.48074069840786
+</code></pre>
+
+<p>The problem with a decorator is that it&rsquo;s <code>__init__</code> and and <code>__call__</code> methods are called upon import. That is, even if I don&rsquo;t run the <code>newton_sqrt(42)</code> inside the <code>main</code> there is a <code>cache</code> instance somewhere in memory and the <code>newton_sqrt</code> is decorated ( <code>__call__</code> being invoked) It looks like it would be hard to inject testing cache interface into this caching class. The cached function is already decorated, and there is no place to use dependency injection. I&rsquo;ve ended up using monkey patching for that. But accessing the instance of the decorator is impossible, so I&rsquo;ve used <a href="https://www.python.org/dev/peps/pep-0232/" target="_blank">function attributes</a>. Since the decorated (or any function) is a class in Python it can have an attribute assigned this points to cache decorator instance. For it I changed the decorator class:</p>
+
+<pre><code class="language-python">class cache:
+    def __init__(self):
+        self.interface = RedisInterface()
+
+    def __call__(self, func):
+        func.cache_decorator_instance = self
+
+        @wraps(func)
+        def wrapped(*args, **kwargs):
+            cache_key = f'{func.__name__}{args}{kwargs}'
+            result = func.cache_instance.caching_interface.get(cache_key)
+            if result:
+                return result
+            result = func(*args, **kwargs)
+            func.cache_instance.interface.set(cache_key, result)
+            return result
+
+        return wrapped
+</code></pre>
+
+<p>Now the class can be easily tested:_test<em>caching.py</em></p>
+
+<pre><code>from caching import newton_sqrt
+from interfaces import TestCacheInterface
+from pytest import approx
+from math import sqrt
+
+
+def test_caching():
+    newton_sqrt.cache_instance.interface = TestCacheInterface()
+    assert newton_sqrt(42) == approx(sqrt(42), abs=1e-6)
+
+</code></pre>
+
+<p>The result of the test:</p>
+
+<pre><code>test_caching.py .
+Accessing local dict for key=newton_sqrt(42,){}
+Setting local dict key=newton_sqrt(42,){} with value=6.48074069840786
+                                                        [100%]
+
+=========================== 1 passed in 0.02 seconds ===========================
+Process finished with exit code 0
+</code></pre>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/">Basic Financial Calculations with Python and Pandas</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/">Streaming timeseries with Flask and Plotly</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/background-jobs-with-flask/">Background jobs with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/multitenancy-with-flask/">Multitenancy with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

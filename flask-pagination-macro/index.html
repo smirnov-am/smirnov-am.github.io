@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Flask pagination macro",
+        "headline" : "Flask pagination macro",
+        "description" : "In this post I will cover how to create a pagination with Jinja macro feature.\n  Requirements:\n show preconfigured limited number of pages at once collapse invisible pages under ... provide previous\/next navigation buttons  Jinja templates for Bootstrap4 I\x26rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:\n head - holds content of the \x26lt;head\x26gt; tag and defines title, metas, styles body - holds content of the \x26lt;body\x26gt; tag and defines navbar, content, scripts navbar - for navigation bar content - for boostrap container (tag with class=\x26quot;container\x26quot;) scripts - goes in the end of the body, here is why  Blocks may be extended or\/and overwritten in the later templatesThis template follows Bootstrap4 intro guide",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2018",
+        "datePublished": "2018-09-27 15:35:00 \x2b0000 UTC",
+        "dateModified" : "2018-09-27 15:35:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/flask-pagination-macro\/",
+        "wordCount" : "683",
+        "keywords" : [ "Flask","Blog" ]
+    }
+    </script>
+
+<title>Flask pagination macro | Alexey Smirnov</title>
+
+<meta property='og:title' content='Flask pagination macro - Alexey Smirnov'>
+<meta property='og:description' content='In this post I will cover how to create a pagination with Jinja macro feature.
+  Requirements:
+ show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
+ head - holds content of the &lt;head&gt; tag and defines title, metas, styles body - holds content of the &lt;body&gt; tag and defines navbar, content, scripts navbar - for navigation bar content - for boostrap container (tag with class=&quot;container&quot;) scripts - goes in the end of the body, here is why  Blocks may be extended or/and overwritten in the later templatesThis template follows Bootstrap4 intro guide'>
+<meta property='og:url' content='https://smirnov-am.github.io/flask-pagination-macro/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/Pager-in-hand-684x513.jpg'><meta property='article:published_time' content='2018-09-27T15:35:00Z'/><meta property='article:modified_time' content='2018-09-27T15:35:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/flask-pagination-macro/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/flask">#Flask</a>
+
+
+
+      
+    </div>
+    <h2 class="subtitle is-6">September 27, 2018</h2>
+    <h1 class="title">Flask pagination macro</h1>
+    
+    <div class="content">
+      
+
+<p>In this post I will cover how to create a pagination with Jinja macro feature.</p>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/04/demo.gif"/> 
+</figure>
+
+
+<p>Requirements:</p>
+
+<ul>
+<li>show preconfigured limited number of pages at once</li>
+<li>collapse invisible pages under <code>...</code></li>
+<li>provide previous/next navigation buttons</li>
+</ul>
+
+<h2 id="jinja-templates-for-bootstrap4">Jinja templates for Bootstrap4</h2>
+
+<p>I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.<strong>First</strong> - <code>bootstrap4_base.html</code> - loads css and js files from CDN and defines major blocks:</p>
+
+<ul>
+<li><code>head</code> - holds content of the <code>&lt;head&gt;</code> tag and defines <code>title</code>, <code>metas</code>, <code>styles</code></li>
+<li><code>body</code> - holds content of the <code>&lt;body&gt;</code> tag and defines <code>navbar</code>, <code>content</code>, <code>scripts</code></li>
+<li><code>navbar</code> - for navigation bar</li>
+<li><code>content</code> - for boostrap container (tag with <code>class=&quot;container&quot;</code>)</li>
+<li><code>scripts</code> - goes in the end of the body, <a href="https://stackoverflow.com/questions/383045/is-put-scripts-at-the-bottom-correct" target="_blank">here is why</a></li>
+</ul>
+
+<p>Blocks may be extended or/and overwritten in the later templatesThis template follows Bootstrap4 <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/" target="_blank">intro guide</a></p>
+
+<p><strong>Second</strong> - <code>page_base.html</code> - creates navbar and extends <code>content</code> block.It shows all the flash messages (the ones invoked with flask <code>flash</code> function) and adds <code>page_content</code>.That one will be extended in the last template and holds actual content.</p>
+
+<p><strong>Third</strong> - <code>index.html</code> - will overwrite <code>title</code> block and extend <code>page_content</code></p>
+
+<p>Hierarchy of templates is achieved with using of <code>{% extends &quot;&lt;parent_template.html&quot; %}</code> block to refer to parent template.</p>
+
+<p>To extend a block - <code>scripts</code> for example - inside child template:</p>
+
+<pre><code>{% block scripts %}
+    {{ super() }}
+    &lt;script&gt;
+        alert(1);
+    &lt;/script&gt;
+(% endblock %)
+
+</code></pre>
+
+<p>Drop <code>super</code> to just overwrite it.</p>
+
+<h2 id="jinja-pagination-macro">Jinja pagination macro</h2>
+
+<p>Macros are comparable with functions in regular programming languages. They are useful to put often used idioms into reusable functions to not repeat yourself (“DRY”).Macro is a bare block that starts with <code>{% macro function_name(formal_params) %}</code>. It holds the HTML, or rather templated Jinja code that will be reused.I&rsquo;m putting it&rsquo;s code into separate file - <code>_macros.html</code>.</p>
+
+<p>Usage:</p>
+
+<ol>
+<li>import it with <code>{% import &quot;_macros.html&quot; as macros %}</code></li>
+<li>call it with <code>{{ macros.function_name(actual_params) }}</code></li>
+</ol>
+
+<p>Bootstrap pagination follows that <a href="https://getbootstrap.com/docs/4.0/components/pagination/#working-with-icons" target="_blank">doc</a></p>
+
+<p>I&rsquo;ve tried to put as little logic in the macro itself and do all the calculations in the flask view. My version needs 2 params:</p>
+
+<ol>
+<li><code>endpoint</code> - the name of flask endpoint provided to <code>url_for</code> which builds the actual link to select page</li>
+<li><code>pages</code> list if dictionaries, each one has</li>
+</ol>
+
+<ul>
+<li><code>class</code> key to define if link is active, normal or disabled</li>
+<li><code>page_label</code> show the page number or navigation icons</li>
+<li><code>href</code> - additional param for <code>url_for</code> which will hold page</li>
+</ul>
+
+<p>Macro code:</p>
+
+<pre><code>{% macro pagination_widget(pages, endpoint) %}
+&lt;nav aria-label=&quot;Page navigation example&quot;&gt;
+    &lt;ul class=&quot;pagination&quot;&gt;
+        {% for p in pages %}
+        &lt;li class=&quot;page-item {{p['class']}}&quot;&gt;
+            &lt;a href=&quot;{{ url_for(endpoint, page = p['href'], **kwargs) }}&quot;
+                class=&quot;page-link&quot;
+                aria-label={{p['page']}}&gt;
+                &lt;span aria-hidden=&quot;true&quot;&gt;{{p['page_label'] | safe}}&lt;/span&gt;
+                &lt;span class=&quot;sr-only&quot;&gt;{{p['page_label'] | safe}}&lt;/span&gt;
+
+            &lt;/a&gt;
+        &lt;/li&gt;
+        {% endfor %}
+    &lt;/ul&gt;
+&lt;/nav&gt;
+{% endmacro %}
+
+</code></pre>
+
+<h3 id="flask-endpoint">Flask endpoint</h3>
+
+<p>Endpoint code relies on a <code>Pager</code> class to prepare <code>pages</code>. It first needs to get the page number from URL parameters.  The actual data I&rsquo;m using is just a list of numbers up to a <code>count</code>. In real world it&rsquo;s going to be a query to the database like <code>SELECT column from table LIMIT Y OFFSET X</code>. Where X - is a page size * current page (zero based), Y - is a page_size.</p>
+
+<p>OFFSET may be slow with big numbers - it&rsquo;s better to use <a href="https://blog.jooq.org/2013/10/26/faster-sql-paging-with-jooq-using-the-seek-method/" target="_blank">Sleek mode</a></p>
+
+<p>Flask endpoint:</p>
+
+<pre><code>@app.route(&quot;/&quot;)
+def index():
+    page = int(request.args.get('page', 1))
+
+    count = 300
+    data = range(count)
+
+    pager = Pager(page, count)
+    pages = pager.get_pages()
+
+    offset = (page - 1) * current_app.config['PAGE_SIZE']
+    limit = current_app.config['PAGE_SIZE']
+    data_to_show = data[offset: offset + limit]
+
+    return render_template('index.html', pages=pages, data_to_show=data_to_show)
+
+</code></pre>
+
+<h3 id="pager-class">Pager class</h3>
+
+<p>This class prepares a <code>pages</code> list for macro. To do the calculations it needs the number of all items and the current page. Page size and a number of visible pages are read from app config.</p>
+
+<p>Difficult part was to show exactly predefined number if links to another pages. Invisible pages are collapsed under <code>...</code>.</p>
+
+<h3 id="app-configuration">App configuration</h3>
+
+<p>App config contains two parameters:</p>
+
+<ol>
+<li><code>PAGE_SIZE</code> - how many elements show in a page</li>
+
+<li><p><code>VISIBLE_PAGE_COUNT</code> - how may links to pages how in pages inculding <code>...</code>s</p>
+
+<pre><code>app = Flask(__name__)
+app.secret_key = os.urandom(42)
+app.config['PAGE_SIZE'] = 20
+app.config['VISIBLE_PAGE_COUNT'] = 10
+
+</code></pre></li>
+</ol>
+
+<p>The whole code is available at <a href="https://github.com/smirnov-am/flask-pager" target="_blank">GitHub</a></p>
+
+<p>Do you have another useful macro? Drop me a message on <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">LinkedIn</a></p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/">Running Flask in production with Docker</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

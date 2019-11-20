@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Anomalies in bank transactions",
+        "headline" : "Anomalies in bank transactions",
+        "description" : "Recently I\x26rsquo;ve noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it \x26ldquo;opportunity to shop with discount\x26rdquo; for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don\x26rsquo;t check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2019",
+        "datePublished": "2019-08-07 17:03:00 \x2b0000 UTC",
+        "dateModified" : "2019-08-07 17:03:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/anomalies-in-bank-transactions\/",
+        "wordCount" : "1741",
+        "keywords" : [ "machine learning","Python","Security","Blog" ]
+    }
+    </script>
+
+<title>Anomalies in bank transactions | Alexey Smirnov</title>
+
+<meta property='og:title' content='Anomalies in bank transactions - Alexey Smirnov'>
+<meta property='og:description' content='Recently I&rsquo;ve noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it &ldquo;opportunity to shop with discount&rdquo; for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don&rsquo;t check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.'>
+<meta property='og:url' content='https://smirnov-am.github.io/anomalies-in-bank-transactions/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/08/hand-keyboard-secured-34203.jpg'><meta property='article:published_time' content='2019-08-07T17:03:00Z'/><meta property='article:modified_time' content='2019-08-07T17:03:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/anomalies-in-bank-transactions/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/machine-learning">#machine learning</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/security">#Security</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">August 7, 2019</h2>
+    <h1 class="title">Anomalies in bank transactions</h1>
+    
+    <div class="content">
+      
+
+<p>Recently I&rsquo;ve noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it &ldquo;opportunity to shop with discount&rdquo; for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don&rsquo;t check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.</p>
+
+<p>After that, I decided to investigate methods to detect suspicious transactions. Of course, banks do that themselves and I&rsquo;m not supposed to see any in my history. Anyway, I&rsquo;ll cover Low-pass filter, Benford&rsquo;s law, SVM, LOF and IsolationForest.</p>
+
+<h2 id="input-data">Input data</h2>
+
+<p>I&rsquo;m using one of the largest banks in the Netherlands - ABN AMRO. I was able to download transaction history from their online banking platform in Excel format - very nice of them. First of all transaction history contains credits - no need to take them into account. Debits are negative in history, so I convert them to positive numbers.</p>
+
+<p>The tricky part is a date. There are <code>transactiondate</code> and <code>valuedate</code> columns in history. Also, some transactions have date and time in their description. It may come handy when I&rsquo;ll be doing feature engineering for machine learning. For now, I&rsquo;ll just extract date from <code>transactiondate</code> column  with <code>python-dateutil</code>parser. Here is the code to converting export from online banking to the usable dataframe</p>
+
+<pre><code class="language-python">import pandas as pd
+from dateutil.parser import parse
+
+df = pd.read_excel('/home/as/Desktop/abn.xls')
+df['date'] = df['transactiondate'].apply(lambda x: parse(str(x)))
+df.drop(['accountNumber', 'mutationcode', 'transactiondate',
+         'valuedate', 'startsaldo', 'endsaldo'], axis=1, inplace=True)
+df['amount'] = df['amount'].apply(abs)
+df.set_index('date', inplace=True)
+df.head()
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th align="left">date</th>
+<th align="right">amount</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">10</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">27.2</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">19.04</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">36.17</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">5.4</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="low-pass-filter">Low-pass filter</h2>
+
+<p>Now I have a time-series - amount vs date. Applying moving average to is effectively is a low-pass filter that smoothes the series. I&rsquo;ve decided to try windows of 7 and 30 days. This running average is not constant and has a standard deviation. And the idea behind this method is to find transactions that more than N standard deviation away from the smoothed line (let N=2).</p>
+
+<pre><code class="language-python">df['avg_7d'] = df['amount'].rolling('7D').mean()
+df['avg_30d'] = df['amount'].rolling('30D').mean()
+
+df['resudual_avg_7d'] = df['amount'] - df['avg_7d']
+df['resudual_avg_30d'] = df['amount'] - df['avg_30d']
+
+std_7d = df['resudual_avg_7d'].std()
+std_30d = df['resudual_avg_30d'].std()
+
+df['outlier_7d'] = df.apply(lambda row: row['amount'] if abs(row['resudual_avg_7d']) &gt; 2*std_7d else None, axis=1)
+df['outlier_30d'] = df.apply(lambda row: row['amount'] if abs(row['resudual_avg_30d']) &gt; 2*std_30d else None, axis=1)
+</code></pre>
+
+<p>Looks like outliers based on 7D moving average are the same as for 30D window</p>
+
+<pre><code class="language-python">all((df[(df.outlier_30d &gt; 0) &amp; (df.outlier_7d &gt; 0)]).index == (df[df.outlier_30d &gt; 0]).index)
+</code></pre>
+
+<p>Let&rsquo;s visualize the time-series and the result. I&rsquo;m using a log scale because the amounts have order magnitude difference</p>
+
+<pre><code class="language-python">import plotly
+import plotly.graph_objs as go
+
+plotly.offline.init_notebook_mode(connected=True)
+
+data = [go.Scatter(x=df.index, y=df.amount, name='amount', mode = 'markers', marker={'size': 2}),
+        go.Scatter(x=df.index, y=df.avg_7d, name='avg 7D'),
+        go.Scatter(x=df.index, y=df.avg_30d, name='avg 30D'),
+        go.Scatter(x=df.index, y=df.outlier_7d,
+                   name='outliers 7D',
+                   mode = 'markers',
+                   marker = dict(size = 5,
+                                 color = 'rgba(152, 0, 0, .8)',
+                                 line = dict(width = 2,
+                                             color = 'rgb(0, 0, 0)')),
+                   text=df.description)]
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True
+    ),
+    yaxis=dict(
+        type='log',
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/08/averages.png"/> 
+</figure>
+
+
+<p>The big red dots show the outliers. They are:</p>
+
+<p><strong>-</strong> big purchases I&rsquo;ve made</p>
+
+<p>**- ** rent</p>
+
+<p><strong>-</strong> 1EUR chocolate bars from a wending machine during the week I&rsquo;ve spent 10K</p>
+
+<p>Not much, but at least I&rsquo;ve learned how to use <code>plotly</code> here.</p>
+
+<h2 id="benford-s-law">Benford&rsquo;s law</h2>
+
+<blockquote>
+<p>In the 2016 movie The Accountant, Ben Affleck’s character uses Benford’s Law to expose the theft of funds from a robotics company.</p>
+</blockquote>
+
+<p>According to that law, a leading significant digit in a series of naturally occurring numbers is likely to be small. There distribution of the first digits in a series of number can be described with a known <a href="https://wikimedia.org/api/rest_v1/media/math/render/svg/26461e7841d135d327aa7d0f914236862e890e7b" target="_blank">formula</a>.</p>
+
+<p>First I&rsquo;m going to multiply an amount column by 100, so purchases less than a euro will also participate in the party. Then I&rsquo;m creating a column with just the first digit of the amount</p>
+
+<pre><code>df['amount'] = df['amount'].apply(lambda x: 100*x)
+df['first_digit'] = df['amount'].apply(lambda x: str(x)[0])
+</code></pre>
+
+<p>Then I use <code>numpy</code> to get a histogram of the first digits to plot against known distribution.</p>
+
+<pre><code>import numpy as np
+bins = [1,2,3,4,5,6,7,8,9]
+count, division = np.histogram(df[&quot;first_digit&quot;], bins=bins, density=True)
+</code></pre>
+
+<p>The Benford&rsquo;s law distribution</p>
+
+<pre><code>from math import log10
+benford = [log10(1 + 1/d) for d in bins]
+</code></pre>
+
+<p>Now the visualization:</p>
+
+<pre><code>data = [go.Bar(x=bins, y=count, name='amount'),
+        go.Scatter(x=bins, y=benford, name='Benford law')]
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True
+    ),
+    yaxis=dict(
+
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/08/benfords.png"/> 
+</figure>
+
+
+<p>The actual distribution is more or less follows that law. More transactions are starting with 8 and 1. And less starting with 4 and 9. According to Wiki:</p>
+
+<blockquote>
+<p>Distributions that would not be expected to obey Benford&rsquo;s Law &hellip; : Where numbers are influenced by human thought: e.g. prices set by psychological thresholds ($1.99)</p>
+</blockquote>
+
+<p>Also from this analysis, it&rsquo;s not obvious how to extract suspicious transactions.</p>
+
+<h2 id="machine-learning-approaches">Machine learning approaches</h2>
+
+<p>There are a couple of algorithms implemented in <a href="https://scikit-learn.org/0.20/auto_examples/plot_anomaly_comparison.html" target="_blank">scikit-learn</a> for anomaly detection. All of them expect to have a list of samples in some feature space. The above data frame has date column with is not a good feature - it&rsquo;s difficult to use it as a coordinate and calculate distances with it. But it can be used to generate features:</p>
+
+<p><strong>-</strong> day of the month</p>
+
+<p><strong>-</strong> day of the week</p>
+
+<p><strong>-</strong> week of the month (which is just a linear transformation from the day of the month)</p>
+
+<p>There are also lagging features that can be formed from the amounts:</p>
+
+<p><strong>-</strong> average of the last X days</p>
+
+<p><strong>-</strong> value of the amount on T-1 (skip for simplicity)</p>
+
+<p>So the feature engineering looks like this:</p>
+
+<pre><code>df['weekday'] = df.apply(lambda row: row.name.weekday(), axis=1)
+df['day'] = df.apply(lambda row: row.name.day,  axis=1)
+df['prev_amount'] = df['amount'].shift(1)
+df.dropna(inplace=True)
+</code></pre>
+
+<p>The resulted training set:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">date</th>
+<th align="right">amount</th>
+<th align="right">avg_30d</th>
+<th align="right">weekday</th>
+<th align="right">day</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">27.2</td>
+<td align="right">18.6</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">19.04</td>
+<td align="right">18.7467</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">36.17</td>
+<td align="right">23.1025</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+
+<tr>
+<td align="left">2018-06-09 00:00:00</td>
+<td align="right">5.4</td>
+<td align="right">19.562</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+
+<p>And as for the most ML algorithms the samples should be scaled to have zero mean, unit variance. But since the samples are having anomalies:</p>
+
+<blockquote>
+<p>If your data contains many outliers, scaling using the mean and variance of the data is likely to not work very well. In these cases, you can use <code>robust_scale</code></p>
+</blockquote>
+
+<pre><code>from sklearn import preprocessing
+X = df[['amount', 'avg_30d', 'weekday', 'day']].values
+X = preprocessing.robust_scale(X)
+</code></pre>
+
+<h2 id="svm">SVM</h2>
+
+<p>Usually, SVM is used for classification in supervised learning - that is when there is labeled data. SVM finds a hyperplane that acts as a border between classes. There is one algorithm that can be used on unlabelled data - One Class SVM. It finds the smallest hypersphere that the samples allowing for some outliers. The idea is to find a function that is positive for regions with a high density of points, and negative for small densities. One of the hyperparameters of the <code>scikit-learn</code> implementation is <code>nu</code> - the fraction of outliers to expect. I&rsquo;m putting 5%, but when I&rsquo;ve tried default 50% half of the transactions were marked as an outlier.</p>
+
+<pre><code>from sklearn import svm
+outliers_fraction = 0.05
+clf = svm.OneClassSVM(nu=outliers_fraction, kernel=&quot;rbf&quot;)
+y_pred_outliers = clf.fit_predict(X)
+df['outlier_svm'] = y_pred_outliers == -1
+</code></pre>
+
+<h2 id="lof">LOF</h2>
+
+<p>Scikit-learn has a clear explanation of the algorithm:</p>
+
+<blockquote>
+<p>The anomaly score of each sample is called Local Outlier Factor. It measures the local deviation of density of a given sample with respect to its neighbors. It is local in that the anomaly score depends on how isolated the object is with respect to the surrounding neighborhood. More precisely, locality is given by k-nearest neighbors, whose distance is used to estimate the local density. By comparing the local density of a sample to the local densities of its neighbors, one can identify samples that have a substantially lower density than their neighbors. These are considered outliers.</p>
+</blockquote>
+
+<p>The algorithm also except a hyperparameter of how many outliers to detect.</p>
+
+<pre><code>from sklearn.neighbors import LocalOutlierFactor
+
+clf_lof = LocalOutlierFactor(contamination=outliers_fraction)
+y_pred_outliers_lof = clf_lof.fit_predict(X)
+df['outlier_lof'] = y_pred_outliers_lof == -1
+</code></pre>
+
+<h2 id="ensemble">Ensemble</h2>
+
+<p>The one from ensemble learning algorithms is IsolationForest</p>
+
+<blockquote>
+<p>The IsolationForest ‘isolates’ observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature. Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node. This path length, averaged over a forest of such random trees, is a measure of normality and our decision function. Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies.</p>
+</blockquote>
+
+<pre><code>from sklearn.ensemble import IsolationForest
+
+clf_forest = IsolationForest(behaviour=&quot;new&quot;, contamination=outliers_fraction)
+y_pred_outliers_forest = clf_forest.fit_predict(X)
+df['outlier_forest'] = y_pred_outliers_forest == -1
+</code></pre>
+
+<h2 id="results">Results</h2>
+
+<p>One way to display the result is just to show it in time-series:</p>
+
+<pre><code class="language-python">outliers_svm = df.loc[df['outlier_svm'], ['amount']]
+outliers_lof = df.loc[df['outlier_lof'], ['amount']]
+outliers_forest = df.loc[df['outlier_forest'], ['amount']]
+data = [go.Scatter(x=df.index,
+                   y=df.amount,
+                   name='amount',
+                   mode = 'markers',
+                   marker={'size': 2}),
+        go.Scatter(x=outliers_svm.index,
+                   y=outliers_svm.amount,
+                   name='outliers svm',
+                   mode = 'markers',
+                   marker = dict(size = 5)),
+        go.Scatter(x=outliers_lof.index, y=outliers_lof.amount,
+                   name='outliers lof',
+                   mode = 'markers',
+                   marker = dict(symbol=&quot;cross&quot;, size = 5)),
+        go.Scatter(x=outliers_forest.index, y=outliers_forest.amount,
+                   name='outliers forest',
+                   mode = 'markers',
+                   marker = dict(symbol=&quot;square-cross&quot;, size = 5, color='red'))
+       ]
+
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True
+    ),
+    yaxis=dict(
+        type='log',
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/08/res_t.png"/> 
+</figure>
+
+
+<p>Another one is to apply dimensionality reduction and plot in simple 2D(maybe it makes sense to do PCA before running classification?)</p>
+
+<pre><code class="language-python">from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+X_two_dim = pca.fit_transform(X)
+
+df2 = pd.DataFrame(X_two_dim, columns=['x', 'y'], index=df.index)
+df2['outlier_svm'] = df.outlier_svm
+df2['outlier_lof'] = df.outlier_lof
+df2['outlier_forest'] = df.outlier_forest
+
+data = [go.Scatter(x=df2.x, y=df2.y, name='amount', mode = 'markers', marker={'size': 2}),
+        go.Scatter(x=df2[df2.outlier_svm == 1].x, y=df2[df2.outlier_svm == 1].y, name='outlier_svm', mode = 'markers', marker={'size': 5}),
+        go.Scatter(x=df2[df2.outlier_lof == 1].x, y=df2[df2.outlier_lof == 1].y, name='outlier_lof', mode = 'markers', marker={'size': 5}),
+        go.Scatter(x=df2[df2.outlier_forest == 1].x, y=df2[df2.outlier_forest == 1].y, name='outlier_forest', mode = 'markers', marker={'size': 5}),
+       ]
+
+layout = go.Layout(
+    xaxis=dict(
+                type='log',
+        autorange=True
+    ),
+    yaxis=dict(
+
+        autorange=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+plotly.offline.iplot(fig)
+</code></pre>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/08/newplot.png"/> 
+</figure>
+
+
+<p>Of course, these algorithms are not an end-to-end solution for fraud detection in bank transactions. There are much more signals that can be used</p>
+
+<p><strong>-</strong> whether a transaction was done from a terminal or online bank</p>
+
+<p><strong>-</strong> if the recipient of the transaction a known account</p>
+
+<p><strong>-</strong> where was the transaction was made - in or outside of  the country</p>
+
+<p>Also, they failed to find the transactions from the introduction to this post. But to solve that problem I&rsquo;m building an <a href="https://afplakkenonline.nl/" target="_blank">app</a>.</p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/">E-commerce recommendation systems: basket analysis. Performance comparison of most common algorithms.</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/">Calculating enterprise value with Python and Pandas (part 2). WACC and DCF</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/unittesting-decorators/">Unittesting decorators</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Streaming timeseries with Flask and Plotly",
+        "headline" : "Streaming timeseries with Flask and Plotly",
+        "description" : "This simple app for streaming cpu utilization to a web page. I\x26rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.\n  Flask app I\x26rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2018",
+        "datePublished": "2018-12-12 18:43:00 \x2b0000 UTC",
+        "dateModified" : "2018-12-12 18:43:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/streaming-timeseries-with-flask-and-plotly\/",
+        "wordCount" : "672",
+        "keywords" : [ "Flask","Python","Blog" ]
+    }
+    </script>
+
+<title>Streaming timeseries with Flask and Plotly | Alexey Smirnov</title>
+
+<meta property='og:title' content='Streaming timeseries with Flask and Plotly - Alexey Smirnov'>
+<meta property='og:description' content='This simple app for streaming cpu utilization to a web page. I&rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.
+  Flask app I&rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.'>
+<meta property='og:url' content='https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/task-manager-3-.png'><meta property='article:published_time' content='2018-12-12T18:43:00Z'/><meta property='article:modified_time' content='2018-12-12T18:43:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/flask">#Flask</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">December 12, 2018</h2>
+    <h1 class="title">Streaming timeseries with Flask and Plotly</h1>
+    
+    <div class="content">
+      
+
+<p>This simple app for streaming cpu utilization to a web page. I&rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.</p>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/04/demo--2-.gif"/> 
+</figure>
+
+
+<h2 id="flask-app">Flask app</h2>
+
+<p>I&rsquo;m following a flask-socketio <a href="https://flask-socketio.readthedocs.io/en/latest/" target="_blank">doc</a> to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</p>
+
+<pre><code>def create_app(register_blueprint=True):
+    app = Flask(__name__)
+    app.secret_key = os.urandom(42)
+    if register_blueprint:
+        app.register_blueprint(plotting_blueprint)
+
+    socketio = SocketIO(app, message_queue='redis://localhost:6379/')
+    socketio.on_event('connect', bootstrap_on_connect)
+    return socketio, app
+
+
+socketio, application = create_app()
+
+
+if __name__ == '__main__':
+    socketio.run(application)
+
+</code></pre>
+
+<p>Here I&rsquo;m defining first hook - when client connects we are going to send him some history data - the task for <code>bootstrap_on_connect</code> functions.</p>
+
+<p>The blueprint I&rsquo;m defining is simple one that has only one route that serves a static page. This page will load client&rsquo;s javascript. The only parameter is window size - I&rsquo;d like to see only last 100 seconds of data.</p>
+
+<pre><code>from flask import Blueprint, render_template
+
+plotting_blueprint = Blueprint('plotting', __name__)
+
+
+@plotting_blueprint.route('/')
+def index():
+    return render_template('index.html', x_window=100)
+
+
+</code></pre>
+
+<h2 id="template-and-client-code">Template and client code</h2>
+
+<p>In the template I&rsquo;m putting window size inside meta tag so JS will be able to read that. Also I&rsquo;m loading all libraries in the end of body</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;x_window&quot; content={{x_window}}&gt;
+    &lt;title&gt;Flask data viz&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{{ url_for('static', filename='styles.css') }}&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;plot&quot;&gt;&lt;/div&gt;
+&lt;script src=&quot;https://cdn.plot.ly/plotly-latest.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;{{ url_for('static', filename='plot.js') }}&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<p><code>plot.js</code> will contain all client-side logic.</p>
+
+<pre><code>var url = 'http://' + document.domain + ':' + location.port
+var socket = io.connect(url);
+
+socket.on('connect', function(msg) {
+    console.log('connected to websocket on ' + url);
+});
+
+socket.on('bootstrap', function (msg) {
+    plot_start = msg.x[0];
+    makePlotly( msg.x, msg.y )
+});
+
+socket.on('update', function (msg) {
+    streamPlotly( msg.x, msg.y )
+});
+
+</code></pre>
+
+<p>First we connect to websocket (using HTTP, not WS protocol). When connected Flask will send us <code>bootstrap</code> message with initial data. Here <code>makePlotly</code> function is invoked. It will initialize plotly stuff. When <code>update</code> message is received <code>streamPlotly</code> will use <code>Plotly.extendTraces</code> to add data to plotly traces. It also updates the layout so we&rsquo;ll have nice sliding window.</p>
+
+<h2 id="running-the-app">Running the app</h2>
+
+<p>To run the app I&rsquo;m using uwsgi with gevent. uwsgi config:</p>
+
+<pre><code>[uwsgi]
+module = app:application
+uid = www-data
+
+http = 127.0.0.1:5000
+
+gevent-monkey-patch = true
+http-websockets = true
+gevent = 1000
+
+
+</code></pre>
+
+<p>Protocol for websockets is going to be HTTP so uwsgi will listen on port 5000 instead of communication through UNIX socket with nginx.</p>
+
+<p>Nginx config should create a separate location for websocket url</p>
+
+<pre><code>server {
+    listen       80 default_server;
+    listen       [::]:80 default_server;
+    server_name  localhost;
+    root         /var/www/html;
+    client_max_body_size 16M;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000;
+    }
+
+    location /socket.io {
+        include proxy_params;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;Upgrade&quot;;
+        proxy_set_header Host $host;
+        proxy_pass http://127.0.0.1:5000/socket.io;
+    }
+}
+
+</code></pre>
+
+<h3 id="background-job">Background job</h3>
+
+<p>A separate process gets CPU utilization with <code>psutil</code> and pushes message to clients. Also it defines bootstrap function - but I&rsquo;m just starting with empty lists for now.</p>
+
+<p><code>streaming.py</code>:</p>
+
+<pre><code>#!/usr/bin/env python
+import time
+from datetime import datetime
+from psutil import cpu_percent
+from flask_socketio import emit, SocketIO
+
+DATE_FMT = &quot;%Y-%m-%d %H:%M:%S&quot;
+
+
+def bootstrap_on_connect():
+    emit('bootstrap', {'x': [datetime.now().strftime(DATE_FMT)], 'y': [0]})
+
+
+def update_plot():
+    socketio = SocketIO(message_queue='redis://localhost:6379/')
+    while True:
+        datetime_now = datetime.now().strftime(DATE_FMT)
+        cpu_percent_second = cpu_percent(interval=1)
+        socketio.emit('update', {'x': [datetime_now], 'y': [cpu_percent_second]})
+        time.sleep(1)
+
+
+if __name__ == '__main__':
+    update_plot()
+
+</code></pre>
+
+<h2 id="running-it-all">Running it all</h2>
+
+<ol>
+<li>Install redis server and nginx</li>
+<li>Run uwsgi with <code>uwsgi --ini uwsgi.ini</code></li>
+<li>Install all dependencies from requirements.txt into virtual environment</li>
+<li>Run streaming.py (<code>chmod +x streaming.py &amp;&amp; ./streaming.py</code>)</li>
+</ol>
+
+<h2 id="further-thoughts">Further thoughts</h2>
+
+<p>There is no persistence to the data and newly connected client won&rsquo;t be able to see the history. For this some kind of storage is needed. Another approach is to periodically call Flask from javascript to get the data though AJAX call. I find a websocket solution more interesting - but more complex - because it allowsto have a separate process to update clients, that offloads some work from web server.</p>
+
+<p>Full code is available from this <a href="https://github.com/smirnov-am/flask-streaming" target="_blank">repo</a></p>
+
+<p>Do you use websockets for streaming live data? Connect with me on <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">linkedin</a> to discuss it.</p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/background-jobs-with-flask/">Background jobs with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/multitenancy-with-flask/">Multitenancy with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/flask-pagination-macro/">Flask pagination macro</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/">Running Flask in production with Docker</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+
