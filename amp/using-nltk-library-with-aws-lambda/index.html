@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Using NLTK library with AWS Lambda.",
+        "headline" : "Using NLTK library with AWS Lambda.",
+        "description" : "I\x26rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.\n1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type \x26quot;help\x26quot;, \x26quot;copyright\x26quot;, \x26quot;credits\x26quot; or \x26quot;license\x26quot; for more information.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2018",
+        "datePublished": "2018-05-09 15:22:00 \x2b0000 UTC",
+        "dateModified" : "2018-05-09 15:22:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/amp\/using-nltk-library-with-aws-lambda\/",
+        "wordCount" : "547",
+        "keywords" : [ "AWS","NLP","Serverless","Blog" ]
+    }
+    </script>
+
+<title>Using NLTK library with AWS Lambda. | Alexey Smirnov</title>
+
+<meta property='og:title' content='Using NLTK library with AWS Lambda. - Alexey Smirnov'>
+<meta property='og:description' content='I&rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.
+1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.'>
+<meta property='og:url' content='https://smirnov-am.github.io/amp/using-nltk-library-with-aws-lambda/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/la.png'><meta property='article:published_time' content='2018-05-09T15:22:00Z'/><meta property='article:modified_time' content='2018-05-09T15:22:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/amp/using-nltk-library-with-aws-lambda/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="LxHvTgaBdcBpIRtJMFKFiIvx5Mm45WC1z1S57O6O5O8" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/aws">#AWS</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/nlp">#NLP</a>
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/serverless">#Serverless</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">May 9, 2018</h2>
+    <h1 class="title">Using NLTK library with AWS Lambda.</h1>
+    
+    <div class="content">
+      
+
+<p>I&rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.</p>
+
+<h3 id="1-create-virtual-environment">1 Create virtual environment</h3>
+
+<pre><code>mac:serverless_nltk as$ mkvirtualenv nltk_env
+
+</code></pre>
+
+<h3 id="2-install-nltk">2 Install nltk</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ pip install nltk
+
+</code></pre>
+
+<h3 id="3-download-nltk-data">3 Download nltk data</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ python 
+Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) 
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import nltk
+&gt;&gt;&gt; nltk.download('tagsets')
+[nltk_data] Downloading package tagsets to /Users/as/nltk_data...
+[nltk_data]   Unzipping help/tagsets.zip.
+True
+
+</code></pre>
+
+<h3 id="4-copy-downloaded-nltk-data-to-current-directory">4 Copy downloaded nltk data to current directory</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ cp -R /Users/as/nltk_data/* ./
+
+</code></pre>
+
+<h3 id="5-copy-site-packages-from-virtualenv-directory-may-be-checked-with-which-python">5 Copy site packages from virtualenv directory (may be checked with <code>which python</code>)</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ cp -R /Users/as/.virtualenvs/nltk_env/lib/python3.6/site-packages/* ./
+
+</code></pre>
+
+<h3 id="6-now-let-s-create-a-lambda-function-code">6 Now let&rsquo;s create a lambda function code</h3>
+
+<pre><code>import imp
+import sys
+# since libsqlite3-dev is not installed in container running lambda
+# this workaround of creating dummy empty modules is needed
+sys.modules[&quot;sqlite&quot;] = imp.new_module(&quot;sqlite&quot;)
+sys.modules[&quot;sqlite3.dbapi2&quot;] = imp.new_module(&quot;sqlite.dbapi2&quot;)
+import nltk
+
+from nltk.data import load
+tagdict = load('help/tagsets/upenn_tagset.pickle')
+
+def lambda_handler(event, context):
+    text = event.get('text')
+    tokenized = nltk.word_tokenize(text)
+    tagged = nltk.pos_tag(tokenized)
+    return {word: tagdict[tag][0] for word, tag in tagged}
+
+
+</code></pre>
+
+<h3 id="7-let-s-check-the-size">7 Let&rsquo;s check the size.</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ du -sh ./ | cut -f1
+187M
+
+</code></pre>
+
+<h3 id="8-zip-everything">8 Zip everything</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ zip -r -9 -q ./lambda.zip *
+
+</code></pre>
+
+<h3 id="9-upload-to-s3">9 Upload to S3</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ aws s3 mb s3://serverless-nltk
+(nltk_env) mac:serverless_nltk as$ aws s3 cp ./lambda.zip s3://serverless-nltk
+
+</code></pre>
+
+<h3 id="10-create-lambda">10 Create lambda</h3>
+
+<pre><code>(nltk_env) mac:serverless_nltk as$ aws lambda create-function \
+                                            --function-name serverless-nltk \
+                                            --runtime  python3.6 \
+                                            --role arn:aws:iam::1234567890:role/lambda_basic_execution \
+                                            --handler lambda_function.lambda_handler --code S3Bucket=serverless-nltk,S3Key=lambda2.zip \
+                                            --environment Variables={NLTK_DATA=./} 
+
+</code></pre>
+
+<p>Key things here are</p>
+
+<ul>
+<li>role arn can be found in IAM (look for role with name <code>lambda_basic_execution</code>)</li>
+<li>environment should create an environment variable telling nltk where look for data</li>
+</ul>
+
+<p>Now let&rsquo;s create a simple javascript application that will call lambda with user input from the page:</p>
+
+<ol>
+<li>Go to AWS Cognito</li>
+<li>Create a new identity pool</li>
+<li>In the first step check <code>Enable access to unauthenticated identities</code></li>
+<li>In the <code>sample code</code> step select javascript and copy <code>IdentityPoolId</code> (needed in invocation script later)</li>
+<li>Go to IAM</li>
+<li>Find the role for unauthenticated access (it will look like <code>Cognito_serverless_nltkUnauth_Role</code>)</li>
+
+<li><p>Select <code>Permission</code> and edit the role as json. It should look like this</p>
+
+<pre><code>{
+&quot;Version&quot;: &quot;2012-10-17&quot;,
+&quot;Statement&quot;: [
+    {
+        &quot;Effect&quot;: &quot;Allow&quot;,
+        &quot;Action&quot;: [
+            &quot;mobileanalytics:PutEvents&quot;,
+            &quot;cognito-sync:*&quot;
+        ],
+        &quot;Resource&quot;: [
+            &quot;*&quot;
+        ]
+    },
+    {
+        &quot;Effect&quot;: &quot;Allow&quot;,
+        &quot;Action&quot;: [
+            &quot;lambda:InvokeFunction&quot;
+        ],
+        &quot;Resource&quot;: [
+            &quot;arn:aws:lambda:us-east-1:1234567890:function:serverless-nltk&quot;
+        ]
+    }
+]
+}
+
+</code></pre></li>
+</ol>
+
+<p>The script calling the lambda will look like this</p>
+
+<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+    var button = document.getElementById('upload-button');
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:8b6a0b3d-6a2a-4c7d-b617-c8dafd8a1aec'});
+    AWS.config.region = 'us-east-1';
+    var lambda = new AWS.Lambda({region: 'us-east-1', apiVersion: '2015-03-31'});
+    
+    function htmlToElement(html) {
+        var template = document.createElement('template');
+        html = html.trim(); // Never return a text node of whitespace as the result
+        template.innerHTML = html;
+        return template.content.firstChild;
+    }
+    
+    function call_lambda() { 
+            var pullParams = {
+                FunctionName : 'serverless-nltk',
+                InvocationType : 'RequestResponse',
+                LogType : 'None',
+                Payload : JSON.stringify({text:document.getElementById(&quot;exampleFormControlTextarea1&quot;).value})
+            };
+            // create variable to hold data returned by the Lambda function
+            var pullResults;
+            lambda.invoke(pullParams, function(error, data) {
+            if (error) {
+                console.log(error);
+
+            } else {
+                pullResults = JSON.parse(data.Payload);
+                console.log(pullResults);
+                var result = document.getElementById(&quot;result&quot;)
+                result.innerHTML = '';
+                for (var key in pullResults) 
+                {
+                    var text = htmlToElement('&lt;span&gt;'+key+':&amp;nbsp;&lt;/span&gt;');
+                    var pos = htmlToElement('&lt;span&gt;'+pullResults[key]+ '&lt;/span&gt;');
+                    var line = htmlToElement('&lt;h6&gt;&lt;/h6&gt;');
+                    line.appendChild(text);
+                    line.appendChild(pos);
+                    result.appendChild(line);
+                }
+            }
+            });
+    }; 
+&lt;/script&gt;
+
+</code></pre>
+
+<p>The resulting app can be accessed <a href="http://serverless-nltk.s3-website-us-east-1.amazonaws.com/" target="_blank">here</a></p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/amp/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

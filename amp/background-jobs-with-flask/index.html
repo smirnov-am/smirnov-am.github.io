@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Background jobs with Flask",
+        "headline" : "Background jobs with Flask",
+        "description" : "Basic request lifecycle with Flask goes like this:\n Flask get request parse parameters does calculations returns result  This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.\nSuch scenarios include:\n sending email creating thumbnails from uploaded image    Common implementation Asynchronous tasks are usually implemented like this:",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2018",
+        "datePublished": "2018-11-27 18:41:00 \x2b0000 UTC",
+        "dateModified" : "2018-11-27 18:41:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/amp\/background-jobs-with-flask\/",
+        "wordCount" : "981",
+        "keywords" : [ "Flask","Python","Blog" ]
+    }
+    </script>
+
+<title>Background jobs with Flask | Alexey Smirnov</title>
+
+<meta property='og:title' content='Background jobs with Flask - Alexey Smirnov'>
+<meta property='og:description' content='Basic request lifecycle with Flask goes like this:
+ Flask get request parse parameters does calculations returns result  This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.
+Such scenarios include:
+ sending email creating thumbnails from uploaded image    Common implementation Asynchronous tasks are usually implemented like this:'>
+<meta property='og:url' content='https://smirnov-am.github.io/amp/background-jobs-with-flask/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/800px_COLOURBOX2362664.jpg'><meta property='article:published_time' content='2018-11-27T18:41:00Z'/><meta property='article:modified_time' content='2018-11-27T18:41:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/amp/background-jobs-with-flask/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="LxHvTgaBdcBpIRtJMFKFiIvx5Mm45WC1z1S57O6O5O8" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+    <div class="container has-text-centered">
+      <p>Improve Python code quality by running flake8 on pull requests <a href="https://github.com/apps/tongschar">https://github.com/apps/tongschar</a></p>
+    </div>
+  </section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/flask">#Flask</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">November 27, 2018</h2>
+    <h1 class="title">Background jobs with Flask</h1>
+    
+    <div class="content">
+      
+
+<p>Basic request lifecycle with Flask goes like this:</p>
+
+<ul>
+<li>Flask get request</li>
+<li>parse parameters</li>
+<li>does calculations</li>
+<li>returns result</li>
+</ul>
+
+<p>This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.</p>
+
+<p>Such scenarios include:</p>
+
+<ul>
+<li>sending email</li>
+<li>creating thumbnails from uploaded image</li>
+</ul>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/04/img1.png"/> 
+</figure>
+
+
+<h2 id="common-implementation">Common implementation</h2>
+
+<p>Asynchronous tasks are usually implemented like this:</p>
+
+<ul>
+<li>Flask schedules a task by putting a message into message broker (Redis, AWS SQS, RabbitMQ) upon request</li>
+<li>The broker is made available to the pool of possibly separate machines - workers</li>
+<li>Workers get messages from broker and execute tasks</li>
+</ul>
+
+<p>This approach has a number of advantages. Firstly, it&rsquo;s sharing responsibility. Instances running Flask web server are doing only one job - serving requests. If the tasks are resource demanding Flask instances won&rsquo;t suffer from high memory/CPU usage and will still server requests. Secondly, tasks are stored in message broker.If Flask instances die it won&rsquo;t affect workers and task execution.</p>
+
+<p>Nothing comes for free. This structure has more points of failure then alternatives. Libraries serving brokers have bugs. Also it may looks like a over-engineering for simple tasks.</p>
+
+<p>Here are some good examples of such implementations: <a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs" target="_blank">RQ</a>, <a href="https://blog.miguelgrinberg.com/post/using-celery-with-flask" target="_blank">Celery</a></p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<h3 id="threads">Threads</h3>
+
+<p>Most basic approach is to run a task in a thread. For that to work this line should be added to uwsgi configuration file:</p>
+
+<pre><code>enable-threads = true
+
+</code></pre>
+
+<p>we run <a href="https://smirnov-am.github.io/2018/08/09/flask-docker.html" target="_blank">Flask with uwsg in production</a> of course</p>
+
+<p>Code <code>app.py</code></p>
+
+<pre><code>import os
+import time
+from flask import Flask, jsonify
+from threading import Thread
+from tasks import threaded_task
+
+app = Flask(__name__)
+app.secret_key = os.urandom(42)
+
+
+@app.route(&quot;/&quot;, defaults={'duration': 5})
+@app.route(&quot;/&lt;int:duration&gt;&quot;)
+def index(duration):
+    thread = Thread(target=threaded_task, args=(duration,))
+    thread.daemon = True
+    thread.start()
+    return jsonify({'thread_name': str(thread.name),
+                    'started': True})
+
+</code></pre>
+
+<p>code <code>tasks.py</code></p>
+
+<pre><code>import time
+
+def threaded_task(duration):
+    for i in range(duration):
+        print(&quot;Working... {}/{}&quot;.format(i + 1, duration))
+        time.sleep(1)
+
+</code></pre>
+
+<p>Demo:</p>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/04/demo1.gif"/> 
+</figure>
+
+
+<h3 id="uwsgi-thread">uWSGI thread</h3>
+
+<p>Creating and running thread may be delegated to uwsgi. So we don&rsquo;t interact withthreading module directly. For that there is a <code>thread</code> decorator available <code>from uwsgidecorators import thread</code> (<a href="https://uwsgi-docs.readthedocs.io/en/latest/PythonDecorators.html?highlight=thread#uwsgidecorators.thread" target="_blank">API docs</a>)</p>
+
+<p>Code <code>app.py</code></p>
+
+<pre><code>import os
+import time
+from flask import Flask, jsonify
+from threading import Thread
+from tasks import uwsgi_task
+
+app = Flask(__name__)
+app.secret_key = os.urandom(42)
+
+
+@app.route(&quot;/uwsgi_thread&quot;, defaults={'duration': 5})
+@app.route(&quot;/uwsgi_thread/&lt;int:duration&gt;&quot;)
+def uwsgi_thread(duration):
+    uwsgi_task(duration)
+    return jsonify({'started': True})
+
+</code></pre>
+
+<p>code <code>tasks.py</code></p>
+
+<pre><code>import time
+from uwsgidecorators import thread
+
+
+@thread
+def uwsgi_task(duration):
+    for i in range(duration):
+        print(&quot;Working in uwsgi thread... {}/{}&quot;.format(i + 1, duration))
+        time.sleep(1)
+
+</code></pre>
+
+<p>Demo:</p>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/04/demo2.gif"/> 
+</figure>
+
+
+<h3 id="uwsgi-spooler">uWSGI spooler</h3>
+
+<p>Above examples create a thread per request and can lead to some troubles when there are many of them. To control that a task may run in a <a href="https://uwsgi-docs.readthedocs.io/en/latest/Spooler.html?highlight=spooler" target="_blank">spooler</a> with controlled number of executors. This however requires some configuration from uwsgi side (that is <code>uwsgi.ini</code>)</p>
+
+<ul>
+<li><code>spooler = my_spools</code> - a path to a directory to store files representing tasks. Directory should be created beforehand.</li>
+<li><code>spooler-import = tasks.py</code> - a module containing task&rsquo;s code spooler workers will import</li>
+<li><code>spooler-frequency = 1</code> - how ofter workers scan spool directory for tasks</li>
+<li><code>spooler-processes = 10</code> - how many workers to run</li>
+</ul>
+
+<p>After running <code>uwsgi --ini uwsgi.ini</code> startup log shows created processes:</p>
+
+<pre><code>spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10609
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10610
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10611
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10612
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10613
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10614
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10615
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10616
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10617
+spawned the uWSGI spooler on dir /home/as/Desktop/blog/my_spools with pid 10618
+spawned uWSGI worker 1 (pid: 10619, cores: 1)
+spawned uWSGI worker 2 (pid: 10620, cores: 1)
+spawned uWSGI worker 3 (pid: 10621, cores: 1)
+spawned uWSGI worker 4 (pid: 10622, cores: 1)
+spawned uWSGI worker 5 (pid: 10623, cores: 1)
+
+</code></pre>
+
+<p><code>tasks.py</code> code is straightforward and use <code>spool</code> decorator from uwsgi.The task function itself should return a predefined codes though:</p>
+
+<ul>
+<li><code>uwsgi.SPOOL_OK</code> if all went well</li>
+
+<li><p><code>uwsgi.SPOOL_RETRY</code> if a jobs needs to be retried (if it&rsquo;s idempotent of course)</p>
+
+<pre><code>import time
+import uwsgi
+from uwsgidecorators import spool
+
+
+@spool
+def spool_task(args):
+try:
+    duration = int(args['duration'])
+    for i in range(duration):
+        print(&quot;Working in uwsgi spool... {}/{}&quot;.format(i + 1, duration))
+        time.sleep(1)
+    return uwsgi.SPOOL_OK
+except:
+    return uwsgi.SPOOL_RETRY
+
+</code></pre></li>
+</ul>
+
+<p><code>app.py</code> calls <code>spool_task</code> in the route, but I struggled a but with passing parameters. I was getting such error when passing them according to the docs:</p>
+
+<pre><code>ValueError: spooler callable dictionary must contains only bytes
+
+</code></pre>
+
+<p>So I came up with simple helper that converts keyword arguments to a dictionary with keys and values that have bytes only - <code>prepare_spooler_args</code>. <code>spool</code> decorator has a <code>pass_arguments</code> parameter - it may be a possible solution as well.</p>
+
+<pre><code>import os
+import time
+from flask import Flask, jsonify
+from tasks import threaded_task, uwsgi_task, spool_task, uwsgi_tasks_task
+
+app = Flask(__name__)
+app.secret_key = os.urandom(42)
+
+
+def prepare_spooler_args(**kwargs):
+    args = {}
+    for name, value in kwargs.items():
+        args[name.encode('utf-8')] = str(value).encode('utf-8')
+    return args
+
+
+@app.route(&quot;/uwsgi_spool&quot;, defaults={'duration': 5})
+@app.route(&quot;/uwsgi_spool/&lt;int:duration&gt;&quot;)
+def uwsgi_spool(duration):
+    args = prepare_spooler_args(duration=duration)
+    spool_task.spool(args)
+    return jsonify({'started': True})
+
+</code></pre>
+
+<p>Also <code>spool_task.spool</code> accepts an <code>at</code> parameter that tell spooler to run a task at a specified unix timestamp. To use it <code>uwsgi_spool</code> route code:</p>
+
+<pre><code>@app.route(&quot;/uwsgi_spool&quot;, defaults={'duration': 5})
+@app.route(&quot;/uwsgi_spool/&lt;int:duration&gt;&quot;)
+def uwsgi_spool(duration):
+    at = int(time.time()) + 3 # delay by 3s
+    args = prepare_spooler_args(duration=duration, at=at)
+    spool_task.spool(args)
+    return jsonify({'started': True})
+
+</code></pre>
+
+<p>Demo:</p>
+
+<figure>
+    <img src="https://smirnov-am.github.io/content/images/2019/04/demo3.gif"/> 
+</figure>
+
+
+<h3 id="wrapping-up-spooler">Wrapping up spooler</h3>
+
+<p><code>uwsgi-tasks</code> library (<a href="https://pypi.org/project/uwsgi-tasks/" target="_blank">pypi</a>) wraps all the uwsgi spooler workings, especially argument passing. Also I found controlling retries as a useful feature. Unfortunately after installing it previous example (bareback spooler) stopped working for me.</p>
+
+<h2 id="further-thoughts">Further thoughts.</h2>
+
+<p>uSWGI spooler is great for simple tasks. It becomes more robust with external spooler support and networking, but at that level it starts resemble a common approach with all it&rsquo;s drawbacks.</p>
+
+<p>The whole code is available at <a href="https://github.com/smirnov-am/flask-bg-tasks" target="_blank">GitHub</a></p>
+
+<p>Do you use background jobs with Flask? Drop me a message on <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">linkedin</a></p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/amp/multitenancy-with-flask/">Multitenancy with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/flask-pagination-macro/">Flask pagination macro</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/running-flask-in-production-with-docker/">Running Flask in production with Docker</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+    
+    <section class="section">
+    <div class="container has-text-centered">
+      <form action="https://tinyletter.com/smirnov_am" 
+        method="post" 
+        target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/smirnov_am', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <p>
+          <label for="tlemail">Subscribe to my mailing list</label>
+        </p>
+        <p>
+          <input type="text" style="width:140px" name="email" id="tlemail" >
+        </p>
+        <input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" />
+        <p>
+          <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+        </p>
+      </form>
+           
+    </div>
+  </section>
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2019</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+
