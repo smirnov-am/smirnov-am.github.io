@@ -4,26 +4,46 @@
   
   <url>
     <loc>https://smirnov-am.github.io/</loc>
-    <lastmod>2019-11-04T20:23:49+00:00</lastmod>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/tags/embedded/</loc>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/tags/esp32/</loc>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/micropython-on-esp32/</loc>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/tags/micropython/</loc>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/post/</loc>
-    <lastmod>2019-11-04T20:23:49+00:00</lastmod>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/tags/python/</loc>
-    <lastmod>2019-11-04T20:23:49+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/python-linters-for-better-code-quality/</loc>
-    <lastmod>2019-11-04T20:23:49+00:00</lastmod>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/tags/</loc>
+    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/python-linters-for-better-code-quality/</loc>
     <lastmod>2019-11-04T20:23:49+00:00</lastmod>
   </url>
   
