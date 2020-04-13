@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MicroPython on Alexey Smirnov</title>
-    <link>http://localhost:1313/tags/micropython/</link>
+    <link>https://smirnov-am.github.io/tags/micropython/</link>
     <description>Recent content in MicroPython on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
     <lastBuildDate>Sun, 29 Dec 2019 17:03:00 +0000</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/micropython/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://smirnov-am.github.io/tags/micropython/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Installing MicroPython on ESP32</title>
-      <link>http://localhost:1313/micropython-on-esp32/</link>
+      <link>https://smirnov-am.github.io/micropython-on-esp32/</link>
       <pubDate>Sun, 29 Dec 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/micropython-on-esp32/</guid>
+      <guid>https://smirnov-am.github.io/micropython-on-esp32/</guid>
       <description>Python vs MicroPython MicroPython is an implementation of Python interpreter that can run on non x86 processors. One the hardware platforms that MicroPython supports is ESP32.
 MicroPython is implemented using ESP-IDF, which is a framework provided by the manufacturer of the ESP32. ESP-IDF is based on FreeRTOS - real-time operating system kernel.
 Boards ESP32 system - containing CPU/WiFi/BT - comes in many different flavors. The chip itself also can come pre-installed on a board - like ESP32-DevKitC.</description>

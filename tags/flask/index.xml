@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Flask on Alexey Smirnov</title>
-    <link>http://localhost:1313/tags/flask/</link>
+    <link>https://smirnov-am.github.io/tags/flask/</link>
     <description>Recent content in Flask on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
     <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/flask/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://smirnov-am.github.io/tags/flask/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>5 ways to deploy Flask</title>
-      <link>http://localhost:1313/deploy-flask/</link>
+      <link>https://smirnov-am.github.io/deploy-flask/</link>
       <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/deploy-flask/</guid>
+      <guid>https://smirnov-am.github.io/deploy-flask/</guid>
       <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
 app.py
 from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
@@ -25,30 +25,30 @@ from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_
     
     <item>
       <title>Run Flask on AWS ECS (Fargate)</title>
-      <link>http://localhost:1313/run-flask-on-aws-ecs/</link>
+      <link>https://smirnov-am.github.io/run-flask-on-aws-ecs/</link>
       <pubDate>Wed, 23 Oct 2019 14:26:16 +0000</pubDate>
       
-      <guid>http://localhost:1313/run-flask-on-aws-ecs/</guid>
+      <guid>https://smirnov-am.github.io/run-flask-on-aws-ecs/</guid>
       <description>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&amp;rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&amp;rsquo;m sharing CloudFormation templates that will create them automatically.Source code
 Here are the details of these templates:</description>
     </item>
     
     <item>
       <title>Streaming timeseries with Flask and Plotly</title>
-      <link>http://localhost:1313/streaming-timeseries-with-flask-and-plotly/</link>
+      <link>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</link>
       <pubDate>Wed, 12 Dec 2018 18:43:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/streaming-timeseries-with-flask-and-plotly/</guid>
+      <guid>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</guid>
       <description>This simple app for streaming cpu utilization to a web page. I&amp;rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.
   Flask app I&amp;rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</description>
     </item>
     
     <item>
       <title>Background jobs with Flask</title>
-      <link>http://localhost:1313/background-jobs-with-flask/</link>
+      <link>https://smirnov-am.github.io/background-jobs-with-flask/</link>
       <pubDate>Tue, 27 Nov 2018 18:41:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/background-jobs-with-flask/</guid>
+      <guid>https://smirnov-am.github.io/background-jobs-with-flask/</guid>
       <description>Basic request lifecycle with Flask goes like this:
  Flask get request parse parameters does calculations returns result  This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.
 Such scenarios include:
@@ -57,20 +57,20 @@ Such scenarios include:
     
     <item>
       <title>Multitenancy with Flask</title>
-      <link>http://localhost:1313/multitenancy-with-flask/</link>
+      <link>https://smirnov-am.github.io/multitenancy-with-flask/</link>
       <pubDate>Fri, 26 Oct 2018 15:59:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/multitenancy-with-flask/</guid>
+      <guid>https://smirnov-am.github.io/multitenancy-with-flask/</guid>
       <description>What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
   Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI gives connection info and database name.</description>
     </item>
     
     <item>
       <title>Flask pagination macro</title>
-      <link>http://localhost:1313/flask-pagination-macro/</link>
+      <link>https://smirnov-am.github.io/flask-pagination-macro/</link>
       <pubDate>Thu, 27 Sep 2018 15:35:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/flask-pagination-macro/</guid>
+      <guid>https://smirnov-am.github.io/flask-pagination-macro/</guid>
       <description>In this post I will cover how to create a pagination with Jinja macro feature.
   Requirements:
  show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&amp;rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
@@ -79,20 +79,20 @@ Such scenarios include:
     
     <item>
       <title>Running Flask in production with Docker</title>
-      <link>http://localhost:1313/running-flask-in-production-with-docker/</link>
+      <link>https://smirnov-am.github.io/running-flask-in-production-with-docker/</link>
       <pubDate>Mon, 13 Aug 2018 15:31:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/running-flask-in-production-with-docker/</guid>
+      <guid>https://smirnov-am.github.io/running-flask-in-production-with-docker/</guid>
       <description>Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:
  * Serving Flask app &amp;quot;app&amp;quot; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit)  I&amp;rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.</description>
     </item>
     
     <item>
       <title>Securing Flask web applications</title>
-      <link>http://localhost:1313/securing-flask-web-applications/</link>
+      <link>https://smirnov-am.github.io/securing-flask-web-applications/</link>
       <pubDate>Wed, 11 Jul 2018 15:26:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/securing-flask-web-applications/</guid>
+      <guid>https://smirnov-am.github.io/securing-flask-web-applications/</guid>
       <description>I&amp;rsquo;ve just recently finished a web security training and in this post I&amp;rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.</description>

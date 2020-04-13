@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AWS on Alexey Smirnov</title>
-    <link>http://localhost:1313/tags/aws/</link>
+    <link>https://smirnov-am.github.io/tags/aws/</link>
     <description>Recent content in AWS on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
     <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://smirnov-am.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>5 ways to deploy Flask</title>
-      <link>http://localhost:1313/deploy-flask/</link>
+      <link>https://smirnov-am.github.io/deploy-flask/</link>
       <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/deploy-flask/</guid>
+      <guid>https://smirnov-am.github.io/deploy-flask/</guid>
       <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
 app.py
 from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
@@ -25,20 +25,20 @@ from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_
     
     <item>
       <title>Run Flask on AWS ECS (Fargate)</title>
-      <link>http://localhost:1313/run-flask-on-aws-ecs/</link>
+      <link>https://smirnov-am.github.io/run-flask-on-aws-ecs/</link>
       <pubDate>Wed, 23 Oct 2019 14:26:16 +0000</pubDate>
       
-      <guid>http://localhost:1313/run-flask-on-aws-ecs/</guid>
+      <guid>https://smirnov-am.github.io/run-flask-on-aws-ecs/</guid>
       <description>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&amp;rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&amp;rsquo;m sharing CloudFormation templates that will create them automatically.Source code
 Here are the details of these templates:</description>
     </item>
     
     <item>
       <title>Static website on AWS S3 with SSL and continuous delivery</title>
-      <link>http://localhost:1313/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</link>
+      <link>https://smirnov-am.github.io/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</link>
       <pubDate>Tue, 01 Oct 2019 12:41:21 +0000</pubDate>
       
-      <guid>http://localhost:1313/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</guid>
+      <guid>https://smirnov-am.github.io/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</guid>
       <description>AWS S3 is perfect to host static websites. Basic setup when you have a CNAME DNS record pointing to the bucket endpoint covers a lot of use cases. Couple of things I&amp;rsquo;m missing is
  SSL continuous delivery.  For SSL we need CloudFront to serve as a global load balancer and provide SSL offload.
 To achieve continues delivery I&amp;rsquo;d like to connect the GitHub repo storing the source to CodePipeline.</description>
@@ -46,20 +46,20 @@ To achieve continues delivery I&amp;rsquo;d like to connect the GitHub repo stor
     
     <item>
       <title>CI/CD  pipeline for AWS Lambda (Python runtime)</title>
-      <link>http://localhost:1313/ci-ci-pipeline-for-aws-lambda-python-runtime/</link>
+      <link>https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/</link>
       <pubDate>Sun, 18 Aug 2019 12:05:36 +0000</pubDate>
       
-      <guid>http://localhost:1313/ci-ci-pipeline-for-aws-lambda-python-runtime/</guid>
+      <guid>https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/</guid>
       <description>Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. I&amp;rsquo;m going to walk through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:
  getting message from SQS that contains the number to calculate sqrt for checks if the calculation was done before by querying DynamoDB if there is not cached answer in DynamoDB - calculate sqrt and saves the result print the result so it&amp;rsquo;s visible in CloudWatch logs  Things I&amp;rsquo;d like the pipeline to do:</description>
     </item>
     
     <item>
       <title>Using NLTK library with AWS Lambda.</title>
-      <link>http://localhost:1313/using-nltk-library-with-aws-lambda/</link>
+      <link>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</link>
       <pubDate>Wed, 09 May 2018 15:22:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/using-nltk-library-with-aws-lambda/</guid>
+      <guid>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</guid>
       <description>I&amp;rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.
 1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information.</description>
     </item>

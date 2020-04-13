@@ -2,112 +2,112 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Alexey Smirnov</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://smirnov-am.github.io/tags/</link>
     <description>Recent content in Tags on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
     <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://smirnov-am.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>AWS</title>
-      <link>http://localhost:1313/tags/aws/</link>
+      <link>https://smirnov-am.github.io/tags/aws/</link>
       <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/aws/</guid>
+      <guid>https://smirnov-am.github.io/tags/aws/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Flask</title>
-      <link>http://localhost:1313/tags/flask/</link>
+      <link>https://smirnov-am.github.io/tags/flask/</link>
       <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/flask/</guid>
+      <guid>https://smirnov-am.github.io/tags/flask/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://localhost:1313/tags/python/</link>
+      <link>https://smirnov-am.github.io/tags/python/</link>
       <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/python/</guid>
+      <guid>https://smirnov-am.github.io/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Embedded</title>
-      <link>http://localhost:1313/tags/embedded/</link>
+      <link>https://smirnov-am.github.io/tags/embedded/</link>
       <pubDate>Sun, 29 Dec 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/embedded/</guid>
+      <guid>https://smirnov-am.github.io/tags/embedded/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ESP32</title>
-      <link>http://localhost:1313/tags/esp32/</link>
+      <link>https://smirnov-am.github.io/tags/esp32/</link>
       <pubDate>Sun, 29 Dec 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/esp32/</guid>
+      <guid>https://smirnov-am.github.io/tags/esp32/</guid>
       <description></description>
     </item>
     
     <item>
       <title>MicroPython</title>
-      <link>http://localhost:1313/tags/micropython/</link>
+      <link>https://smirnov-am.github.io/tags/micropython/</link>
       <pubDate>Sun, 29 Dec 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/micropython/</guid>
+      <guid>https://smirnov-am.github.io/tags/micropython/</guid>
       <description></description>
     </item>
     
     <item>
       <title>machine learning</title>
-      <link>http://localhost:1313/tags/machine-learning/</link>
+      <link>https://smirnov-am.github.io/tags/machine-learning/</link>
       <pubDate>Wed, 07 Aug 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/machine-learning/</guid>
+      <guid>https://smirnov-am.github.io/tags/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Security</title>
-      <link>http://localhost:1313/tags/security/</link>
+      <link>https://smirnov-am.github.io/tags/security/</link>
       <pubDate>Wed, 07 Aug 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/security/</guid>
+      <guid>https://smirnov-am.github.io/tags/security/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Financial Modelling</title>
-      <link>http://localhost:1313/tags/financial-modelling/</link>
+      <link>https://smirnov-am.github.io/tags/financial-modelling/</link>
       <pubDate>Sun, 07 Jul 2019 07:01:04 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/financial-modelling/</guid>
+      <guid>https://smirnov-am.github.io/tags/financial-modelling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>NLP</title>
-      <link>http://localhost:1313/tags/nlp/</link>
+      <link>https://smirnov-am.github.io/tags/nlp/</link>
       <pubDate>Wed, 09 May 2018 15:22:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/nlp/</guid>
+      <guid>https://smirnov-am.github.io/tags/nlp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Serverless</title>
-      <link>http://localhost:1313/tags/serverless/</link>
+      <link>https://smirnov-am.github.io/tags/serverless/</link>
       <pubDate>Wed, 09 May 2018 15:22:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/serverless/</guid>
+      <guid>https://smirnov-am.github.io/tags/serverless/</guid>
       <description></description>
     </item>
     

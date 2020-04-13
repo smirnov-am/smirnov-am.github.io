@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Security on Alexey Smirnov</title>
-    <link>http://localhost:1313/tags/security/</link>
+    <link>https://smirnov-am.github.io/tags/security/</link>
     <description>Recent content in Security on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
     <lastBuildDate>Wed, 07 Aug 2019 17:03:00 +0000</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/security/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://smirnov-am.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Anomalies in bank transactions</title>
-      <link>http://localhost:1313/anomalies-in-bank-transactions/</link>
+      <link>https://smirnov-am.github.io/anomalies-in-bank-transactions/</link>
       <pubDate>Wed, 07 Aug 2019 17:03:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/anomalies-in-bank-transactions/</guid>
+      <guid>https://smirnov-am.github.io/anomalies-in-bank-transactions/</guid>
       <description>Recently I&amp;rsquo;ve noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it &amp;ldquo;opportunity to shop with discount&amp;rdquo; for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don&amp;rsquo;t check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.</description>
     </item>
     
     <item>
       <title>Securing Flask web applications</title>
-      <link>http://localhost:1313/securing-flask-web-applications/</link>
+      <link>https://smirnov-am.github.io/securing-flask-web-applications/</link>
       <pubDate>Wed, 11 Jul 2018 15:26:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/securing-flask-web-applications/</guid>
+      <guid>https://smirnov-am.github.io/securing-flask-web-applications/</guid>
       <description>I&amp;rsquo;ve just recently finished a web security training and in this post I&amp;rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.</description>
