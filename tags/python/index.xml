@@ -2,22 +2,33 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on Alexey Smirnov</title>
-    <link>https://smirnov-am.github.io/tags/python/</link>
+    <link>http://localhost:1313/tags/python/</link>
     <description>Recent content in Python on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Sun, 29 Dec 2019 17:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
     
-	<atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>5 ways to deploy Flask</title>
+      <link>http://localhost:1313/deploy-flask/</link>
+      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/deploy-flask/</guid>
+      <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
+app.py
+from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
+    </item>
+    
+    <item>
       <title>Installing MicroPython on ESP32</title>
-      <link>https://smirnov-am.github.io/micropython-on-esp32/</link>
+      <link>http://localhost:1313/micropython-on-esp32/</link>
       <pubDate>Sun, 29 Dec 2019 17:03:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/micropython-on-esp32/</guid>
+      <guid>http://localhost:1313/micropython-on-esp32/</guid>
       <description>Python vs MicroPython MicroPython is an implementation of Python interpreter that can run on non x86 processors. One the hardware platforms that MicroPython supports is ESP32.
 MicroPython is implemented using ESP-IDF, which is a framework provided by the manufacturer of the ESP32. ESP-IDF is based on FreeRTOS - real-time operating system kernel.
 Boards ESP32 system - containing CPU/WiFi/BT - comes in many different flavors. The chip itself also can come pre-installed on a board - like ESP32-DevKitC.</description>
@@ -25,10 +36,10 @@ Boards ESP32 system - containing CPU/WiFi/BT - comes in many different flavors. 
     
     <item>
       <title>Python linters for better code quality</title>
-      <link>https://smirnov-am.github.io/python-linters-for-better-code-quality/</link>
+      <link>http://localhost:1313/python-linters-for-better-code-quality/</link>
       <pubDate>Mon, 04 Nov 2019 20:23:49 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/python-linters-for-better-code-quality/</guid>
+      <guid>http://localhost:1313/python-linters-for-better-code-quality/</guid>
       <description>Code quality There are two types of software quality - external and internal. External are the ones that are important to the users of the system. They may include:
  correctness - software behaves as users expect usability - how easy is it to use reliability - the ability to function under any circumstances  Internal quality characteristics are what developers care about:
  maintainability - how easy the software can be modified readability - how easy new developers can understand what code is doing by reading it testability - how easy the systems could be tested to verify that it satisfies the requirements  The internal characteristics relate closely with the quality of the code and design.</description>
@@ -36,39 +47,39 @@ Boards ESP32 system - containing CPU/WiFi/BT - comes in many different flavors. 
     
     <item>
       <title>Representing money in Python</title>
-      <link>https://smirnov-am.github.io/representing-money-in-python/</link>
+      <link>http://localhost:1313/representing-money-in-python/</link>
       <pubDate>Sun, 15 Sep 2019 14:30:10 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/representing-money-in-python/</guid>
+      <guid>http://localhost:1313/representing-money-in-python/</guid>
       <description>Python&amp;rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence b1, b2, .. b53 so that a sum: b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53 is close to the number as possible.</description>
     </item>
     
     <item>
       <title>CI/CD  pipeline for AWS Lambda (Python runtime)</title>
-      <link>https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/</link>
+      <link>http://localhost:1313/ci-ci-pipeline-for-aws-lambda-python-runtime/</link>
       <pubDate>Sun, 18 Aug 2019 12:05:36 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/</guid>
+      <guid>http://localhost:1313/ci-ci-pipeline-for-aws-lambda-python-runtime/</guid>
       <description>Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. I&amp;rsquo;m going to walk through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:
  getting message from SQS that contains the number to calculate sqrt for checks if the calculation was done before by querying DynamoDB if there is not cached answer in DynamoDB - calculate sqrt and saves the result print the result so it&amp;rsquo;s visible in CloudWatch logs  Things I&amp;rsquo;d like the pipeline to do:</description>
     </item>
     
     <item>
       <title>Anomalies in bank transactions</title>
-      <link>https://smirnov-am.github.io/anomalies-in-bank-transactions/</link>
+      <link>http://localhost:1313/anomalies-in-bank-transactions/</link>
       <pubDate>Wed, 07 Aug 2019 17:03:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/anomalies-in-bank-transactions/</guid>
+      <guid>http://localhost:1313/anomalies-in-bank-transactions/</guid>
       <description>Recently I&amp;rsquo;ve noticed suspicious transactions in my history that were initiated by some shady company that provides as the put it &amp;ldquo;opportunity to shop with discount&amp;rdquo; for their subscribers. Some web-shop had small font checkbox that initiated this subscription. Looks like the whole business model of such companies based on people who don&amp;rsquo;t check their transaction histories often. Needless to say, there were no subscription confirmation email, monthly bill or - most importantly - discounts I was supposed to receive.</description>
     </item>
     
     <item>
       <title>Calculating enterprise value with Python and Pandas (part 2). WACC and DCF</title>
-      <link>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</link>
+      <link>http://localhost:1313/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</link>
       <pubDate>Sun, 07 Jul 2019 07:01:04 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</guid>
+      <guid>http://localhost:1313/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</guid>
       <description>The latests documentation for pyfinmod is available here https://pyfinmod.readthedocs.io/en/latest/
  The weighted average cost of capital (WACC) is used as the discount rate for a firm’s anticipated free cash flows (FCFs) The formula is the following:
   whereE = market value of the firm’s equity D = market value of the firm’s debtTc = firm’s corporate tax raterE = firm’s cost of equityrD = firm’s cost of debt</description>
@@ -76,20 +87,20 @@ Doubles contain 53 bits of precision. When the machine is trying to represent th
     
     <item>
       <title>Unittesting decorators</title>
-      <link>https://smirnov-am.github.io/unittesting-decorators/</link>
+      <link>http://localhost:1313/unittesting-decorators/</link>
       <pubDate>Sun, 30 Jun 2019 18:10:41 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/unittesting-decorators/</guid>
+      <guid>http://localhost:1313/unittesting-decorators/</guid>
       <description>I&amp;rsquo;ll start with a simple example of a class I want to put under test. A Car class uses Engine and instantiates it internally
 class Engine: def start(self): interact_with_outside_world() print(&#39;Engine started&#39;) class Car: def __init__(self): self.engine = Engine() def drive(self): self.engine.start()  Let&amp;rsquo;s write a unittest for Car class. By definition, unittest shouldn&amp;rsquo;t be allowed to interact with the outside world (connect . to DB, etc). There are 2 ways to solve that.</description>
     </item>
     
     <item>
       <title>Basic Financial Calculations with Python and Pandas</title>
-      <link>https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/</link>
+      <link>http://localhost:1313/basic-financial-calculations-with-python-and-pandas/</link>
       <pubDate>Mon, 24 Dec 2018 18:48:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/</guid>
+      <guid>http://localhost:1313/basic-financial-calculations-with-python-and-pandas/</guid>
       <description>The latests documentation for pyfinmod is available here https://pyfinmod.readthedocs.io/en/latest/
  In this post I&amp;rsquo;ll cover:
  Net present value (NPV) Internal rate of return (IRR) Payment schedules and loan tables Future value Pension and accumulation problems Continuously compounded interest  Net present value Present value allows to answer a simple question &amp;ldquo;should I put my money in a bank or invest&amp;rdquo;. Let&amp;rsquo;s say I have $100 and the bank gives a 12% annual interest rate.</description>
@@ -97,20 +108,20 @@ class Engine: def start(self): interact_with_outside_world() print(&#39;Engine s
     
     <item>
       <title>Streaming timeseries with Flask and Plotly</title>
-      <link>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</link>
+      <link>http://localhost:1313/streaming-timeseries-with-flask-and-plotly/</link>
       <pubDate>Wed, 12 Dec 2018 18:43:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</guid>
+      <guid>http://localhost:1313/streaming-timeseries-with-flask-and-plotly/</guid>
       <description>This simple app for streaming cpu utilization to a web page. I&amp;rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.
   Flask app I&amp;rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</description>
     </item>
     
     <item>
       <title>Background jobs with Flask</title>
-      <link>https://smirnov-am.github.io/background-jobs-with-flask/</link>
+      <link>http://localhost:1313/background-jobs-with-flask/</link>
       <pubDate>Tue, 27 Nov 2018 18:41:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/background-jobs-with-flask/</guid>
+      <guid>http://localhost:1313/background-jobs-with-flask/</guid>
       <description>Basic request lifecycle with Flask goes like this:
  Flask get request parse parameters does calculations returns result  This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.
 Such scenarios include:
@@ -119,20 +130,20 @@ Such scenarios include:
     
     <item>
       <title>Multitenancy with Flask</title>
-      <link>https://smirnov-am.github.io/multitenancy-with-flask/</link>
+      <link>http://localhost:1313/multitenancy-with-flask/</link>
       <pubDate>Fri, 26 Oct 2018 15:59:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/multitenancy-with-flask/</guid>
+      <guid>http://localhost:1313/multitenancy-with-flask/</guid>
       <description>What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
   Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI gives connection info and database name.</description>
     </item>
     
     <item>
       <title>Securing Flask web applications</title>
-      <link>https://smirnov-am.github.io/securing-flask-web-applications/</link>
+      <link>http://localhost:1313/securing-flask-web-applications/</link>
       <pubDate>Wed, 11 Jul 2018 15:26:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/securing-flask-web-applications/</guid>
+      <guid>http://localhost:1313/securing-flask-web-applications/</guid>
       <description>I&amp;rsquo;ve just recently finished a web security training and in this post I&amp;rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.</description>
@@ -140,10 +151,10 @@ Exploit Consider a form asking for a user input.</description>
     
     <item>
       <title>Extracting keyphrases from texts: unsupervised algorithm TopicRank</title>
-      <link>https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</link>
+      <link>http://localhost:1313/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</link>
       <pubDate>Mon, 16 Apr 2018 15:17:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</guid>
+      <guid>http://localhost:1313/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</guid>
       <description>Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.
 Supervised approach This is a multi-label, multi-class classification algorithm, where we may have following features as an input:
  text converted to bag-of-words text is treated as a stream of vectors, which are pre-trained word embeddings  For bag-of-words we may use linear SVM as a classifier.</description>
@@ -151,10 +162,10 @@ Supervised approach This is a multi-label, multi-class classification algorithm,
     
     <item>
       <title>E-commerce recommendation systems: basket analysis. Performance comparison of most common algorithms.</title>
-      <link>https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/</link>
+      <link>http://localhost:1313/2018-04-08-e-commerce-recommendation-systems-html/</link>
       <pubDate>Sun, 08 Apr 2018 12:18:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/</guid>
+      <guid>http://localhost:1313/2018-04-08-e-commerce-recommendation-systems-html/</guid>
       <description>Once novelty recommendation systems are used now by more and more e-commerce sites to help customers find products to purchase. For e-commerce business owners these tools facilitate cross-sales.
 Usage Amazon is one of the most prominent organizations used recommendations to increase sales. According to fortune.com Amazon was able to increase sales by 29% in 2012 as a result of implementing recommendation system.35% of Amazon’s revenue is generated by its recommendation engine (source).</description>
     </item>

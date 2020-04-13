@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>NLP on Alexey Smirnov</title>
-    <link>https://smirnov-am.github.io/tags/nlp/</link>
+    <link>http://localhost:1313/tags/nlp/</link>
     <description>Recent content in NLP on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
     <lastBuildDate>Wed, 09 May 2018 15:22:00 +0000</lastBuildDate>
     
-	<atom:link href="https://smirnov-am.github.io/tags/nlp/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/nlp/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Using NLTK library with AWS Lambda.</title>
-      <link>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</link>
+      <link>http://localhost:1313/using-nltk-library-with-aws-lambda/</link>
       <pubDate>Wed, 09 May 2018 15:22:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</guid>
+      <guid>http://localhost:1313/using-nltk-library-with-aws-lambda/</guid>
       <description>I&amp;rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.
 1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information.</description>
     </item>
     
     <item>
       <title>Extracting keyphrases from texts: unsupervised algorithm TopicRank</title>
-      <link>https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</link>
+      <link>http://localhost:1313/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</link>
       <pubDate>Mon, 16 Apr 2018 15:17:00 +0000</pubDate>
       
-      <guid>https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</guid>
+      <guid>http://localhost:1313/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</guid>
       <description>Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.
 Supervised approach This is a multi-label, multi-class classification algorithm, where we may have following features as an input:
  text converted to bag-of-words text is treated as a stream of vectors, which are pre-trained word embeddings  For bag-of-words we may use linear SVM as a classifier.</description>

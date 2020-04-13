@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "http:\/\/localhost:1313\/"
+        },
+        "articleSection" : "post",
+        "name" : "5 ways to deploy Flask",
+        "headline" : "5 ways to deploy Flask",
+        "description" : "In this post, I\x26rsquo;m going to explore 5 ways to deploy a Flask application In all examples I\x26rsquo;m going to use a simple app from Flask docs:\napp.py\nfrom flask import Flask app = Flask(__name__) @app.route(\x27\/\x27) def hello_world(): return \x27Hello, World!\x27 if __name__ == \x27__main__\x27: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2020",
+        "datePublished": "2020-04-12 17:03:00 \x2b0000 UTC",
+        "dateModified" : "2020-04-12 17:03:00 \x2b0000 UTC",
+        "url" : "http:\/\/localhost:1313\/amp\/deploy-flask\/",
+        "wordCount" : "955",
+        "keywords" : [ "Flask","Python","AWS","Blog" ]
+    }
+    </script>
+
+<title>5 ways to deploy Flask | Alexey Smirnov</title>
+
+<meta property='og:title' content='5 ways to deploy Flask - Alexey Smirnov'>
+<meta property='og:description' content='In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&rsquo;m going to use a simple app from Flask docs:
+app.py
+from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.'>
+<meta property='og:url' content='http://localhost:1313/amp/deploy-flask/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Python'><meta property='article:tag' content='AWS'><meta property='article:published_time' content='2020-04-12T17:03:00Z'/><meta property='article:modified_time' content='2020-04-12T17:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="http://localhost:1313/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="http://localhost:1313/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="manifest" href="http://localhost:1313/site.webmanifest">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="http://localhost:1313/amp/deploy-flask/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="LxHvTgaBdcBpIRtJMFKFiIvx5Mm45WC1z1S57O6O5O8" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="http://localhost:1313/">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='http://localhost:1313/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="http://localhost:1313/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="http://localhost:1313/tags/flask">#Flask</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="http://localhost:1313/tags/python">#Python</a>
+  
+  | <a class="subtitle is-6" href="http://localhost:1313/tags/aws">#AWS</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">April 12, 2020</h2>
+    <h1 class="title">5 ways to deploy Flask</h1>
+    
+    <div class="content">
+      
+
+<p>In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application
+In all examples I&rsquo;m going to use a simple app from Flask docs:</p>
+
+<p>app.py</p>
+
+<pre><code class="language-python">from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+</code></pre>
+
+<h2 id="local-machine">Local machine</h2>
+
+<p>This option is used when you need to test your application on a local machine.
+By simply running <code>app.py</code> you spin up a server and can call the endpoints locally, but
+this particular scenario help when you need to integrate your app with external service.
+Think of a service that sends notifications on the progress of sending an email - you send an email and your email provider calls your API asynchronously to notify you when the email was delivered and opened.</p>
+
+<p>For that I&rsquo;m using ngrok - the install is pretty easy - <a href="https://ngrok.com/download" target="_blank">https://ngrok.com/download</a>.
+Now you can run Flask:</p>
+
+<pre><code class="language-bash">➜  python3 app.py
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+</code></pre>
+
+<p>In a separate terminal session run:</p>
+
+<pre><code class="language-bash">➜  ./ngrok http 5000
+ngrok by @inconshreveable                                                                                                                                            (Ctrl+C to quit)
+
+Session Status                online
+Account                       Alex Smirnov (Plan: Free)
+Version                       2.3.35
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://473b0854.ngrok.io -&gt; http://localhost:5000
+Forwarding                    https://473b0854.ngrok.io -&gt; http://localhost:5000
+
+Connections                   ttl     opn     rt1     rt5     p50     p90
+                              0       0       0.00    0.00    0.00    0.00
+</code></pre>
+
+<p>In the last to lines - <code>Forwarding</code> - there are 2 URLs (secured and plain) that are accessible form the internet.4</p>
+
+<h2 id="bare-metal-linux">Bare metal Linux</h2>
+
+<p>In that example we will need:
+- nginx - it will proxy incoming requests to uwsgi gateway
+- uwsgi - runs Python interpreter in some workers executing app code
+- systemd - Linux system that allows to (auto-)start, stop and monitor background processes</p>
+
+<h3 id="dependencies">Dependencies</h3>
+
+<p>On a Debian based system with python3 run these commands</p>
+
+<pre><code class="language-bash">➜ sudo apt-get update
+➜ sudo apt-get install python3-pip python3-dev nginx
+➜ pip install flask uwsgi
+</code></pre>
+
+<h3 id="virtual-environment">Virtual environment</h3>
+
+<pre><code class="language-bash">➜ mkdir ~/flask_app
+➜ cd ~/flask_app
+➜ virtualenv env
+➜ source env/bin/activate
+</code></pre>
+
+<h3 id="uwsgi">uwsgi</h3>
+
+<p>Create a <code>uwgi.ini</code> file in the same directory with the following content:</p>
+
+<pre><code class="language-bash">[uwsgi]
+module = app:app
+
+master = true
+processes = 5
+
+socket = flask.sock
+chmod-socket = 660
+vacuum = true
+
+die-on-term = true
+</code></pre>
+
+<p>In the module configuration you need to specify a module (a single app.py file in this case) and
+Flask application variable name with a semicolon in between.</p>
+
+<p>Next, <code>processes = 5</code> will run 5 simultaneous instances of uwsgi workers, thus allowing 5 simultaneous requests to the app. You will need to experiment with that number to find a balance between
+memory consumption and a load you expect on your app</p>
+
+<p>Then, there is a socket creation section - <code>socket = flask.sock</code>. It will create a socket file.
+This is a mechanism for nginx to communicate with uwsgi. There is an option to communicate over HTTP.
+With the socket option, the file will be created in the same directory.</p>
+
+<h3 id="nginx">nginx</h3>
+
+<p>Create a file in this path <code>/etc/nginx/sites-available/flask</code> with the following content
+It will instruct nginx to proxy requests to a socket file created by uwsgi</p>
+
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name server_domain_or_IP;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/home/as/flask_all/flask.sock;
+    }
+}
+</code></pre>
+
+<p>You can restart nginx by <code>sudo systemctl restart nginx</code> for apply this config.nginx</p>
+
+<h3 id="background-service">Background service</h3>
+
+<p>Create this file in this path <code>/etc/systemd/system/flask.service</code></p>
+
+<pre><code>[Unit]
+Description=uWSGI instance to serve flask
+After=network.target
+
+[Service]
+User=as
+Group=www-data
+WorkingDirectory=/home/as/flask_app
+Environment=&quot;PATH=/home/as/flask_app/env/bin&quot;
+ExecStart=/home/as/flask_app/venv/bin/uwsgi --ini uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>Check the path - in this example, it points to an absolute path on my machine.
+Now we can start a service and enable it to start at boot:</p>
+
+<pre><code class="language-bash">➜ sudo systemctl start flask
+➜ sudo systemctl enable flask
+</code></pre>
+
+<p>Now we can access Flask app in browser following standard HTTP port 80</p>
+
+<h2 id="docker">Docker</h2>
+
+<p>For that, we need 3 things</p>
+
+<ul>
+<li>docker image with Flask app</li>
+<li>container image repository</li>
+<li>container orchestration (K8s, AWS ECS)</li>
+</ul>
+
+<p>I&rsquo;ve covered that scenario in these posts</p>
+
+<ul>
+<li><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/" target="_blank">https://smirnov-am.github.io/running-flask-in-production-with-docker/</a></li>
+<li><a href="https://smirnov-am.github.io/run-flask-on-aws-ecs/" target="_blank">https://smirnov-am.github.io/run-flask-on-aws-ecs/</a></li>
+</ul>
+
+<h2 id="paas">PaaS</h2>
+
+<p>There are several PaaS platforms that you can run Flask on. They include AWS Elastic Beanstalk,
+GCP App Engine. The nice thing about them is that you don&rsquo;t need to worry about OS, loadbalancing and autoscaling - platforms will to it for you.</p>
+
+<p>I&rsquo;m going to cover AWS Elastic Beanstalk here. First, we need an AWS account and an <code>eb</code> CLI tool installed
+locally - see the docs <a href="https://github.com/aws/aws-elastic-beanstalk-cli-setup" target="_blank">here</a></p>
+
+<p>AWS EB will need a <code>requirements.txt</code> file listing all the required dependencies. We can generate it from
+local virtual environment:</p>
+
+<pre><code class="language-bash">➜ pip freeze &gt; requirements.txt
+</code></pre>
+
+<p>Now in the folder with <code>app.py</code> and <code>requirements.txt</code> (we don&rsquo;t need any files from the examples
+above), we can create EB repository with:</p>
+
+<pre><code class="language-bash">➜ eb init -p python-3.6 flask-app-helloworld-as --region eu-west-1
+Application flask-app-helloworld-as has been created.
+</code></pre>
+
+<p>and later deploy it with:</p>
+
+<pre><code class="language-bash">➜ eb create flask-app-helloworld-as
+</code></pre>
+
+<p>It will take some time (~10 minutes) and will create a bunch of resources - don&rsquo;t forget to
+clean up if you don&rsquo;t need it later with <code>eb terminate flask-app-helloworld-as</code> command.</p>
+
+<p>You can reach your deployed app from CLI by <code>eb open flask-app-helloworld-as</code>.</p>
+
+<h2 id="serverless">Serverless</h2>
+
+<p>Serverless is the most modern way to deploy web apps. I&rsquo;m using this one for all my pet projects
+as AWS gives 1M free requests per month allowing me to run my apps at no cost.</p>
+
+<p>In order to deploy Flask as an AWS Lambda I&rsquo;m using a <a href="https://github.com/Miserlou/Zappa" target="_blank">Zappa</a> project.
+All you need is 3 commands:</p>
+
+<pre><code class="language-bash">➜ pip install zappa
+➜ zappa init
+➜ zappa deploy
+</code></pre>
+
+<p>The second command will ask a bunch of question interactively about the environments and some
+configuration. The last command will show an URL where the app is available now:</p>
+
+<pre><code class="language-bash">Your updated Zappa deployment is live!: https://l17c5t2uhe.execute-api.us-east-1.amazonaws.com/dev
+</code></pre>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="http://localhost:1313/amp/run-flask-on-aws-ecs/">Run Flask on AWS ECS (Fargate)</a></li>
+	
+	<li><a href="http://localhost:1313/amp/ci-ci-pipeline-for-aws-lambda-python-runtime/">CI/CD  pipeline for AWS Lambda (Python runtime)</a></li>
+	
+	<li><a href="http://localhost:1313/amp/streaming-timeseries-with-flask-and-plotly/">Streaming timeseries with Flask and Plotly</a></li>
+	
+	<li><a href="http://localhost:1313/amp/background-jobs-with-flask/">Background jobs with Flask</a></li>
+	
+	<li><a href="http://localhost:1313/amp/multitenancy-with-flask/">Multitenancy with Flask</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="http://localhost:1313/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2020</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10&v=2"></' + 'script>')</script></body>
+</html>
+

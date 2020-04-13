@@ -3,172 +3,177 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://smirnov-am.github.io/</loc>
+    <loc>http://localhost:1313/deploy-flask/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/aws/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/flask/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/post/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/python/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/embedded/</loc>
     <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/embedded/</loc>
+    <loc>http://localhost:1313/tags/esp32/</loc>
     <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/esp32/</loc>
+    <loc>http://localhost:1313/micropython-on-esp32/</loc>
     <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/micropython-on-esp32/</loc>
+    <loc>http://localhost:1313/tags/micropython/</loc>
     <lastmod>2019-12-29T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/micropython/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/post/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/python/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/python-linters-for-better-code-quality/</loc>
+    <loc>http://localhost:1313/python-linters-for-better-code-quality/</loc>
     <lastmod>2019-11-04T20:23:49+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/aws/</loc>
+    <loc>http://localhost:1313/run-flask-on-aws-ecs/</loc>
     <lastmod>2019-10-23T14:26:16+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/flask/</loc>
-    <lastmod>2019-10-23T14:26:16+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/run-flask-on-aws-ecs/</loc>
-    <lastmod>2019-10-23T14:26:16+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</loc>
+    <loc>http://localhost:1313/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</loc>
     <lastmod>2019-10-01T12:41:21+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/representing-money-in-python/</loc>
+    <loc>http://localhost:1313/representing-money-in-python/</loc>
     <lastmod>2019-09-15T14:30:10+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/</loc>
+    <loc>http://localhost:1313/ci-ci-pipeline-for-aws-lambda-python-runtime/</loc>
     <lastmod>2019-08-18T12:05:36+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/anomalies-in-bank-transactions/</loc>
+    <loc>http://localhost:1313/anomalies-in-bank-transactions/</loc>
     <lastmod>2019-08-07T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/machine-learning/</loc>
+    <loc>http://localhost:1313/tags/machine-learning/</loc>
     <lastmod>2019-08-07T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/security/</loc>
+    <loc>http://localhost:1313/tags/security/</loc>
     <lastmod>2019-08-07T17:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</loc>
+    <loc>http://localhost:1313/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</loc>
     <lastmod>2019-07-07T07:01:04+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/financial-modelling/</loc>
+    <loc>http://localhost:1313/tags/financial-modelling/</loc>
     <lastmod>2019-07-07T07:01:04+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/unittesting-decorators/</loc>
+    <loc>http://localhost:1313/unittesting-decorators/</loc>
     <lastmod>2019-06-30T18:10:41+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</loc>
+    <loc>http://localhost:1313/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</loc>
     <lastmod>2019-02-19T18:55:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/</loc>
+    <loc>http://localhost:1313/basic-financial-calculations-with-python-and-pandas/</loc>
     <lastmod>2018-12-24T18:48:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</loc>
+    <loc>http://localhost:1313/streaming-timeseries-with-flask-and-plotly/</loc>
     <lastmod>2018-12-12T18:43:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/background-jobs-with-flask/</loc>
+    <loc>http://localhost:1313/background-jobs-with-flask/</loc>
     <lastmod>2018-11-27T18:41:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/multitenancy-with-flask/</loc>
+    <loc>http://localhost:1313/multitenancy-with-flask/</loc>
     <lastmod>2018-10-26T15:59:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/flask-pagination-macro/</loc>
+    <loc>http://localhost:1313/flask-pagination-macro/</loc>
     <lastmod>2018-09-27T15:35:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/running-flask-in-production-with-docker/</loc>
+    <loc>http://localhost:1313/running-flask-in-production-with-docker/</loc>
     <lastmod>2018-08-13T15:31:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/securing-flask-web-applications/</loc>
+    <loc>http://localhost:1313/securing-flask-web-applications/</loc>
     <lastmod>2018-07-11T15:26:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/nlp/</loc>
+    <loc>http://localhost:1313/tags/nlp/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/serverless/</loc>
+    <loc>http://localhost:1313/tags/serverless/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</loc>
+    <loc>http://localhost:1313/using-nltk-library-with-aws-lambda/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</loc>
+    <loc>http://localhost:1313/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</loc>
     <lastmod>2018-04-16T15:17:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/</loc>
+    <loc>http://localhost:1313/2018-04-08-e-commerce-recommendation-systems-html/</loc>
     <lastmod>2018-04-08T12:18:00+00:00</lastmod>
   </url>
   
