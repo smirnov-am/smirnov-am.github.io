@@ -26,7 +26,7 @@
         "datePublished": "2020-05-07 23:03:00 \x2b0000 UTC",
         "dateModified" : "2020-05-07 23:03:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/flask-perf\/",
-        "wordCount" : "1343",
+        "wordCount" : "1340",
         "keywords" : [ "Flask","Python","Blog" ]
     }
     </script>
@@ -396,10 +396,15 @@ Profiler(app)
 
 <h2 id="final-thoughts">Final thoughts</h2>
 
-<p>Only after identifying an underlying cause for slow responses, we can start dealing with them. In my career I&rsquo;ve encountered such situations:
-- In case if slow DB queries - use EXPLAIN to see if the server uses the index for querying the data.
-- Or you may spin up a read-replica DB to steer read requests to it if you&rsquo;ve reached a limit with vertical scaling of the DB server.
-- If it&rsquo;s a slow API or CPU intensive job - consider putting it in an async background job.</p>
+<p>Only after identifying an underlying cause for slow responses, we can start dealing with them. In my career I&rsquo;ve encountered such situations:</p>
+
+<ul>
+<li><p>In case if slow DB queries - use EXPLAIN to see if the server uses the index for querying the data.</p></li>
+
+<li><p>Or you may spin up a read-replica DB to steer read requests to it if you&rsquo;ve reached a limit with vertical scaling of the DB server.</p></li>
+
+<li><p>If it&rsquo;s a slow API or CPU intensive job - consider putting it in an async background job.</p></li>
+</ul>
 
 <p>Please, reach me out on <a href="linkedin.com/in/smirnovam" target="_blank">LinkedIn</a> you you find this post useful and want to share your expreience with
 slow Flask performance</p>
