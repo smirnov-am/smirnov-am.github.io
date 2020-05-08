@@ -7,24 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 May 2020 23:03:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>AWS</title>
-      <link>https://smirnov-am.github.io/tags/aws/</link>
-      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/tags/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Flask</title>
       <link>https://smirnov-am.github.io/tags/flask/</link>
-      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
+      <pubDate>Thu, 07 May 2020 23:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/tags/flask/</guid>
       <description></description>
@@ -33,9 +24,18 @@
     <item>
       <title>Python</title>
       <link>https://smirnov-am.github.io/tags/python/</link>
-      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
+      <pubDate>Thu, 07 May 2020 23:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AWS</title>
+      <link>https://smirnov-am.github.io/tags/aws/</link>
+      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/tags/aws/</guid>
       <description></description>
     </item>
     

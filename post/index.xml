@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 May 2020 23:03:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How increase Flask performance</title>
+      <link>https://smirnov-am.github.io/flask-perf/</link>
+      <pubDate>Thu, 07 May 2020 23:03:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/flask-perf/</guid>
+      <description>When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.
+And here I assume that the underlying platform that runs Flask has enough resources to do so.</description>
+    </item>
     
     <item>
       <title>5 ways to deploy Flask</title>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "How increase Flask performance",
+        "headline" : "How increase Flask performance",
+        "description" : "When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.\nAnd here I assume that the underlying platform that runs Flask has enough resources to do so.",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2020",
+        "datePublished": "2020-05-07 23:03:00 \x2b0000 UTC",
+        "dateModified" : "2020-05-07 23:03:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/flask-perf\/",
+        "wordCount" : "1343",
+        "keywords" : [ "Flask","Python","Blog" ]
+    }
+    </script>
+
+<title>How increase Flask performance | Alexey Smirnov</title>
+
+<meta property='og:title' content='How increase Flask performance - Alexey Smirnov'>
+<meta property='og:description' content='When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.
+And here I assume that the underlying platform that runs Flask has enough resources to do so.'>
+<meta property='og:url' content='https://smirnov-am.github.io/flask-perf/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-05-07T23:03:00Z'/><meta property='article:modified_time' content='2020-05-07T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/flask-perf/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="LxHvTgaBdcBpIRtJMFKFiIvx5Mm45WC1z1S57O6O5O8" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='https://smirnov-am.github.io/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/flask">#Flask</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">May 7, 2020</h2>
+    <h1 class="title">How increase Flask performance</h1>
+    
+    <div class="content">
+      
+
+<p>When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.</p>
+
+<p>And here I assume that the underlying platform that runs Flask has enough resources to do so. In the rest of this post, I&rsquo;ll explore some instruments that help with identifying bottlenecks.</p>
+
+<h2 id="db-model">DB model</h2>
+
+<p>Our app will use MySQL with many-to-many mapping from Students tables to Classes table - students can sign up for multiple classes and each class can accommodate many students.</p>
+
+<p>I&rsquo;m using Flask-SQLAlchemy:</p>
+
+<pre><code class="language-python">from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://localhost:33066/perf'
+db = SQLAlchemy(app)
+
+student_identifier = db.Table('student_identifier',
+                              db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id')),
+                              db.Column('student_id', db.Integer, db.ForeignKey('students.student_id')))
+
+
+class Student(db.Model):
+    __tablename__ = 'students'
+    student_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    classes = db.relationship(&quot;Class&quot;, secondary=student_identifier)
+
+
+class Class(db.Model):
+    __tablename__ = 'classes'
+    class_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    students = db.relationship(&quot;Student&quot;, secondary=student_identifier)
+</code></pre>
+
+<h2 id="views">Views</h2>
+
+<p>Let create a couple of views. One to query all the students signed up for a class</p>
+
+<pre><code class="language-python">@app.route('/roster')
+def roster():
+    class_id = request.args.get('class_id')
+    class_orm = Class.query.filter_by(class_id=class_id).first_or_404()
+    return jsonify([c.name for c in class_orm.students])
+</code></pre>
+
+<p>Another will query all classes a student has sighed up for.</p>
+
+<pre><code class="language-python">@app.route('/my_class')
+def my_class():
+    student_id = request.args.get('student_id')
+    student_orm = Student.query.filter_by(student_id=student_id).first_or_404()
+    return render_template_string('&lt;html&gt;&lt;body&gt;data: {{ data }}&lt;/body&gt;&lt;/html&gt;', data=[c.name for c in student_orm.classes])
+</code></pre>
+
+<p>I&rsquo;ll run flask in a development mode, as I&rsquo;d like to find the bottleneck in my code and not in middleware such as nginx or uwsgi</p>
+
+<pre><code class="language-python">if __name__ == '__main__':
+    app.run(debug=True)
+</code></pre>
+
+<h2 id="profiling-with-werkzeug-profiler">Profiling with werkzeug profiler</h2>
+
+<p>There is a built-in profiler in werkzeug - Flask’s development web server To use it I&rsquo;ll modify the main of the app.py:</p>
+
+<pre><code class="language-python">if __name__ == '__main__':
+    from werkzeug.middleware.profiler import ProfilerMiddleware
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[5], profile_dir='./profile')
+    app.run(debug=True)
+
+</code></pre>
+
+<p>The profiler has 2 parameters:
+- a number of slowest performing functions to show - I&rsquo;m putting 5
+- a directory where to put the details of the function calls</p>
+
+<p>The result is available in the stdout:</p>
+
+<pre><code class="language-bash">PATH: '/my_class'
+         8887 function calls (8615 primitive calls) in 0.038 seconds
+
+   Ordered by: internal time, call count
+   List reduced from 994 to 5 due to restriction &lt;5&gt;
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        3    0.004    0.001    0.004    0.001 {method 'recv_into' of '_socket.socket' objects}
+        2    0.001    0.000    0.001    0.000 /Users/as/.virtualenvs/flask-perf/lib/python3.6/site-packages/sqlalchemy/orm/interfaces.py:558(create_row_processor)
+       28    0.001    0.000    0.001    0.000 {method 'update' of 'dict' objects}
+       57    0.001    0.000    0.001    0.000 /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/_weakrefset.py:58(__iter__)
+      309    0.001    0.000    0.001    0.000 {built-in method builtins.getattr}
+</code></pre>
+
+<p>It shows that most of the time the program spent communication over the network. Now let&rsquo;s have a look at what was accessing the sockets.</p>
+
+<p>Profiler puts details of the requests in <code>profile-dir</code> directory in a *.prof files.
+We can use <a href="https://github.com/jiffyclub/snakeviz/" target="_blank">snakeviz</a> to visualize it:</p>
+
+<pre><code class="language-bash">pip install snakeviz
+snakeviz profile/GET.my_class.38ms.1588862067.prof
+</code></pre>
+
+<p>It will open a diagram in a browser. In my case it looks like that:
+<img src="https://smirnov-am.github.io/content/images/flask-perf/prof_viz1.png" alt="prof_viz1" />.</p>
+
+<p>I can hover over boxes on each call level to see what&rsquo;s the function being called and how long did it take. If I want to find  this costly method &lsquo;recv_into&rsquo; of &lsquo;_socket.socket&rsquo; I need to click on a box to zoom in.</p>
+
+<p>Another way of visualizing of the profiler output is to use <code>gprof2dot</code> to convert prof file to
+a dot file and <code>xdot</code> draw a graph from dot file</p>
+
+<pre><code class="language-bash">pip install gprof2dot
+gprof2dot -f pstats profile/GET.my_class.38ms.1588862067.prof -o calling_graph.dot
+xdot calling_graph.dot
+</code></pre>
+
+<p>The resulting graph is:
+<img src="https://smirnov-am.github.io/content/images/flask-perf/dot.png" alt="dot" /></p>
+
+<p>After investigating this visualization it&rsquo;s clear that we spend most time executing sqlachemy code (no surprise - we only do a query to the database in our view)</p>
+
+<h2 id="getting-slow-sql-queries">Getting slow SQL queries</h2>
+
+<p>Since now we know that querying the database slows us down let&rsquo;s investigate what queries we execute. There is an SQLAlchemy feature that allows us to get all the queries executed during the request. I&rsquo;ll use <code>after_request</code> Flask hook to print them when the request is over:</p>
+
+<pre><code class="language-python">from flask_sqlalchemy import get_debug_queries
+
+app.config['SQLALCHEMY_RECORD_QUERIES'] = True
+
+@app.after_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration &gt;= 0:
+            print(query.statement, query.parameters, query.duration, query.context)
+    return response
+</code></pre>
+
+<p>Each query returned by <code>get_debug_queries</code> has a duration attribute. In my case, I&rsquo;m printing all queries (duration &gt;= 0) but in a real case, I&rsquo;ll be interested in ones that are longer than say 1s.</p>
+
+<p>In stdout I now can wee the queries:</p>
+
+<pre><code class="language-bash">SELECT students.student_id AS students_student_id, students.name AS students_name 
+FROM students 
+WHERE students.student_id = %(student_id_1)s 
+ LIMIT %(param_1)s {'student_id_1': '43', 'param_1': 1} 0.01108407974243164 /Users/as/Desktop/flask-perf/app.py:40 (my_class)
+</code></pre>
+
+<p>Now I can substitute bind variables with values and put EXPLAIN before the query in SQL console to see how it was executed by the server:</p>
+
+<pre><code class="language-bash">EXPLAIN SELECT students.student_id AS students_student_id, students.name AS students_name 
+FROM students 
+WHERE students.student_id = 42 
+LIMIT 1;
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>select_type</th>
+<th>table</th>
+<th>partitions</th>
+<th>type</th>
+<th>possible_keys</th>
+<th>key</th>
+<th>key_len</th>
+<th>ref</th>
+<th>rows</th>
+<th>filtered</th>
+<th>Extra</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>SIMPLE</td>
+<td>students</td>
+<td></td>
+<td>ALL</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>10016</td>
+<td>10</td>
+<td>Using where</td>
+</tr>
+</tbody>
+</table>
+
+<p>The <code>type</code> column says that it was an ALL type query and it means that MySQL was unable to identify any keys that can be used. So if we set a proper index te query should run faster.</p>
+
+<h2 id="flask-debugtoolbar">Flask-DebugToolbar</h2>
+
+<p>More high-level tools can profile Flask. One of them is a <code>flask-debugtoolbar</code>. It&rsquo;s simple to install with <code>pip install flask-debugtoolbar</code>.</p>
+
+<pre><code class="language-python">from flask_debugtoolbar import DebugToolbarExtension
+
+app.config['SECRET_KEY'] = 'verysecretsuchwow'
+app.config['DEBUG_TB_PROFILER_ENABLED'] = True
+app.debug = True
+
+toolbar = DebugToolbarExtension(app)
+</code></pre>
+
+<p>Now in every response with an HTML page, there will be a toolbar on a right-hand sight. There we can see SQLAlchemy queries and execute EXPLAIN right from the browser:<img src="debtb1.png" alt="tb1" /></p>
+
+<p>There is a profiler output as well:
+<img src="https://smirnov-am.github.io/content/images/flask-perf/debtb2.png" alt="tb2" /></p>
+
+<h2 id="api-monitoring">API monitoring</h2>
+
+<p>All the mentioned methods need you to make an actual call to get the profiler data. They do not store the results of your user&rsquo;s call, not they provide statistics on what endpoints perform worst.</p>
+
+<p>2 plugins allow monitoring such a performance: <code>Flask MonitoringDashboard</code> and <code>flask-profiler</code></p>
+
+<p>Installation of both plugins is simple:</p>
+
+<pre><code class="language-bash">pip install flask_profiler Flask-MonitoringDashboard
+</code></pre>
+
+<h3 id="flask-monitoringdashboard">Flask-MonitoringDashboard</h3>
+
+<p>The setup for the dashboard looks like this:</p>
+
+<pre><code class="language-python">import flask_monitoringdashboard as dashboard
+dashboard.bind(app)
+</code></pre>
+
+<p>The dashboard is using SQLite by default (you&rsquo;ll a .db file in the root directory of the project). The dashboard is available under /dashboard (default credentials are admin/admin)</p>
+
+<p>In the API performance section, we can find statistics (nice block diagrams) showing response time distributions of our endpoints:</p>
+
+<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fdb1.png" alt="fdb1" /></p>
+
+<p>In the overview section, we can select a log level. If we select #3 we will be able to access a profiler data that shows the call stack and timings for every request being made<img src="fdb2.png" alt="fdb2" /></p>
+
+<p>There are a bunch of configuration options this a profiler. See the docs <a href="https://flask-monitoringdashboard.readthedocs.io/en/latest/configuration.html" target="_blank">here</a></p>
+
+<h3 id="flask-profiler">flask-profiler</h3>
+
+<p>We setup the profiler like so:</p>
+
+<pre><code class="language-python">from flask_profiler import Profiler
+app.config[&quot;flask_profiler&quot;] = {
+    &quot;enabled&quot;: app.config[&quot;DEBUG&quot;],
+    &quot;storage&quot;: {
+        &quot;engine&quot;: &quot;sqlite&quot;
+    },
+    &quot;basicAuth&quot;:{
+        &quot;enabled&quot;: True,
+        &quot;username&quot;: &quot;admin&quot;,
+        &quot;password&quot;: &quot;admin&quot;
+    },
+    &quot;ignore&quot;: [
+        &quot;^/static/.*&quot;
+    ]
+}
+
+Profiler(app)
+</code></pre>
+
+<p>The dashboard is also using SQLite by default (but MongoDB and SQLAlchemy are available interfaces). of the project). The dashboard is available under /flask-profile (default credentials are admin/admin)</p>
+
+<p>On the overview page there is a statistics of our endpoint&rsquo;s usage:<img src="https://smirnov-am.github.io/content/images/flask-perf/fpf1.png" alt="fpf1" /></p>
+
+<p>In the settings there is a list of all requests where we can see that was  passed to the server:
+<img src="https://smirnov-am.github.io/content/images/flask-perf/fpf2.png" alt="fpf2" /></p>
+
+<p>Both dashboards are meant to be used when Flask is in debug mode and I wouldn&rsquo;t put them on in a production environment. So the best approach to work with them is to enable them on a development machine and run a test using ab, siege, or JMeter and analyze the results afterward.</p>
+
+<h2 id="final-thoughts">Final thoughts</h2>
+
+<p>Only after identifying an underlying cause for slow responses, we can start dealing with them. In my career I&rsquo;ve encountered such situations:
+- In case if slow DB queries - use EXPLAIN to see if the server uses the index for querying the data.
+- Or you may spin up a read-replica DB to steer read requests to it if you&rsquo;ve reached a limit with vertical scaling of the DB server.
+- If it&rsquo;s a slow API or CPU intensive job - consider putting it in an async background job.</p>
+
+<p>Please, reach me out on <a href="linkedin.com/in/smirnovam" target="_blank">LinkedIn</a> you you find this post useful and want to share your expreience with
+slow Flask performance</p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/deploy-flask/">5 ways to deploy Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/">Streaming timeseries with Flask and Plotly</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/background-jobs-with-flask/">Background jobs with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/multitenancy-with-flask/">Multitenancy with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2020</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+
