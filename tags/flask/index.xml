@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Thu, 07 May 2020 23:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jul 2020 23:03:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/tags/flask/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Accepting payments in Flask with Stripe</title>
+      <link>https://smirnov-am.github.io/flask-stripe/</link>
+      <pubDate>Thu, 09 Jul 2020 23:03:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/flask-stripe/</guid>
+      <description>Introduction In this article you&amp;rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. Our example will be a webshop, that has a single page for selling 5$ T-shirts.
+Main page Let&amp;rsquo;s create a Flask route that serves the webshop page.
+The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
+@app.route(&#39;/&#39;) def webshop(): return &amp;quot;&amp;quot;&amp;quot;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; id=&amp;quot;checkout&amp;quot;&amp;gt;Buy T-shirt for 5$&amp;lt;/a&amp;gt; &amp;lt;script src=&amp;quot;https://code.</description>
+    </item>
     
     <item>
       <title>How to increase Flask performance</title>
