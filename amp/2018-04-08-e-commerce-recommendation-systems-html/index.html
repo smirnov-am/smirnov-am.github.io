@@ -26,7 +26,7 @@
         "datePublished": "2018-04-08 12:18:00 \x2b0000 UTC",
         "dateModified" : "2018-04-08 12:18:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/2018-04-08-e-commerce-recommendation-systems-html\/",
-        "wordCount" : "1594",
+        "wordCount" : "1533",
         "keywords" : [ "Python","machine learning","Blog" ]
     }
     </script>
@@ -101,6 +101,11 @@ Usage Amazon is one of the most prominent organizations used recommendations to 
     </nav>
 
   </div>
+  <section class="section">
+    <div class="container has-text-centered" style="background-color: lightcyan;">
+      <p>Join my free email course <a href="https://app.emailcourse.net/testing-python-code-with-pytest">Testing Python code with pytest</a></p>
+    </div>
+  </section>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
 <section class="section">
@@ -345,27 +350,9 @@ with open('data.csv', encoding=&quot;iso-8859-1&quot;) as f:
 
 <p>I&rsquo;ve implemented all 4 aforementioned algorithms <a href="https://github.com/smirnov-am/pyfreqpm" target="_blank">here</a>. FP-Growth needs some more testing though, so I&rsquo;ve used <a href="https://spark.apache.org/docs/2.3.0/mllib-frequent-pattern-mining.html" target="_blank">Apache Spark</a></p>
 
-<p>Running times with <code>min_support=0.03</code>, <code>min_confidence=0.5</code>, <code>min_lift=1.0</code> are:</p>
-
-<p>Algorithmrun time, smemmory used, MBapriori-gen21050apriori-tid35202eclat*8000fp-growth8</p>
-
-<ul>
-<li>Eclat generated long id lists and it depleted 8GB RAM very fast in my docker container, so I never ended this test.</li>
-</ul>
-
 <h3 id="generated-rules">Generated rules</h3>
 
 <p>All algorithms showed same 3 rules, with 2nd and 3rd being the same pair.</p>
-
-<p>from_itemsetto_itemsetconfidencelift2238685099B0.678.222697226990.7417.122699226970.717.1</p>
-
-<p>22386 = JUMBO BAG PINK POLKADOT</p>
-
-<p>85099B = JUMBO BAG RED RETROSPOT</p>
-
-<p>22697 = GREEN REGENCY TEACUP AND SAUCER</p>
-
-<p>22699 = ROSES REGENCY TEACUP AND SAUCER</p>
 
 <p>Not very impressive findings, so it worth trying to experiment with different input parameters. But based on them we can recommend someone buying &ldquo;JUMBO BAG PINK POLKADOT&rdquo; to get a &ldquo;JUMBO BAG RED RETROSPOT&rdquo; as well. Same goes for teacups.</p>
 

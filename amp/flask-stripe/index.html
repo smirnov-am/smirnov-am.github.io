@@ -103,6 +103,11 @@ The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - s
     </nav>
 
   </div>
+  <section class="section">
+    <div class="container has-text-centered" style="background-color: lightcyan;">
+      <p>Join my free email course <a href="https://app.emailcourse.net/testing-python-code-with-pytest">Testing Python code with pytest</a></p>
+    </div>
+  </section>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
 <section class="section">
@@ -230,8 +235,9 @@ You need to create a Flask route for that as well. Also, if the payment fails us
 <p>Now, when the payment succeeds your user is redirected to a <code>success_url</code>. But nothing prevents them to just go to this url directly and acquire the purchase.
 One way to solve that is to configure stripe servers to call a specific url in your backend notifying you that payment was successful.</p>
 
-<p>First, you need to create a webhook in Stripe dashboard:
-<img src="https://smirnov-am.github.io/content/images/stripe/callback.png" alt="callback" />.</p>
+<p>First, you need to create a webhook in Stripe dashboard:</p>
+
+<p><img src="https://smirnov-am.github.io/content/images/stripe/callback.png" alt="callback" />.</p>
 
 <p>You provide a URL and en event type here. <code>checkout.session.completed</code> should be enough here.</p>
 

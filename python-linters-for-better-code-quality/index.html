@@ -26,7 +26,7 @@
         "datePublished": "2019-11-04 20:23:49 \x2b0000 UTC",
         "dateModified" : "2019-11-04 20:23:49 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/python-linters-for-better-code-quality\/",
-        "wordCount" : "1232",
+        "wordCount" : "1119",
         "keywords" : [ "Python","Blog" ]
     }
     </script>
@@ -102,6 +102,11 @@
     </nav>
 
   </div>
+  <section class="section">
+    <div class="container has-text-centered" style="background-color: lightcyan;">
+      <p>Join my free email course <a href="https://app.emailcourse.net/testing-python-code-with-pytest">Testing Python code with pytest</a></p>
+    </div>
+  </section>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
 <section class="section">
@@ -143,7 +148,7 @@
 
 <h2 id="does-code-quality-matter">Does code quality matter?</h2>
 
-<p>One of my recent pet-projects is <a href="https://afplakkenonline.nl/" target="_blank">https://afplakkenonline.nl/</a>. I was solving my problem with a script to scan bank transaction history to find recurrent payments but then decided to put it into AWS Lambda and create a UI. Since I launched it I got 0 hits. I posted about it on LinkedIn and told my colleagues about it. But of course, launching a service without proper customer development is a key to failure. I have no plans to work on this project and market it. When I was writing it I was not sure if someone else will see the code and whether I get some donations from the users, so I didn&rsquo;t care about code quality at all. Not that the code is a mess - it&rsquo;s ok. But I&rsquo;ve spent an hour putting it all together, so it&rsquo;s maybe not my best one.</p>
+<p>When I&rsquo;m working on my pet projects I&rsquo;m not sure if someone else will see the code and whether I get some donations from the users, so I donn&rsquo;t care about code quality at all. Not that the code is a mess - it&rsquo;s ok. But I&rsquo;ve spent an hour putting it all together, so it&rsquo;s maybe not my best one.</p>
 
 <p>I work full time as a software developer. I write software that generates revenue for the company I work for. The owner may not care about code quality as long as users don&rsquo;t complain (external software quality characteristics are met) and pay. But from CTO point of view code quality matters:</p>
 
@@ -154,17 +159,14 @@
 <li>we won&rsquo;t be able to implement new revenue-generating features on time</li>
 </ul>
 
-<p>So there are situations when code quality doesn&rsquo;t matter, and whereit may cost a lot</p>
+<p>So there are situations when code quality doesn&rsquo;t matter, and where it may cost a lot</p>
 
 <h2 id="python-linters">Python linters</h2>
 
 <p>There are many methods to ensure quality: having a code style, doing code reviews, etc. And one of them is using automated tools such as linters. They analyze the code for known issues - for example, violations of PEP8 code style. They can be incorporated into CI/CD pipelines and stop deployments if linters report problems (or the number of issues increased from the last run).</p>
 
-<p>They can also be used as pre-commit hooks, so every time a code is committed on the developer&rsquo;s machine a script is run to perform the checks.</p>
-
-<p>I also created a GitHub app that runs one of the most popular python linters - flake8 - on pull requests. Check it out here <a href="https://github.com/apps/tongschar" target="_blank">https://github.com/apps/tongschar</a></p>
-
-<p>I think that it will also remove the human factor when doing code reviews - some engineers think of their code as their baby, and I don&rsquo;t want to bring down a colleague I will work with for years to come by noting all the issues in his/her PRs. It&rsquo;s better to let the bot do the job.</p>
+<p>They can also be used as pre-commit hooks, so every time a code is committed on the developer&rsquo;s machine a script is run to perform the check
+I think that it will also remove the human factor when doing code reviews - some engineers think of their code as their baby, and I don&rsquo;t want to bring down a colleague I will work with for years to come by noting all the issues in his/her PRs. It&rsquo;s better to let the bot do the job.</p>
 
 <p>So there are several python linters available:</p>
 
@@ -261,7 +263,7 @@ No config file found, using default configuration
 
 <p>Security linters also scratch the surface of external characteristics - reliability by increasing security.</p>
 
-<p>Do you use linters? Drop me a message in <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">LinkedIn</a> and try my <a href="https://github.com/apps/tongschar" target="_blank">GitHub app</a>.</p>
+<p>Do you use linters? Drop me a message in <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">LinkedIn</a></p>
 
       
       <div class="related">
