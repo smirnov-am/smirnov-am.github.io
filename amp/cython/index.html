@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Speeding up Python code with Cython",
         "headline" : "Speeding up Python code with Cython",
-        "description" : "Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.\nIn this tutorial, you’ll learn how to: - Install Cython and Compile Cython code - something about speed - Write Cython application with statically typed variables and C functions",
+        "description" : "Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.\nIn this tutorial, you’ll learn how to:\n Install Cython and Compile Cython code something about speed Write Cython application with statically typed variables and C functions  What Cython is and what it\x26rsquo;s used for The Cython project consists of two parts - a programming language and a compiler.",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2020-08-13 18:41:00 \x2b0000 UTC",
         "dateModified" : "2020-08-13 18:41:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/cython\/",
-        "wordCount" : "2480",
+        "wordCount" : "2469",
         "keywords" : [ "Python","Blog" ]
     }
     </script>
@@ -35,7 +35,8 @@
 
 <meta property='og:title' content='Speeding up Python code with Cython - Alexey Smirnov'>
 <meta property='og:description' content='Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.
-In this tutorial, you’ll learn how to: - Install Cython and Compile Cython code - something about speed - Write Cython application with statically typed variables and C functions'>
+In this tutorial, you’ll learn how to:
+ Install Cython and Compile Cython code something about speed Write Cython application with statically typed variables and C functions  What Cython is and what it&rsquo;s used for The Cython project consists of two parts - a programming language and a compiler.'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/cython/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-08-13T18:41:00Z'/><meta property='article:modified_time' content='2020-08-13T18:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -127,10 +128,13 @@ In this tutorial, you’ll learn how to: - Install Cython and Compile Cython cod
 
 <p>Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.</p>
 
-<p><strong>In this tutorial, you’ll learn how to:</strong>
-- Install Cython and Compile Cython code
-- something about speed
-- Write Cython application with statically typed variables and C functions</p>
+<p><strong>In this tutorial, you’ll learn how to:</strong></p>
+
+<ul>
+<li>Install Cython and Compile Cython code</li>
+<li>something about speed</li>
+<li>Write Cython application with statically typed variables and C functions</li>
+</ul>
 
 <h2 id="what-cython-is-and-what-it-s-used-for">What Cython is and what it&rsquo;s used for</h2>
 
@@ -171,7 +175,7 @@ In this tutorial, you’ll learn how to: - Install Cython and Compile Cython cod
 
 <p>After installation, hit Start and search for <em>Developer Command Prompt</em>. Once it&rsquo;s open, you can enter <code>cl /?</code> to check whether the installation was successful.</p>
 
-<p>** Final step**</p>
+<p><strong>Final step</strong></p>
 
 <p>The simplest way of installing Cython is by using pip:</p>
 
@@ -318,13 +322,16 @@ if __name__ == &quot;__main__&quot;:
 
 <p>Firstly, just by compiling it with Cython you can achieve almost 30% increase in performance:</p>
 
-<p>1) Rename <code>sum_of_squares.py</code> to <code>sum_of_squares_cython.pyx</code>
-2) Compile with one of the methods from above
-3) Use <code>timeit</code> again:</p>
+<ol>
+<li>Rename <code>sum_of_squares.py</code> to <code>sum_of_squares_cython.pyx</code></li>
+<li>Compile with one of the methods from above</li>
 
-<pre><code class="language-bash">   python -m timeit &quot;from sum_of_squares_cython import sum_of_squares; sum_of_squares()&quot;
-   10 loops, best of 3: 543 msec per loop
-</code></pre>
+<li><p>Use <code>timeit</code> again:</p>
+
+<pre><code class="language-bash">python -m timeit &quot;from sum_of_squares_cython import sum_of_squares; sum_of_squares()&quot;
+10 loops, best of 3: 543 msec per loop
+</code></pre></li>
+</ol>
 
 <p>Cython provides an annotation tools that helps with profiling. Each line in the annotation is color coded - darker lines indicate that there is much more C code was generated for them and that they are potentially slower.</p>
 
@@ -508,11 +515,14 @@ def numpy_cy():
 
 <p>You are now able to install and compile Cython code and use it in Python applications. You&rsquo;ve also learned about profiling tools and now to use them.</p>
 
-<p>You&rsquo;ve learned:
-- how to install Cython on macOS, Linux and Windows
-- compile Cython code using 3 different methods
-- write simple Cython functions and use statically typed variables
-- use fast arrays</p>
+<p>You&rsquo;ve learned:</p>
+
+<ul>
+<li>how to install Cython on macOS, Linux and Windows</li>
+<li>compile Cython code using 3 different methods</li>
+<li>write simple Cython functions and use statically typed variables</li>
+<li>use fast arrays</li>
+</ul>
 
       
       <div class="related">
