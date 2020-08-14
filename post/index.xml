@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Thu, 09 Jul 2020 23:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2020 18:41:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Speeding up Python code with Cython</title>
+      <link>https://smirnov-am.github.io/cython/</link>
+      <pubDate>Thu, 13 Aug 2020 18:41:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/cython/</guid>
+      <description>Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.
+In this tutorial, you’ll learn how to: - Install Cython and Compile Cython code - something about speed - Write Cython application with statically typed variables and C functions</description>
+    </item>
     
     <item>
       <title>Accepting payments in Flask with Stripe</title>
