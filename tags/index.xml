@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Thu, 13 Aug 2020 18:41:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2020 22:41:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>Python</title>
       <link>https://smirnov-am.github.io/tags/python/</link>
-      <pubDate>Thu, 13 Aug 2020 18:41:00 +0000</pubDate>
+      <pubDate>Sun, 23 Aug 2020 22:41:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/tags/python/</guid>
       <description></description>
@@ -81,15 +81,6 @@
       <pubDate>Wed, 07 Aug 2019 17:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/tags/security/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Financial Modelling</title>
-      <link>https://smirnov-am.github.io/tags/financial-modelling/</link>
-      <pubDate>Sun, 07 Jul 2019 07:01:04 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/tags/financial-modelling/</guid>
       <description></description>
     </item>
     

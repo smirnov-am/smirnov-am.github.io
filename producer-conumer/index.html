@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "Producer consumer pattern for fast data pipelines",
+        "headline" : "Producer consumer pattern for fast data pipelines",
+        "description" : "Let\x26rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation\nVery simple implementation of this pipeline can be like this one:",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2020",
+        "datePublished": "2020-08-23 22:41:00 \x2b0000 UTC",
+        "dateModified" : "2020-08-23 22:41:00 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/producer-conumer\/",
+        "wordCount" : "1175",
+        "keywords" : [ "Python","Blog" ]
+    }
+    </script>
+
+<title>Producer consumer pattern for fast data pipelines | Alexey Smirnov</title>
+
+<meta property='og:title' content='Producer consumer pattern for fast data pipelines - Alexey Smirnov'>
+<meta property='og:description' content='Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
+Very simple implementation of this pipeline can be like this one:'>
+<meta property='og:url' content='https://smirnov-am.github.io/producer-conumer/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-08-23T22:41:00Z'/><meta property='article:modified_time' content='2020-08-23T22:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/producer-conumer/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="LxHvTgaBdcBpIRtJMFKFiIvx5Mm45WC1z1S57O6O5O8" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='https://smirnov-am.github.io/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <section class="section">
+    <div class="container has-text-centered" style="background-color: lightcyan;">
+      <p>Join my free email course <a href="https://app.emailcourse.net/testing-python-code-with-pytest">Testing Python code with pytest</a></p>
+    </div>
+  </section>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+
+
+
+      
+    </div>
+    <h2 class="subtitle is-6">August 23, 2020</h2>
+    <h1 class="title">Producer consumer pattern for fast data pipelines</h1>
+    
+    <div class="content">
+      
+
+<p>Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000.
+The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
+- VALUE column holding original number
+- ROOT column for the result of calculation</p>
+
+<p>Very simple implementation of this pipeline can be like this one:</p>
+
+<pre><code class="language-python">from math import sqrt
+import mysql.connector # 1
+
+
+def main_simple():
+    connection = mysql.connector.connect(
+        host=&quot;localhost&quot;, 
+        user=&quot;yourusername&quot;,
+        password=&quot;yourpassword&quot;
+    ) # 2 
+    cursor_read = connection.cursor()
+    cursor_read.execute(&quot;SELECT VALUE FROM SOURCE&quot;) #3
+    
+    cursor_write = connection.cursor()
+    for row in cursor_read: # 4
+        value = int(row[0])
+        root = sqrt(value) # 5
+        cursor_write.execute(f&quot;INSERT INTO DESTINATION (VALUE, ROOT) VALUES ({value}, {root})&quot;) # 6
+    connection.commit() # 7
+</code></pre>
+
+<ol>
+<li>Import Mysql Connector. It can be installed with <code>pip install mysql-connector-python</code></li>
+<li>Connect to the database by providing host name (local machine in this case), username and password</li>
+<li>Read the data from SOURCE table. This command won&rsquo;t retrieve the data yet</li>
+<li>Data from database is read in this loop row by row</li>
+<li>Here a calculation is done</li>
+<li>Insert the result into DESTINATION table</li>
+<li>Don&rsquo;t forget to commit in the end to persist the changes to DESTINATION table</li>
+</ol>
+
+<p>We don&rsquo;t usually write application by cramping everything into one function. Let&rsquo;s decompose it into two functions with separate responsibilities.</p>
+
+<p>First function will read the data:</p>
+
+<pre><code class="language-python">def producer(connection):
+    cursor_read = connection.cursor()
+    cursor_read.execute(&quot;SELECT VALUE FROM SOURCE&quot;)
+    for row in cursor_read:
+        yield row[0]
+</code></pre>
+
+<p>The second one will do the calculation for one item - number - and save the result:</p>
+
+<pre><code class="language-python">def consumer(connection, item):
+    value = int(item)
+    root = sqrt(value)
+    cursor_write = connection.cursor()
+    cursor_write.execute(f&quot;INSERT INTO DESTINATION (VALUE, ROOT) VALUES ({value}, {root})&quot;)
+</code></pre>
+
+<p>Let&rsquo;s bring it all together</p>
+
+<pre><code class="language-python">def main_decompose():
+    connection = mysql.connector.connect(
+        host=&quot;localhost&quot;, 
+        user=&quot;yourusername&quot;,
+        password=&quot;yourpassword&quot;
+    )
+    for value in producer(connection):
+        comsumer(connection, value)
+    connection.commit()
+</code></pre>
+
+<p>Timing the execution of this function with <code>timeit</code> magic in Jupyter gives</p>
+
+<pre><code>CPU times: user 46.9 ms, sys: 93.8 ms, total: 141 ms
+Wall time: 1.41 s
+</code></pre>
+
+<p>Total CPU time is 141ms, but the whole execution of the program is 1.41s. It means that it spends most time communicating with database and very little doing actual calculation. Concurrency can speed things up here.
+And since this is a IO heavy task it&rsquo;s a good candidate to use threads as a concurrency mechanism.</p>
+
+<h2 id="producer-consumer-pattern">Producer consumer pattern</h2>
+
+<p>Producer consumer pattern is widely used for such applications. The idea is that producer and consumer runs in separate threads in parallel. Producer reads the data and put them into a queue and consumer reads data from the queue, processes it and saves. The number of producer and consumer threads can be more than one.</p>
+
+<p>Python standard library has a <a href="https://docs.python.org/3/library/queue.html" target="_blank">queue</a> module that can be used in concurrent applications and that free us from implementing all the locking/mutexes.</p>
+
+<blockquote>
+<p>The queue module implements multi-producer, multi-consumer queues. It is especially useful in threaded programming when information must be exchanged safely between multiple threads. The Queue class in this module implements all the required locking semantics.</p>
+</blockquote>
+
+<p>Python has two modules for concurrency with threads. Low level <code>threading</code> and high level abstraction with <code>concurrent.futures</code>.</p>
+
+<p>Let&rsquo;s convert our <code>producer</code> and <code>consumer</code> to
+- accept queue an the only argument
+- create DB connection internally as it&rsquo;s not thread-safe to pass it from <code>main</code> to these functions</p>
+
+<p><code>producer</code> will accepts a queue and instead of returning data elements it will put them in the queue. <code>consumer</code> will start a loop that exits when queue is empty. In the loop it will get element from the queue, process it and after all the processing is over commit the changes to database</p>
+
+<pre><code class="language-python">from concurrent.futures import ThreadPoolExecutor
+from queue import Queue
+
+def producer_threaded(queue):
+    connection = mysql.connector.connect(...)
+    cursor = connection.cursor()
+    cursor.execute(&quot;SELECT VALUE FROM SOURCE&quot;)
+    for row in cursor:
+        queue.put(row) # 1
+
+def consumer_threaded(queue):
+    connection = mysql.connector.connect(...)
+    cursor = connection.cursor()
+
+    while not queue.empty(): # 2
+        item = queue.get() # 3
+        value = int(item)
+        root = sqrt(value)
+        cursor_write.execute(f&quot;INSERT INTO DESTINATION (VALUE, ROOT) VALUES ({value}, {root})&quot;)
+
+        queue.task_done() # 4
+    connection.commit()
+</code></pre>
+
+<ol>
+<li><code>producer</code> puts items in the queue instead of returning</li>
+<li><code>consumer</code> loop check that queue has some elements with a special method instead of <code>len</code></li>
+<li>Item is extracted from the queue</li>
+<li>When item processing is over this method of the queue should be called, otherwise the queue won&rsquo;t become <code>empty</code> as in # 2</li>
+</ol>
+
+<p>The <code>main</code> that will bring it all together will utilize <code>ThreadPoolExecutor</code> that will manage threads for us:</p>
+
+<pre><code class="language-python">def main_threaded():
+    q = Queue() # 1
+    with ThreadPoolExecutor(max_workers=4) as executor: # 2
+        executor.submit(producer_threaded, q) # 3
+        for _ in range(3):
+            executor.submit(consumer_threaded, q)
+    # 4
+</code></pre>
+
+<ol>
+<li>queue is instantiated, but it&rsquo;s wise to limit the size of it as if the consumers are much slower than producers it will grow indefinitely and consume a lot of memory</li>
+<li>Number of workers is also an important parameter - I&rsquo;m putting 4 here so the pool have enough threads for one producer and 3 consumers</li>
+<li>This is how you start a thread - provide an function as a fist positional argument and then all arguments for the function itself</li>
+<li>Upon exiting for this context manager executor will wait for all threads to finish</li>
+</ol>
+
+<p>Let&rsquo;s time this:</p>
+
+<pre><code>CPU times: user 109 ms, sys: 141 ms, total: 250 ms
+Wall time: 481 s
+</code></pre>
+
+<p>it runs 3 times faster than non-concurrent implementation.</p>
+
+<h2 id="futures">Futures</h2>
+
+<p>Let&rsquo;s introduce a bug in our producer:</p>
+
+<pre><code class="language-python">def producer_threaded(queue):
+    connection = mysql.connector.connect(&quot;some wrong password&quot;)
+</code></pre>
+
+<p>When running the above code you&rsquo;ll see no traceback as it runs in a separate thread. To get the exceptions and result for threads in the pool you can utilize a special <code>Future</code> object returned by <code>submit</code> method:</p>
+
+<pre><code class="language-python">from concurrent.futures import as_completed
+
+def main_threaded_future():
+    q = Queue() 
+    futures = []
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        producer_future = executor.submit(producer_threaded, q)
+        futures.append(producer_future) # 1
+        for _ in range(3):
+            consumer_future = executor.submit(consumer_threaded, q)
+            futures.append(consumer_future)
+
+        for future in as_completed(futures): # 2
+            future.result() # 3
+</code></pre>
+
+<ol>
+<li>Store the returned future in a list</li>
+<li>iterate over futures that finished execution</li>
+<li>It will not only reraise exceptions but also return the results from threads (ours return <code>None</code>)</li>
+</ol>
+
+<h2 id="paging">Paging</h2>
+
+<p>We can do better in terms of performance we we spin multiple producer. Each producer will read only a part of SOURCE table. For that we will execute paging query:</p>
+
+<pre><code class="language-python">def producer_paged(queue, page, page_size=500):
+    connection = mysql.connector.connect(...)
+    cursor = connection.cursor()
+    cursor.execute(f&quot;SELECT VALUE FROM SOURCE LIMIT {page_size} OFFSET {page_size * page}&quot;)
+    for row in cursor:
+        queue.put(row) # 1
+</code></pre>
+
+<p>Now let&rsquo;s create 2 producers, each reading 500 rows from SOURCE table:</p>
+
+<pre><code class="language-python">def main_threaded_future():
+    q = Queue() 
+    futures = []
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        for page in range(2):
+            producer_future = executor.submit(producer_threaded, q, page)
+            futures.append(producer_future) # 1
+        for _ in range(2):
+            consumer_future = executor.submit(consumer_threaded, q)
+            futures.append(consumer_future)
+
+        for future in as_completed(futures): # 2
+            future.result() # 3
+</code></pre>
+
+<p>The execution time for paged producer is 2 times faster than previous implementation:</p>
+
+<pre><code>CPU times: user 0 ns, sys: 62.5 ms, total: 62.5 ms
+Wall time: 221 ms
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Producer-consumer is a powerful design pattern for data pipelines. In Python it can be implemented using standard library through <code>queue</code> and <code>concurrent.futures</code> modules.</p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/cython/">Speeding up Python code with Cython</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/flask-stripe/">Accepting payments in Flask with Stripe</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/flask-perf/">How to increase Flask performance</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/deploy-flask/">5 ways to deploy Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/micropython-on-esp32/">Installing MicroPython on ESP32</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2020</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

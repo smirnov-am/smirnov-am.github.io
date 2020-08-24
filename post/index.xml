@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Thu, 13 Aug 2020 18:41:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2020 22:41:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Producer consumer pattern for fast data pipelines</title>
+      <link>https://smirnov-am.github.io/producer-conumer/</link>
+      <pubDate>Sun, 23 Aug 2020 22:41:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/producer-conumer/</guid>
+      <description>Let&amp;rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
+Very simple implementation of this pipeline can be like this one:</description>
+    </item>
     
     <item>
       <title>Speeding up Python code with Cython</title>
@@ -129,17 +139,6 @@ Doubles contain 53 bits of precision. When the machine is trying to represent th
     </item>
     
     <item>
-      <title>Calculating enterprise value with Python and Pandas (part 2). WACC and DCF</title>
-      <link>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</link>
-      <pubDate>Sun, 07 Jul 2019 07:01:04 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</guid>
-      <description>The latests documentation for pyfinmod is available here https://pyfinmod.readthedocs.io/en/latest/
- The weighted average cost of capital (WACC) is used as the discount rate for a firm’s anticipated free cash flows (FCFs) The formula is the following:
-  whereE = market value of the firm’s equity D = market value of the firm’s debtTc = firm’s corporate tax raterE = firm’s cost of equityrD = firm’s cost of debt</description>
-    </item>
-    
-    <item>
       <title>Unittesting decorators</title>
       <link>https://smirnov-am.github.io/unittesting-decorators/</link>
       <pubDate>Sun, 30 Jun 2019 18:10:41 +0000</pubDate>
@@ -147,29 +146,6 @@ Doubles contain 53 bits of precision. When the machine is trying to represent th
       <guid>https://smirnov-am.github.io/unittesting-decorators/</guid>
       <description>I&amp;rsquo;ll start with a simple example of a class I want to put under test. A Car class uses Engine and instantiates it internally
 class Engine: def start(self): interact_with_outside_world() print(&#39;Engine started&#39;) class Car: def __init__(self): self.engine = Engine() def drive(self): self.engine.start()  Let&amp;rsquo;s write a unittest for Car class. By definition, unittest shouldn&amp;rsquo;t be allowed to interact with the outside world (connect . to DB, etc). There are 2 ways to solve that.</description>
-    </item>
-    
-    <item>
-      <title>Calculating enterprise value with Python and Pandas (part 1). FCF</title>
-      <link>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</link>
-      <pubDate>Tue, 19 Feb 2019 18:55:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</guid>
-      <description>The latests documentation for pyfinmod is available here https://pyfinmod.readthedocs.io/en/latest/
- Enterprise Value Value of the enterprise may be used to find out whether the price of company equity - a share - is worth what market offers. It&amp;rsquo;s also used in acquisitions to get the price of the company as a whole.
-In this post I&amp;rsquo;ll cover 3 methods of Enterprise Value calculations:
- using accounting book efficient market approach discounted cash flows (DCF)  The latter one - DCF - is a complex topic.</description>
-    </item>
-    
-    <item>
-      <title>Basic Financial Calculations with Python and Pandas</title>
-      <link>https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/</link>
-      <pubDate>Mon, 24 Dec 2018 18:48:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/</guid>
-      <description>The latests documentation for pyfinmod is available here https://pyfinmod.readthedocs.io/en/latest/
- In this post I&amp;rsquo;ll cover:
- Net present value (NPV) Internal rate of return (IRR) Payment schedules and loan tables Future value Pension and accumulation problems Continuously compounded interest  Net present value Present value allows to answer a simple question &amp;ldquo;should I put my money in a bank or invest&amp;rdquo;. Let&amp;rsquo;s say I have $100 and the bank gives a 12% annual interest rate.</description>
     </item>
     
     <item>

@@ -4,26 +4,31 @@
   
   <url>
     <loc>https://smirnov-am.github.io/</loc>
-    <lastmod>2020-08-13T18:41:00+00:00</lastmod>
+    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/post/</loc>
-    <lastmod>2020-08-13T18:41:00+00:00</lastmod>
+    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/producer-conumer/</loc>
+    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/tags/python/</loc>
-    <lastmod>2020-08-13T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/cython/</loc>
-    <lastmod>2020-08-13T18:41:00+00:00</lastmod>
+    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/tags/</loc>
+    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/cython/</loc>
     <lastmod>2020-08-13T18:41:00+00:00</lastmod>
   </url>
   
@@ -113,28 +118,8 @@
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-wacc-and-dcf/</loc>
-    <lastmod>2019-07-07T07:01:04+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/financial-modelling/</loc>
-    <lastmod>2019-07-07T07:01:04+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://smirnov-am.github.io/unittesting-decorators/</loc>
     <lastmod>2019-06-30T18:10:41+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/calculating-enterprise-value-with-python-and-pandas-part-1-fcf/</loc>
-    <lastmod>2019-02-19T18:55:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/basic-financial-calculations-with-python-and-pandas/</loc>
-    <lastmod>2018-12-24T18:48:00+00:00</lastmod>
   </url>
   
   <url>
