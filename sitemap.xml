@@ -3,27 +3,77 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://smirnov-am.github.io/pytest-advanced-fixtures/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://smirnov-am.github.io/</loc>
-    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-hello-world/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/post/</loc>
-    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/producer-consumer/</loc>
-    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
+    <loc>https://smirnov-am.github.io/tags/pytest/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-plugins/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/tags/python/</loc>
-    <lastmod>2020-08-23T22:41:00+00:00</lastmod>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-selecting_tests/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/tags/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-tdd/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-testing_database/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-testing_http_client/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-test-types/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/pytest-why-testing/</loc>
+    <lastmod>2020-09-06T18:41:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/producer-consumer/</loc>
     <lastmod>2020-08-23T22:41:00+00:00</lastmod>
   </url>
   
