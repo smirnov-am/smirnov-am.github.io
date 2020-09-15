@@ -24,8 +24,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-06 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-06 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-09-14 23:03:00 \x2b0000 UTC",
+        "dateModified" : "2020-09-14 23:03:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/",
         "wordCount" : "0",
         "keywords" : [ "Blog" ]
@@ -38,7 +38,7 @@
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='website'><meta property='article:section' content=''><meta property='og:updated_time' content='2020-09-06T18:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='website'><meta property='article:section' content=''><meta property='og:updated_time' content='2020-09-14T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -106,6 +106,34 @@
 <section class="section">
   <div class="container">
     
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+        
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/flask">#Flask</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+  
+
+        
+      </div>
+      <h2 class="subtitle is-6 date">September 14, 2020</h2>
+      <h1 class="title"><a href="https://smirnov-am.github.io/amp/flask-s3/">Uploading files to AWS S3 with Flask</a></h1>
+      <div class="content">
+        One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
+I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
+Another option is to use block storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.
+        
+        <a class="button is-link" href="https://smirnov-am.github.io/amp/flask-s3/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
     
     <article>
       <div class="subtitle tags is-6 is-pulled-right">
@@ -430,29 +458,6 @@ Testing makes our code flexible, reliable and reusable.
 Flexible If you don’t have tests for your code - every change to the code is a possible bug. Thus, developers fear making changes and implementing new features, no matter how flexible the architecture of the application is.
         
         <a class="button is-link" href="https://smirnov-am.github.io/amp/pytest-why-testing/" style="height:28px">
-          Read more
-        </a>
-        
-      </div>
-    </article>
-    
-    <article>
-      <div class="subtitle tags is-6 is-pulled-right">
-        
-        
-<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
-
-
-
-        
-      </div>
-      <h2 class="subtitle is-6 date">August 23, 2020</h2>
-      <h1 class="title"><a href="https://smirnov-am.github.io/amp/producer-consumer/">Producer consumer pattern for fast data pipelines</a></h1>
-      <div class="content">
-        Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
-Very simple implementation of this pipeline can be like this one:
-        
-        <a class="button is-link" href="https://smirnov-am.github.io/amp/producer-consumer/" style="height:28px">
           Read more
         </a>
         

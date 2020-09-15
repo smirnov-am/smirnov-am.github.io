@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Sun, 06 Sep 2020 18:41:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Sep 2020 23:03:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Uploading files to AWS S3 with Flask</title>
+      <link>https://smirnov-am.github.io/flask-s3/</link>
+      <pubDate>Mon, 14 Sep 2020 23:03:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/flask-s3/</guid>
+      <description>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
+I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
+Another option is to use block storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
+    </item>
     
     <item>
       <title>Advanced fixtures with pytest</title>
