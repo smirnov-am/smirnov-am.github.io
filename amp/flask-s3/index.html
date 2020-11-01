@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Uploading files to AWS S3 with Flask",
         "headline" : "Uploading files to AWS S3 with Flask",
-        "description" : "One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.\nI found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.\nAnother option is to use block storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.",
+        "description" : "One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.\nI found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.\nAnother option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -36,7 +36,7 @@
 <meta property='og:title' content='Uploading files to AWS S3 with Flask - Alexey Smirnov'>
 <meta property='og:description' content='One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
 I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
-Another option is to use block storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.'>
+Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/flask-s3/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-09-14T23:03:00Z'/><meta property='article:modified_time' content='2020-09-14T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -127,8 +127,8 @@ Another option is to use block storage - like AWS S3 - and upload files directly
 
 <p>I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.</p>
 
-<p>Another option is to use block storage - like AWS S3 - and upload files directly from the frontend.
-In that case Flask will have a route that just generates and URL a frontend will upload to. In that case files are not consumer by Flask.</p>
+<p>Another option is to use object storage - like AWS S3 - and upload files directly from the frontend.
+In that case Flask will have a route that just generates and URL a frontend will upload to. In that case files are not consumed by Flask.</p>
 
 <p><img src="https://smirnov-am.github.io/content/images/s3/flasks3.png" alt="scheme" /></p>
 

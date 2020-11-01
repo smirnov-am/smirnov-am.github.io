@@ -20,7 +20,7 @@
       <guid>https://smirnov-am.github.io/flask-s3/</guid>
       <description>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
 I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
-Another option is to use block storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
+Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
     </item>
     
     <item>

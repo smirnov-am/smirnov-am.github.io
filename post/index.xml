@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Mon, 14 Sep 2020 23:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 14 Oct 2020 23:03:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Chroma Keying with OpenCV/C&#43;&#43;</title>
+      <link>https://smirnov-am.github.io/chromakeying/</link>
+      <pubDate>Wed, 14 Oct 2020 23:03:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/chromakeying/</guid>
+      <description>Chroma keying - or blue/green screen matting - is a process of removing a specific color from the video to be replaced with another picture or video. Historically green or blue colors were used as a background because they are not dominant in human skin or clothes. However, when a weather forecaster puts on a green skirt it can lead to funny situations:
+Chroma keying became very popular technique not only on TV but in the movies.</description>
+    </item>
     
     <item>
       <title>Uploading files to AWS S3 with Flask</title>
@@ -20,7 +30,7 @@
       <guid>https://smirnov-am.github.io/flask-s3/</guid>
       <description>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
 I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
-Another option is to use block storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
+Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
     </item>
     
     <item>
