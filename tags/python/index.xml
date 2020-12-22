@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Mon, 14 Sep 2020 23:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 Dec 2020 18:41:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to become a Python developer</title>
+      <link>https://smirnov-am.github.io/how-to-become-python-developer/</link>
+      <pubDate>Mon, 21 Dec 2020 18:41:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/how-to-become-python-developer/</guid>
+      <description>In this post I present a Python software developer study plan. It consists of these 8 not-so-easy steps:
+ Pick a project Choose tech specialization Learn Python basics Practice programming Learn the ecosystem Study computer science Prepare yourself for the job Find a mentor  Why I&amp;rsquo;m writing that One of my former colleagues asked me a how to become a Python developer. Of course, there are thousands of courses, boot camps and different programs helping people to start a developer career.</description>
+    </item>
     
     <item>
       <title>Uploading files to AWS S3 with Flask</title>
