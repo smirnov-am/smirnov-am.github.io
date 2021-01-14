@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Run Flask on AWS ECS (Fargate)",
         "headline" : "Run Flask on AWS ECS (Fargate)",
-        "description" : "There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don\x26rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I\x26rsquo;m sharing CloudFormation templates that will create them automatically.Source code\nHere are the details of these templates:",
+        "description" : "How to run Flask in Docker in AWS ECS",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2019-10-23 14:26:16 \x2b0000 UTC",
         "dateModified" : "2019-10-23 14:26:16 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/run-flask-on-aws-ecs\/",
-        "wordCount" : "847",
+        "wordCount" : "859",
         "keywords" : [ "Flask","AWS","Blog" ]
     }
     </script>
@@ -34,11 +34,10 @@
 <title>Run Flask on AWS ECS (Fargate) | Alexey Smirnov</title>
 
 <meta property='og:title' content='Run Flask on AWS ECS (Fargate) - Alexey Smirnov'>
-<meta property='og:description' content='There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.Source code
-Here are the details of these templates:'>
+<meta property='og:description' content='How to run Flask in Docker in AWS ECS'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/run-flask-on-aws-ecs/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/10/photo-1561475699-fa66c7246834.jpeg'><meta property='article:published_time' content='2019-10-23T14:26:16Z'/><meta property='article:modified_time' content='2019-10-23T14:26:16Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='AWS'><meta property='article:published_time' content='2019-10-23T14:26:16Z'/><meta property='article:modified_time' content='2019-10-23T14:26:16Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -144,13 +143,13 @@ Here are the details of these templates:'>
     <div class="content">
       
 
-<p>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.<a href="https://github.com/smirnov-am/aws_ecs_flask" target="_blank">Source code</a></p>
+<p>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.<a href="https://github.com/smirnov-am/aws_ecs_flask" target="_blank">Source code</a></p>
 
 <p>Here are the details of these templates:</p>
 
 <h2 id="resources">Resources</h2>
 
-<p><code>flask_resources.yaml</code> - is a CloudFormation template that will createservices that won&rsquo;t change much. It consists of three parts.</p>
+<p><code>flask_resources.yaml</code> - is a CloudFormation template that will create services that won&rsquo;t change much. It consists of three parts.</p>
 
 <h3 id="dns">DNS</h3>
 
@@ -158,7 +157,7 @@ Here are the details of these templates:'>
 
 <h3 id="vpc">VPC</h3>
 
-<p>A virtual private cloud (VPC) is a logical isolation of the resources. It&rsquo;s necessary for ALB to work. I&rsquo;m following this <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/cloudformation-vpc-template.html" target="_blank">example</a> that creates a pair of private subnets (where our containers will live), a pair of public subnets (different AZs) and all the wiring - routing tables and default routes, internet and NAT gateways.</p>
+<p>A virtual private cloud (VPC) is a logical isolation of the resources. It&rsquo;s necessary for ALB to work. I&rsquo;m following this <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/cloudformation-vpc-template.html" target="_blank">example</a> that creates a pair of private subnets (where our containers will live), a pair of public subnets (in different AZs) and all the wiring - routing tables and default routes, internet and NAT gateways.</p>
 
 <h3 id="loadbalancer">LoadBalancer</h3>
 
@@ -180,7 +179,7 @@ Here are the details of these templates:'>
 
 <p>First, the certificate is needed:</p>
 
-<pre><code>Certificate:
+<pre><code class="language-yaml">Certificate:
     Type: &quot;AWS::CertificateManager::Certificate&quot;
     Properties:
       DomainName: !Sub &quot;*.${Domain}&quot;
@@ -190,7 +189,7 @@ Here are the details of these templates:'>
 
 <p>Then this certificate is used by additional load balancer listener:</p>
 
-<pre><code>HTTPSListener:
+<pre><code class="language-yaml">HTTPSListener:
 Type: &quot;AWS::ElasticLoadBalancingV2::Listener&quot;
     Properties:
       Certificates:
@@ -203,16 +202,24 @@ Type: &quot;AWS::ElasticLoadBalancingV2::Listener&quot;
       Protocol: HTTPS
 </code></pre>
 
-<p>Then a redirect should be added in <code>nginx.conf</code> inside a locationsection:</p>
+<p>Then a redirect should be added in <code>nginx.conf</code> inside a location section:</p>
 
-<pre><code>if ($http_x_forwarded_proto != &quot;https&quot;) {
+<pre><code class="language-nginx">if ($http_x_forwarded_proto != &quot;https&quot;) {
     rewrite ^(.*)$ https://$host$request_uri permanent;
 }
 </code></pre>
 
 <h2 id="building-image">Building image</h2>
 
-<p>I&rsquo;m building a Docker image locally and pushing it to AWS ECR.<strong>1.</strong> Login to ERC <code>$(aws ecr get-login --region eu-west-1 --no-include-email)</code><strong>2.</strong> Build image locally <code>docker build . -t flask_image</code>See a folder <code>flask.com</code> in the repo.<strong>3.</strong> Get the image ID by issuing <code>docker images</code><strong>4.</strong> Tag image. For that you&rsquo;ll need you AWS account number and region. Put the tag that will be passed to CF template.</p>
+<p>I&rsquo;m building a Docker image locally and pushing it to AWS ECR.</p>
+
+<p><strong>1.</strong> Login to ERC <code>$(aws ecr get-login --region eu-west-1 --no-include-email)</code></p>
+
+<p><strong>2.</strong> Build image locally <code>docker build . -t flask_image</code>See a folder <code>flask.com</code> in the repo.</p>
+
+<p><strong>3.</strong> Get the image ID by issuing <code>docker images</code></p>
+
+<p><strong>4.</strong> Tag image. For that you&rsquo;ll need you AWS account number and region. Put the tag that will be passed to CF template.</p>
 
 <p><code>docker tag &lt;image_id&gt; &lt;aws_account_number&gt;.dkr.ecr..amazonaws.com/:&lt;my_tag&gt;</code></p>
 
@@ -220,11 +227,25 @@ Type: &quot;AWS::ElasticLoadBalancingV2::Listener&quot;
 
 <h2 id="bringing-it-all-together">Bringing it all together</h2>
 
-<p><strong>1.</strong> Create a stack from resources CloudFormation template<strong>2.</strong> Build and push the image to ECR<strong>3.</strong> Create a stack from stack.yaml CloudFormation template<strong>4.</strong> In Route53 locate a newly created hosted zone and find a A record with ALIAS. Open load balancer hostname in browser - you&rsquo;ll see a response from Flask<strong>5.</strong> Rewrite NS records in registrar to use the ones from the Hosted zone. (So example <code>flask.com</code> will lead to the deployed server)</p>
+<p><strong>1.</strong> Create a stack from resources CloudFormation template</p>
+
+<p><strong>2.</strong> Build and push the image to ECR</p>
+
+<p><strong>3.</strong> Create a stack from stack.yaml CloudFormation template</p>
+
+<p><strong>4.</strong> In Route53 locate a newly created hosted zone and find a A record with ALIAS. Open load balancer hostname in browser - you&rsquo;ll see a response from Flask</p>
+
+<p><strong>5.</strong> Rewrite NS records in registrar to use the ones from the Hosted zone. (So example <code>flask.com</code> will lead to the deployed server)</p>
 
 <h2 id="further-thoughts">Further thoughts</h2>
 
-<p>The stacks are missing some important things:<strong>-</strong> Scaling. In <code>ECS::Service</code> a DesiredCount attribute can be specified to define the number of simultaneous running containers. But it doesn&rsquo;t change based on the load.<strong>-</strong> Alarms. There are logs on CloudWatch. An alarm can be created based on these logs, like a number of excessive 4XX, 5XX HTTP responses, to long load balancee response<strong>-</strong> CI/CD. Images are built locally, CodePipeline+CodeBuild can be used for that.</p>
+<p>The stacks are missing some important things:</p>
+
+<p><strong>-</strong> Scaling. In <code>ECS::Service</code> a DesiredCount attribute can be specified to define the number of simultaneous running containers. But it doesn&rsquo;t change based on the load.</p>
+
+<p><strong>-</strong> Alarms. There are logs on CloudWatch. An alarm can be created based on these logs, like a number of excessive 4XX, 5XX HTTP responses, to long load balance response</p>
+
+<p><strong>-</strong> CI/CD. Images are built locally, CodePipeline+CodeBuild can be used for that.</p>
 
       
       <div class="related">
@@ -234,7 +255,7 @@ Type: &quot;AWS::ElasticLoadBalancingV2::Listener&quot;
 	
 	<li><a href="https://smirnov-am.github.io/amp/static-website-on-aws-s3-with-ssl-and-continuous-delivery/">Static website on AWS S3 with SSL and continuous delivery</a></li>
 	
-	<li><a href="https://smirnov-am.github.io/amp/ci-ci-pipeline-for-aws-lambda-python-runtime/">CI/CD  pipeline for AWS Lambda (Python runtime)</a></li>
+	<li><a href="https://smirnov-am.github.io/amp/ci-cd-pipeline-for-aws-lambda-python-runtime/">CI/CD  pipeline for AWS Lambda (Python runtime)</a></li>
 	
 	<li><a href="https://smirnov-am.github.io/amp/streaming-timeseries-with-flask-and-plotly/">Streaming timeseries with Flask and Plotly</a></li>
 	

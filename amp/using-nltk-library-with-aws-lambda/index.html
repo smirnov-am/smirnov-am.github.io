@@ -13,9 +13,9 @@
              "@id": "https:\/\/smirnov-am.github.io"
         },
         "articleSection" : "post",
-        "name" : "Using NLTK library with AWS Lambda.",
-        "headline" : "Using NLTK library with AWS Lambda.",
-        "description" : "I\x26rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.\n1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type \x26quot;help\x26quot;, \x26quot;copyright\x26quot;, \x26quot;credits\x26quot; or \x26quot;license\x26quot; for more information.",
+        "name" : "Using NLTK library with AWS Lambda",
+        "headline" : "Using NLTK library with AWS Lambda",
+        "description" : "How to compile NLTK for usage in AWS Lambda serverless environment",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,19 +26,18 @@
         "datePublished": "2018-05-09 15:22:00 \x2b0000 UTC",
         "dateModified" : "2018-05-09 15:22:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/using-nltk-library-with-aws-lambda\/",
-        "wordCount" : "540",
+        "wordCount" : "667",
         "keywords" : [ "AWS","NLP","Serverless","Blog" ]
     }
     </script>
 
-<title>Using NLTK library with AWS Lambda. | Alexey Smirnov</title>
+<title>Using NLTK library with AWS Lambda | Alexey Smirnov</title>
 
-<meta property='og:title' content='Using NLTK library with AWS Lambda. - Alexey Smirnov'>
-<meta property='og:description' content='I&rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.
-1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.'>
+<meta property='og:title' content='Using NLTK library with AWS Lambda - Alexey Smirnov'>
+<meta property='og:description' content='How to compile NLTK for usage in AWS Lambda serverless environment'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/using-nltk-library-with-aws-lambda/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/la.png'><meta property='article:published_time' content='2018-05-09T15:22:00Z'/><meta property='article:modified_time' content='2018-05-09T15:22:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='AWS'><meta property='article:tag' content='NLP'><meta property='article:tag' content='Serverless'><meta property='article:published_time' content='2018-05-09T15:22:00Z'/><meta property='article:modified_time' content='2018-05-09T15:22:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -141,28 +140,32 @@
       
     </div>
     <h2 class="subtitle is-6">May 9, 2018</h2>
-    <h1 class="title">Using NLTK library with AWS Lambda.</h1>
+    <h1 class="title">Using NLTK library with AWS Lambda</h1>
     
     <div class="content">
       
 
-<p>I&rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.</p>
+<p>This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.</p>
 
 <h3 id="1-create-virtual-environment">1 Create virtual environment</h3>
 
-<pre><code>mac:serverless_nltk as$ mkvirtualenv nltk_env
+<p>In order to separate system-wide dependencies from this app, create a separate virtual environment with:</p>
 
+<pre><code class="language-bash">~ mkvirtualenv nltk_env
 </code></pre>
 
 <h3 id="2-install-nltk">2 Install nltk</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ pip install nltk
+<p>In the virtual environment use <code>pip</code> to install <code>nltk</code> package:</p>
 
+<pre><code class="language-bash">(nltk_env) ~ pip install nltk
 </code></pre>
 
 <h3 id="3-download-nltk-data">3 Download nltk data</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ python 
+<p>Pip doesn&rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</p>
+
+<pre><code class="language-bash">(nltk_env) ~ python 
 Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) 
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
@@ -171,29 +174,33 @@ Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;licen
 [nltk_data] Downloading package tagsets to /Users/as/nltk_data...
 [nltk_data]   Unzipping help/tagsets.zip.
 True
-
 </code></pre>
 
 <h3 id="4-copy-downloaded-nltk-data-to-current-directory">4 Copy downloaded nltk data to current directory</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ cp -R /Users/as/nltk_data/* ./
+<p>THe helper functions download the extra data to user home directory, so you need to copy them closer to the app code:</p>
+
+<pre><code>(nltk_env) ~ cp -R /Users/as/nltk_data/* ./
 
 </code></pre>
 
-<h3 id="5-copy-site-packages-from-virtualenv-directory-may-be-checked-with-which-python">5 Copy site packages from virtualenv directory (may be checked with <code>which python</code>)</h3>
+<h3 id="5-copy-site-packages-from-virtualenv-directory">5 Copy site packages from virtualenv directory</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ cp -R /Users/as/.virtualenvs/nltk_env/lib/python3.6/site-packages/* ./
+<p>Now copy all the packages from the site-packages folder of the virtual environment to the folder with the app:</p>
+
+<pre><code class="language-bash">(nltk_env) ~ cp -R /Users/as/.virtualenvs/nltk_env/lib/python3.6/site-packages/* ./
 
 </code></pre>
+
+<p>To find site-packages folder you may use <code>which python</code> command.</p>
 
 <h3 id="6-now-let-s-create-a-lambda-function-code">6 Now let&rsquo;s create a lambda function code</h3>
 
-<pre><code>import imp
+<pre><code class="language-python">import imp
 import sys
-# since libsqlite3-dev is not installed in container running lambda
-# this workaround of creating dummy empty modules is needed
-sys.modules[&quot;sqlite&quot;] = imp.new_module(&quot;sqlite&quot;)
+sys.modules[&quot;sqlite&quot;] = imp.new_module(&quot;sqlite&quot;) # (1)
 sys.modules[&quot;sqlite3.dbapi2&quot;] = imp.new_module(&quot;sqlite.dbapi2&quot;)
+
 import nltk
 
 from nltk.data import load
@@ -208,34 +215,42 @@ def lambda_handler(event, context):
 
 </code></pre>
 
-<h3 id="7-let-s-check-the-size">7 Let&rsquo;s check the size.</h3>
+<p>(1) Since <code>libsqlite3-dev</code> is not installed in container running lambda this workaround of creating dummy empty modules is needed.</p>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ du -sh ./ | cut -f1
+<h3 id="7-check-the-size">7 Check the size.</h3>
+
+<p>There is a limit on the Lambda function code size, so check it with:</p>
+
+<pre><code class="language-bash">(nltk_env) ~ du -sh ./ | cut -f1
 187M
-
 </code></pre>
 
 <h3 id="8-zip-everything">8 Zip everything</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ zip -r -9 -q ./lambda.zip *
+<p>To deploy lambda zip the folder:</p>
 
+<pre><code>(nltk_env) ~ zip -r -9 -q ./lambda.zip *
 </code></pre>
 
 <h3 id="9-upload-to-s3">9 Upload to S3</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ aws s3 mb s3://serverless-nltk
-(nltk_env) mac:serverless_nltk as$ aws s3 cp ./lambda.zip s3://serverless-nltk
+<p>Zipped Lambda code is uploaded to S3 from where it will be deployed:</p>
+
+<pre><code>(nltk_env) ~ aws s3 mb s3://serverless-nltk
+(nltk_env) ~ aws s3 cp ./lambda.zip s3://serverless-nltk
 
 </code></pre>
 
 <h3 id="10-create-lambda">10 Create lambda</h3>
 
-<pre><code>(nltk_env) mac:serverless_nltk as$ aws lambda create-function \
-                                            --function-name serverless-nltk \
-                                            --runtime  python3.6 \
-                                            --role arn:aws:iam::1234567890:role/lambda_basic_execution \
-                                            --handler lambda_function.lambda_handler --code S3Bucket=serverless-nltk,S3Key=lambda2.zip \
-                                            --environment Variables={NLTK_DATA=./} 
+<p>Use AWS CLI to create lambda function and tell it where on S3 the code resides:</p>
+
+<pre><code class="language-bash">(nltk_env) ~ aws lambda create-function \
+                    --function-name serverless-nltk \
+                    --runtime  python3.6 \
+                    --role arn:aws:iam::1234567890:role/lambda_basic_execution \
+                    --handler lambda_function.lambda_handler --code S3Bucket=serverless-nltk,S3Key=lambda2.zip \
+                    --environment Variables={NLTK_DATA=./} 
 
 </code></pre>
 
@@ -243,7 +258,7 @@ def lambda_handler(event, context):
 
 <ul>
 <li>role arn can be found in IAM (look for role with name <code>lambda_basic_execution</code>)</li>
-<li>environment should create an environment variable telling nltk where look for data</li>
+<li>environment variable <code>NLTK_DATA</code> telling nltk where look for data</li>
 </ul>
 
 <p>Now let&rsquo;s create a simple javascript application that will call lambda with user input from the page:</p>
@@ -332,7 +347,6 @@ def lambda_handler(event, context):
             });
     }; 
 &lt;/script&gt;
-
 </code></pre>
 
       
@@ -341,7 +355,7 @@ def lambda_handler(event, context):
 <h3>Similar articles:</h3>
 <ul>
 	
-	<li><a href="https://smirnov-am.github.io/amp/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
+	<li><a href="https://smirnov-am.github.io/amp/keyphrases/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
 	
 </ul>
 </div>

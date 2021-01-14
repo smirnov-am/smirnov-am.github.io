@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<script type="application/ld+json">
+    {
+        "@context" : "http://schema.org",
+        "@type" : "BlogPosting",
+        "mainEntityOfPage": {
+             "@type": "WebPage",
+             "@id": "https:\/\/smirnov-am.github.io"
+        },
+        "articleSection" : "post",
+        "name" : "CI\/CD  pipeline for AWS Lambda (Python runtime)",
+        "headline" : "CI\/CD  pipeline for AWS Lambda (Python runtime)",
+        "description" : "Create a CI\/CD pipeline with CloudFormation and chalice for AWS Lambda running Python",
+        "inLanguage" : "en-US",
+        "author" : "",
+        "creator" : "",
+        "publisher": "",
+        "accountablePerson" : "",
+        "copyrightHolder" : "",
+        "copyrightYear" : "2019",
+        "datePublished": "2019-08-18 12:05:36 \x2b0000 UTC",
+        "dateModified" : "2019-08-18 12:05:36 \x2b0000 UTC",
+        "url" : "https:\/\/smirnov-am.github.io\/amp\/ci-cd-pipeline-for-aws-lambda-python-runtime\/",
+        "wordCount" : "986",
+        "keywords" : [ "AWS","Python","Blog" ]
+    }
+    </script>
+
+<title>CI/CD  pipeline for AWS Lambda (Python runtime) | Alexey Smirnov</title>
+
+<meta property='og:title' content='CI/CD  pipeline for AWS Lambda (Python runtime) - Alexey Smirnov'>
+<meta property='og:description' content='Create a CI/CD pipeline with CloudFormation and chalice for AWS Lambda running Python'>
+<meta property='og:url' content='https://smirnov-am.github.io/amp/ci-cd-pipeline-for-aws-lambda-python-runtime/'>
+<meta property='og:site_name' content='Alexey Smirnov'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='AWS'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2019-08-18T12:05:36Z'/><meta property='article:modified_time' content='2019-08-18T12:05:36Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
+
+<link rel="stylesheet" href="https://smirnov-am.github.io/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://smirnov-am.github.io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://smirnov-am.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://smirnov-am.github.io/favicon-16x16.png">
+<link rel="manifest" href="https://smirnov-am.github.io/site.webmanifest">
+<link rel="mask-icon" href="https://smirnov-am.github.io/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://smirnov-am.github.io/amp/ci-cd-pipeline-for-aws-lambda-python-runtime/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="LxHvTgaBdcBpIRtJMFKFiIvx5Mm45WC1z1S57O6O5O8" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://smirnov-am.github.io">
+          <h1 id="nav-heading" class="title is-4">Alexey Smirnov</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/smirnov-am'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg></i>
+            </span>
+          </a><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/smirnovam'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+  
+</svg></i>
+            </span>
+          </a><a class="level-item" aria-label="youtube" href='https://youtube.com/channel/UC1PS5Vov2HSkz-fKCQUiffg'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+  
+</svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:msc.smirnov.am@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg></i>
+            </span>
+          </a><a class="level-item" aria-label="rss" href='https://smirnov-am.github.io/index.xml'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>
+  
+</svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://smirnov-am.github.io/tags/aws">#AWS</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://smirnov-am.github.io/tags/python">#Python</a>
+  
+
+      
+    </div>
+    <h2 class="subtitle is-6">August 18, 2019</h2>
+    <h1 class="title">CI/CD  pipeline for AWS Lambda (Python runtime)</h1>
+    
+    <div class="content">
+      <p>Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. This post walks through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:</p>
+
+<ul>
+<li>getting message from SQS that contains the number to calculate <code>sqrt</code> for</li>
+<li>checks if the calculation was done before by querying DynamoDB</li>
+<li>if there is not cached answer in DynamoDB - calculate <code>sqrt</code> and saves the result</li>
+<li>print the result so it&rsquo;s visible in CloudWatch logs</li>
+</ul>
+
+<p>Things I&rsquo;d like the pipeline to do:</p>
+
+<ul>
+<li>create all the resources - SQS and Dynamo</li>
+<li>subscribe to any changes that are committed to master branch of GitHub repo</li>
+<li>run tests - I&rsquo;m going to run unit tests, but since the resources are there you can run integration/end-to-end tests</li>
+<li>build the package for lambda with all python dependencies</li>
+<li>deploy the package</li>
+</ul>
+
+<p>Pipeline architecture:</p>
+
+<p><img src="https://smirnov-am.github.io/content/images/cicd_lambda.png" alt="arch" /></p>
+
+<p>The initial CloudFormation template along with all the code can be found in <a href="https://github.com/smirnov-am/cicd_lambda" target="_blank">this GitHub repo</a></p>
+
+<p>The <code>pipeline.yaml</code> (see <code>aws</code> folder in the repo) contain the CloudFormation template that will create SQS, Dynamo, CodePipeline with all its steps:</p>
+
+<ul>
+<li>source step to get the source code form GitHub</li>
+<li>CodeTest (CodeBuild type) to run a container to run tests</li>
+<li>CodeBuild - a container that will prepare the build - a zip file on S3 Lambda can digest</li>
+<li>CodeDeploy - the step to deploy newly build Lambda.</li>
+</ul>
+
+<p>The first thing to do is to create GitHub OAuth token - just follow steps 1-6 from <a href="https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html" target="_blank">this AWS doc</a>.</p>
+
+<p>Next, you need to create a stack from AWS console - Go to CloudFormation and click Create Stack. It will ask to fill in the stack parameters:</p>
+
+<ul>
+<li>name - a reference to the resources of the stack</li>
+<li>GitHub token, repo owner and repo name</li>
+</ul>
+
+<p>Newly created pipeline appears in CodePipeline console right after that. If you open it there will be Source, CodeTest, CodeBuild and CodeDeploy stages present.</p>
+
+<p>Also, all additional resources will be created:</p>
+
+<ul>
+<li>SQS queue that will feed the Lambda</li>
+<li>DynamoDB table with Pay-Per-Request billing</li>
+<li>S3 bucket for pipeline artifacts - it&rsquo;s the mechanism to pass result of CodePipeline stages between each other</li>
+<li>S3 bucket that will hold zip file with packaged Lambda code</li>
+</ul>
+
+<p>Source step of the pipeline is pretty autonomous. AWS will monitor the changes and start the execution of the pipeline once there was a push to the master branch. There is a limit on how many repositories it can monitor so the alternative is to implement a GitHub webhook that will trigger a special separate Lambda that in turn will start pipeline execution.</p>
+
+<p>CodeTest is a step of CodeBuild type. It runs unit tests. Usually, the unit tests are run by developers individually by implementing pre-commit hooks on the local machine. But this step ensures that they were executed before push. Also, it can run the test for a higher level of the testing pyramid.</p>
+
+<p>CodeBuild uses <a href="https://chalice.readthedocs.io/en/latest/" target="_blank">chalice</a> package to do a couple of things</p>
+
+<ul>
+<li>create CloudFormation template to deploy lambda</li>
+<li>package Lambda code</li>
+<li>create Lambda policies</li>
+</ul>
+
+<p>The important part of this stage is the image the container will use. Since some python packages are wrappers around C libraries, which are compiled when we run <code>pip install</code>, so the OS where we run <code>pip install</code> should be similar to the OS which will run the code and use these packages. I found this images <code>amazonlinux:latest</code> on DockerHub, which resembles Lambda runtime. Dependencies are installed into virtual environment. All the site-packages go to <code>vendor</code> folder.</p>
+
+<pre><code>- python3 -m venv v-env &amp;&amp; . v-env/bin/activate &amp;&amp; pip install --upgrade pip &amp;&amp; pip install -r requirements/requirements.txt &amp;&amp; deactivate
+- mkdir vendor
+- cp -R v-env/lib/python3.7/site-packages/. vendor
+- cp -R v-env/lib64/python3.7/site-packages/. vendor
+</code></pre>
+
+<p>Next thing is the code - it should be placed in a <code>vendor</code> folder as per chalice docs. I don&rsquo;t like to have it in my projects structures so I&rsquo;m creating it in <code>codebuild.yaml</code> (which is referred in CodeTest as a <code>buildspec</code> - a script to run) and copying everything in it.</p>
+
+<pre><code>- cp -R my_package vendor
+</code></pre>
+
+<p>There is another difficulty - a Lambda IAM policy. Ideally, it should be as restrictive as possible, but grant access to the SQS and Dynamo we already created. In this stage I&rsquo;m passing a number of different environment variables to the container:</p>
+
+<ul>
+<li>the ones that start with <code>LAMBDA_ENV</code> go into Lambda config to be available at its runtime</li>
+<li>the ones starting with <code>POLICY_ENV</code> are used to generate policy document (chalice policy generator is not yet good enough for that)</li>
+</ul>
+
+<p>There is a <code>config_generator.py</code> script that read these variables and put them in proper places. <code>LAMBDA_ENV</code> will be put into a file <code>.chalice/config.json</code> and <code>POLICY_ENV</code> will go to <code>.chalice/police.json</code> - both will be used later by chalice to generate CloudFormation template.</p>
+
+<p>Finally, the size of the build should be less than 265Mb. So delete extra files (<code>boto3</code> is needed for build, but it&rsquo;s available in Lambda runtime so no need to take it with us).</p>
+
+<pre><code>- echo 'Size of build' $(du -sm --exclude=./v-env .) 'MB'
+- find . -name &quot;*.pyc&quot; -exec rm -f {} \;
+- find ./vendor  -name 'boto3' -prune -type d -exec rm -rf {} \;
+- find ./vendor  -name 'botocore' -prune -type d -exec rm -rf {} \;
+- echo 'Size of build after cleaning' $(du -sm --exclude=./v-env .) 'MB'
+</code></pre>
+
+<p>The <code>chalice package</code> command, in the end, creates a zip file along with <code>sam.json</code> file. AWS CLI command will prepare the final template for CloudFormation - <code>transformed.yaml</code> - that will drive the deploy stage</p>
+
+<pre><code>- . v-env/bin/activate &amp;&amp; python config_generator.py &amp;&amp; chalice package /tmp/packaged &amp;&amp; deactivate
+- aws cloudformation package --template-file /tmp/packaged/sam.json --s3-bucket ${APP_S3_BUCKET} --output-template-file transformed.yaml
+</code></pre>
+
+<p>After all that all the changes to the master branch of your repo should be automatically tested, (ideally) integrated and deployed.</p>
+
+<p>If you use Python in a serverless environment on AWS or use CI/CD for such applications, connect with me on <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">LinkedIn</a></p>
+
+<p>Code for this post is available <a href="https://github.com/smirnov-am/cicd_lambda" target="_blank">here</a></p>
+
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://smirnov-am.github.io/amp/streaming-timeseries-with-flask-and-plotly/">Streaming timeseries with Flask and Plotly</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/background-jobs-with-flask/">Background jobs with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/multitenancy-with-flask/">Multitenancy with Flask</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/securing-flask-web-applications/">Securing Flask web applications</a></li>
+	
+	<li><a href="https://smirnov-am.github.io/amp/using-nltk-library-with-aws-lambda/">Using NLTK library with AWS Lambda</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="https://smirnov-am.github.io/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; Alexey Smirnov 2020</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-107429956-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+</body>
+</html>
+

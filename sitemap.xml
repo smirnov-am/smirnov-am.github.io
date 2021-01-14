@@ -4,16 +4,41 @@
   
   <url>
     <loc>https://smirnov-am.github.io/</loc>
-    <lastmod>2020-12-21T18:41:00+00:00</lastmod>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/how-to-become-python-developer/</loc>
-    <lastmod>2020-12-21T18:41:00+00:00</lastmod>
+    <loc>https://smirnov-am.github.io/tags/c&#43;&#43;/</loc>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/tags/opencv/</loc>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://smirnov-am.github.io/post/</loc>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/matting/</loc>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/tags/</loc>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/tags/vfx/</loc>
+    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/how-to-become-python-developer/</loc>
     <lastmod>2020-12-21T18:41:00+00:00</lastmod>
   </url>
   
@@ -23,27 +48,7 @@
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/</loc>
-    <lastmod>2020-12-21T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/c&#43;&#43;/</loc>
-    <lastmod>2020-10-14T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://smirnov-am.github.io/chromakeying/</loc>
-    <lastmod>2020-10-14T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/opencv/</loc>
-    <lastmod>2020-10-14T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/vfx/</loc>
     <lastmod>2020-10-14T23:03:00+00:00</lastmod>
   </url>
   
@@ -138,26 +143,6 @@
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/tags/embedded/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/esp32/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/micropython-on-esp32/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/micropython/</loc>
-    <lastmod>2019-12-29T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://smirnov-am.github.io/python-linters-for-better-code-quality/</loc>
     <lastmod>2019-11-04T20:23:49+00:00</lastmod>
   </url>
@@ -178,28 +163,8 @@
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/</loc>
+    <loc>https://smirnov-am.github.io/ci-cd-pipeline-for-aws-lambda-python-runtime/</loc>
     <lastmod>2019-08-18T12:05:36+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/anomalies-in-bank-transactions/</loc>
-    <lastmod>2019-08-07T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/machine-learning/</loc>
-    <lastmod>2019-08-07T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/tags/security/</loc>
-    <lastmod>2019-08-07T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://smirnov-am.github.io/unittesting-decorators/</loc>
-    <lastmod>2019-06-30T18:10:41+00:00</lastmod>
   </url>
   
   <url>
@@ -233,6 +198,11 @@
   </url>
   
   <url>
+    <loc>https://smirnov-am.github.io/tags/security/</loc>
+    <lastmod>2018-07-11T15:26:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://smirnov-am.github.io/tags/nlp/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
   </url>
@@ -248,12 +218,17 @@
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/</loc>
+    <loc>https://smirnov-am.github.io/keyphrases/</loc>
     <lastmod>2018-04-16T15:17:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/</loc>
+    <loc>https://smirnov-am.github.io/tags/machine-learning/</loc>
+    <lastmod>2018-04-16T15:17:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://smirnov-am.github.io/basket-analysis/</loc>
     <lastmod>2018-04-08T12:18:00+00:00</lastmod>
   </url>
   

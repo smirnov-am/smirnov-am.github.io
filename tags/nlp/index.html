@@ -37,7 +37,7 @@
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/nlp/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='website'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2020-12-21T18:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='website'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2021-01-12T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -142,10 +142,12 @@
         
       </div>
       <h2 class="subtitle is-6 date">May 9, 2018</h2>
-      <h1 class="title"><a href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/">Using NLTK library with AWS Lambda.</a></h1>
+      <h1 class="title"><a href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/">Using NLTK library with AWS Lambda</a></h1>
       <div class="content">
-        I&rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.
-1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+        This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.
+1 Create virtual environment In order to separate system-wide dependencies from this app, create a separate virtual environment with:
+~ mkvirtualenv nltk_env  2 Install nltk In the virtual environment use pip to install nltk package:
+(nltk_env) ~ pip install nltk  3 Download nltk data Pip doesn&rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:
         
         <a class="button is-link" href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/" style="height:28px">
           Read more
@@ -171,13 +173,13 @@
         
       </div>
       <h2 class="subtitle is-6 date">April 16, 2018</h2>
-      <h1 class="title"><a href="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></h1>
+      <h1 class="title"><a href="https://smirnov-am.github.io/keyphrases/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></h1>
       <div class="content">
         Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.
-Supervised approach This is a multi-label, multi-class classification algorithm, where we may have following features as an input:
- text converted to bag-of-words text is treated as a stream of vectors, which are pre-trained word embeddings  For bag-of-words we may use linear SVM as a classifier.
+Supervised approach This is a multi-label, multi-class classification algorithm, where following features can be used as an input:
+ text converted to bag-of-words text is treated as a stream of vectors, which are pre-trained word embeddings  For bag-of-words linear SVM is a good classifier.
         
-        <a class="button is-link" href="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/" style="height:28px">
+        <a class="button is-link" href="https://smirnov-am.github.io/keyphrases/" style="height:28px">
           Read more
         </a>
         

@@ -37,7 +37,7 @@
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/aws/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='website'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2020-12-21T18:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='website'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2021-01-12T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -144,7 +144,7 @@
       <h2 class="subtitle is-6 date">April 12, 2020</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/deploy-flask/">5 ways to deploy Flask</a></h1>
       <div class="content">
-        In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&rsquo;m going to use a simple app from Flask docs:
+        In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&rsquo;m going to use a simple app from Flask docs:
 app.py
 from flask import Flask app = Flask(__name__) @app.route('/') def hello_world(): return 'Hello, World!' if __name__ == '__main__': app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.
         
@@ -172,7 +172,7 @@ from flask import Flask app = Flask(__name__) @app.route('/') def hello_world():
       <h2 class="subtitle is-6 date">October 23, 2019</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/run-flask-on-aws-ecs/">Run Flask on AWS ECS (Fargate)</a></h1>
       <div class="content">
-        There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.Source code
+        There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.Source code
 Here are the details of these templates:
         
         <a class="button is-link" href="https://smirnov-am.github.io/run-flask-on-aws-ecs/" style="height:28px">
@@ -195,9 +195,9 @@ Here are the details of these templates:
       <h2 class="subtitle is-6 date">October 1, 2019</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/static-website-on-aws-s3-with-ssl-and-continuous-delivery/">Static website on AWS S3 with SSL and continuous delivery</a></h1>
       <div class="content">
-        AWS S3 is perfect to host static websites. Basic setup when you have a CNAME DNS record pointing to the bucket endpoint covers a lot of use cases. Couple of things I&rsquo;m missing is
- SSL continuous delivery.  For SSL we need CloudFront to serve as a global load balancer and provide SSL offload.
-To achieve continues delivery I&rsquo;d like to connect the GitHub repo storing the source to CodePipeline.
+        AWS S3 is perfect to host static websites. Basic setup when you have a CNAME DNS record pointing to the bucket endpoint covers a lot of use cases. Couple of things missing are
+ SSL continuous delivery.  For SSL you need CloudFront to serve as a global load balancer and provide SSL offload.
+To achieve continues delivery connect the GitHub repo storing the source to CodePipeline. CodePipeline is triggered at every push to the master branch and automatically updates the content of the S3 bucket with changes source files.
         
         <a class="button is-link" href="https://smirnov-am.github.io/static-website-on-aws-s3-with-ssl-and-continuous-delivery/" style="height:28px">
           Read more
@@ -221,12 +221,12 @@ To achieve continues delivery I&rsquo;d like to connect the GitHub repo storing 
         
       </div>
       <h2 class="subtitle is-6 date">August 18, 2019</h2>
-      <h1 class="title"><a href="https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/">CI/CD  pipeline for AWS Lambda (Python runtime)</a></h1>
+      <h1 class="title"><a href="https://smirnov-am.github.io/ci-cd-pipeline-for-aws-lambda-python-runtime/">CI/CD  pipeline for AWS Lambda (Python runtime)</a></h1>
       <div class="content">
-        Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. I&rsquo;m going to walk through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:
+        Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. This post walks through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:
  getting message from SQS that contains the number to calculate sqrt for checks if the calculation was done before by querying DynamoDB if there is not cached answer in DynamoDB - calculate sqrt and saves the result print the result so it&rsquo;s visible in CloudWatch logs  Things I&rsquo;d like the pipeline to do:
         
-        <a class="button is-link" href="https://smirnov-am.github.io/ci-ci-pipeline-for-aws-lambda-python-runtime/" style="height:28px">
+        <a class="button is-link" href="https://smirnov-am.github.io/ci-cd-pipeline-for-aws-lambda-python-runtime/" style="height:28px">
           Read more
         </a>
         
@@ -250,10 +250,12 @@ To achieve continues delivery I&rsquo;d like to connect the GitHub repo storing 
         
       </div>
       <h2 class="subtitle is-6 date">May 9, 2018</h2>
-      <h1 class="title"><a href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/">Using NLTK library with AWS Lambda.</a></h1>
+      <h1 class="title"><a href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/">Using NLTK library with AWS Lambda</a></h1>
       <div class="content">
-        I&rsquo;m going to walk through the process of creating a simple serverless app for finding part-of-speech tag of an input text.
-1 Create virtual environment mac:serverless_nltk as$ mkvirtualenv nltk_env  2 Install nltk (nltk_env) mac:serverless_nltk as$ pip install nltk  3 Download nltk data (nltk_env) mac:serverless_nltk as$ python Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+        This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.
+1 Create virtual environment In order to separate system-wide dependencies from this app, create a separate virtual environment with:
+~ mkvirtualenv nltk_env  2 Install nltk In the virtual environment use pip to install nltk package:
+(nltk_env) ~ pip install nltk  3 Download nltk data Pip doesn&rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:
         
         <a class="button is-link" href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/" style="height:28px">
           Read more

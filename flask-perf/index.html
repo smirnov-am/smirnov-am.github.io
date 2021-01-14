@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "How to increase Flask performance",
         "headline" : "How to increase Flask performance",
-        "description" : "When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.\nAnd here I assume that the underlying platform that runs Flask has enough resources to do so.",
+        "description" : "How to monitor, troubleshoot and increase Flask performance",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2020-05-07 23:03:00 \x2b0000 UTC",
         "dateModified" : "2020-05-07 23:03:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/flask-perf\/",
-        "wordCount" : "1340",
+        "wordCount" : "1332",
         "keywords" : [ "Flask","Python","Blog" ]
     }
     </script>
@@ -34,8 +34,7 @@
 <title>How to increase Flask performance | Alexey Smirnov</title>
 
 <meta property='og:title' content='How to increase Flask performance - Alexey Smirnov'>
-<meta property='og:description' content='When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.
-And here I assume that the underlying platform that runs Flask has enough resources to do so.'>
+<meta property='og:description' content='How to monitor, troubleshoot and increase Flask performance'>
 <meta property='og:url' content='https://smirnov-am.github.io/flask-perf/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-05-07T23:03:00Z'/><meta property='article:modified_time' content='2020-05-07T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -144,7 +143,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
     <div class="content">
       
 
-<p>When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.</p>
+<p>When Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified you can fight an underlying cause.</p>
 
 <p>And here I assume that the underlying platform that runs Flask has enough resources to do so. In the rest of this post, I&rsquo;ll explore some instruments that help with identifying bottlenecks.</p>
 
@@ -152,7 +151,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
 
 <p>Our app will use MySQL with many-to-many mapping from Students tables to Classes table - students can sign up for multiple classes and each class can accommodate many students.</p>
 
-<p>I&rsquo;m using Flask-SQLAlchemy:</p>
+<p>I&rsquo;m using Flask-SQLAlchemy here:</p>
 
 <pre><code class="language-python">from flask_sqlalchemy import SQLAlchemy
 
@@ -181,7 +180,7 @@ class Class(db.Model):
 
 <h2 id="views">Views</h2>
 
-<p>Let create a couple of views. One to query all the students signed up for a class</p>
+<p>Let&rsquo;s create a couple of views. One to query all the students signed up for a class</p>
 
 <pre><code class="language-python">@app.route('/roster')
 def roster():
@@ -207,7 +206,7 @@ def my_class():
 
 <h2 id="profiling-with-werkzeug-profiler">Profiling with werkzeug profiler</h2>
 
-<p>There is a built-in profiler in werkzeug - Flask’s development web server To use it I&rsquo;ll modify the main of the app.py:</p>
+<p>There is a built-in profiler in werkzeug - Flask’s development web server. To use it modify the main of the app.py:</p>
 
 <pre><code class="language-python">if __name__ == '__main__':
     from werkzeug.middleware.profiler import ProfilerMiddleware
@@ -248,7 +247,7 @@ snakeviz profile/GET.my_class.38ms.1588862067.prof
 <p>It will open a diagram in a browser. In my case it looks like that:
 <img src="https://smirnov-am.github.io/content/images/flask-perf/prof_viz1.png" alt="prof_viz1" />.</p>
 
-<p>I can hover over boxes on each call level to see what&rsquo;s the function being called and how long did it take. If I want to find  this costly method &lsquo;recv_into&rsquo; of &lsquo;_socket.socket&rsquo; I need to click on a box to zoom in.</p>
+<p>Hover over boxes on each call level to see what&rsquo;s the function being called and how long did it take. If you want to find this costly method &lsquo;recv_into&rsquo; of &lsquo;_socket.socket&rsquo; you need to click on a box to zoom in.</p>
 
 <p>Another way of visualizing of the profiler output is to use <code>gprof2dot</code> to convert prof file to
 a dot file and <code>xdot</code> draw a graph from dot file</p>
@@ -261,7 +260,7 @@ xdot calling_graph.dot
 <p>The resulting graph is:
 <img src="https://smirnov-am.github.io/content/images/flask-perf/dot.png" alt="dot" /></p>
 
-<p>After investigating this visualization it&rsquo;s clear that we spend most time executing sqlachemy code (no surprise - we only do a query to the database in our view)</p>
+<p>After investigating this visualization it&rsquo;s clear that most time is spent executing sqlachemy code (no surprise - we only do a query to the database in the Flask)</p>
 
 <h2 id="getting-slow-sql-queries">Getting slow SQL queries</h2>
 
@@ -333,7 +332,7 @@ LIMIT 1;
 </tbody>
 </table>
 
-<p>The <code>type</code> column says that it was an ALL type query and it means that MySQL was unable to identify any keys that can be used. So if we set a proper index te query should run faster.</p>
+<p>The <code>type</code> column says that it was an ALL type query and it means that MySQL was unable to identify any keys that can be used. So if we set a proper index the query should run faster.</p>
 
 <h2 id="flask-debugtoolbar">Flask-DebugToolbar</h2>
 
@@ -355,9 +354,9 @@ toolbar = DebugToolbarExtension(app)
 
 <h2 id="api-monitoring">API monitoring</h2>
 
-<p>All the mentioned methods need you to make an actual call to get the profiler data. They do not store the results of your user&rsquo;s call, not they provide statistics on what endpoints perform worst.</p>
+<p>All the mentioned methods need you to make an actual call to get the profiler data. They do not store the results of your user&rsquo;s call, nor they provide statistics on what endpoints perform worst.</p>
 
-<p>2 plugins allow monitoring such a performance: <code>Flask MonitoringDashboard</code> and <code>flask-profiler</code></p>
+<p>2 plugins allow monitoring such a performance: <code>Flask-MonitoringDashboard</code> and <code>flask-profiler</code></p>
 
 <p>Installation of both plugins is simple:</p>
 
@@ -372,19 +371,21 @@ toolbar = DebugToolbarExtension(app)
 dashboard.bind(app)
 </code></pre>
 
-<p>The dashboard is using SQLite by default (you&rsquo;ll a .db file in the root directory of the project). The dashboard is available under /dashboard (default credentials are admin/admin)</p>
+<p>The dashboard is using SQLite by default (you&rsquo;ll get a .db file in the root directory of the project). The dashboard is available under <code>/dashboard</code> (default credentials are admin/admin)</p>
 
-<p>In the API performance section, we can find statistics (nice block diagrams) showing response time distributions of our endpoints:</p>
+<p>In the API performance section, you can find statistics (nice block diagrams) showing response time distributions of our endpoints:</p>
 
 <p><img src="https://smirnov-am.github.io/content/images/flask-perf/fdb1.png" alt="fdb1" /></p>
 
-<p>In the overview section, we can select a log level. If we select #3 we will be able to access a profiler data that shows the call stack and timings for every request being made<img src="fdb2.png" alt="fdb2" /></p>
+<p>In the overview section, you can select a log level. If you select #3 you will access a profiler data that shows the call stack and timings for every request being made</p>
+
+<p><img src="fdb2.png" alt="fdb2" /></p>
 
 <p>There are a bunch of configuration options this a profiler. See the docs <a href="https://flask-monitoringdashboard.readthedocs.io/en/latest/configuration.html" target="_blank">here</a></p>
 
 <h3 id="flask-profiler">flask-profiler</h3>
 
-<p>We setup the profiler like so:</p>
+<p>Setup the profiler like so:</p>
 
 <pre><code class="language-python">from flask_profiler import Profiler
 app.config[&quot;flask_profiler&quot;] = {
@@ -405,25 +406,28 @@ app.config[&quot;flask_profiler&quot;] = {
 Profiler(app)
 </code></pre>
 
-<p>The dashboard is also using SQLite by default (but MongoDB and SQLAlchemy are available interfaces). of the project). The dashboard is available under /flask-profile (default credentials are admin/admin)</p>
+<p>The dashboard is also using SQLite by default (but MongoDB and SQLAlchemy are available backends). The dashboard is available under /flask-profile (default credentials are admin/admin)</p>
 
-<p>On the overview page there is a statistics of our endpoint&rsquo;s usage:<img src="https://smirnov-am.github.io/content/images/flask-perf/fpf1.png" alt="fpf1" /></p>
+<p>On the overview page there is a statistics of our endpoint&rsquo;s usage:</p>
 
-<p>In the settings there is a list of all requests where we can see that was  passed to the server:
-<img src="https://smirnov-am.github.io/content/images/flask-perf/fpf2.png" alt="fpf2" /></p>
+<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fpf1.png" alt="fpf1" /></p>
+
+<p>In the settings there is a list of all requests where we can see that was  passed to the server:</p>
+
+<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fpf2.png" alt="fpf2" /></p>
 
 <p>Both dashboards are meant to be used when Flask is in debug mode and I wouldn&rsquo;t put them on in a production environment. So the best approach to work with them is to enable them on a development machine and run a test using ab, siege, or JMeter and analyze the results afterward.</p>
 
 <h2 id="final-thoughts">Final thoughts</h2>
 
-<p>Only after identifying an underlying cause for slow responses, we can start dealing with them. In my career I&rsquo;ve encountered such situations:</p>
+<p>Only after identifying an underlying cause for slow responses, you can start dealing with them. In my career I&rsquo;ve encountered such situations:</p>
 
 <ul>
 <li><p>In case if slow DB queries - use EXPLAIN to see if the server uses the index for querying the data.</p></li>
 
 <li><p>Or you may spin up a read-replica DB to steer read requests to it if you&rsquo;ve reached a limit with vertical scaling of the DB server.</p></li>
 
-<li><p>If it&rsquo;s a slow API or CPU intensive job - consider putting it in an async background job.</p></li>
+<li><p>If it&rsquo;s a slow API or CPU intensive job - consider putting it in an <a href="https://smirnov-am.github.io/background-jobs-with-flask/" target="_blank">async background job</a>.</p></li>
 </ul>
 
 <p>Please, reach me out on <a href="linkedin.com/in/smirnovam" target="_blank">LinkedIn</a> you you find this post useful and want to share your experience with

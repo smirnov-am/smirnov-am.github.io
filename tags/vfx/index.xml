@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2020</copyright>
-    <lastBuildDate>Wed, 14 Oct 2020 23:03:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 12 Jan 2021 23:03:00 +0000</lastBuildDate>
     
 	<atom:link href="https://smirnov-am.github.io/tags/vfx/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Replacing background in video with OpenCV/C&#43;&#43;</title>
+      <link>https://smirnov-am.github.io/matting/</link>
+      <pubDate>Tue, 12 Jan 2021 23:03:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/matting/</guid>
+      <description>Separating a foreground element of an image from its background for later compositing into a new scene is one of the most basic and common tasks in visual effects production. This problem is typically called matting when applied to film, or keying when applied to video.
+In this demo you can see how a church in the foreground is separated from the background blue sky, which was later replaced with a sky full of stars.</description>
+    </item>
     
     <item>
       <title>Chroma Keying with OpenCV/C&#43;&#43;</title>

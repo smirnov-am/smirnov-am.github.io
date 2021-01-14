@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Running Flask in production with Docker",
         "headline" : "Running Flask in production with Docker",
-        "description" : "Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:\n * Serving Flask app \x26quot;app\x26quot; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http:\/\/0.0.0.0:5555\/ (Press CTRL\x2bC to quit)  I\x26rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.",
+        "description" : "How to run Flask in Docker",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2018-08-13 15:31:00 \x2b0000 UTC",
         "dateModified" : "2018-08-13 15:31:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/running-flask-in-production-with-docker\/",
-        "wordCount" : "1337",
+        "wordCount" : "1331",
         "keywords" : [ "Flask","Blog" ]
     }
     </script>
@@ -34,11 +34,10 @@
 <title>Running Flask in production with Docker | Alexey Smirnov</title>
 
 <meta property='og:title' content='Running Flask in production with Docker - Alexey Smirnov'>
-<meta property='og:description' content='Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:
- * Serving Flask app &quot;app&quot; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL&#43;C to quit)  I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.'>
+<meta property='og:description' content='How to run Flask in Docker'>
 <meta property='og:url' content='https://smirnov-am.github.io/running-flask-in-production-with-docker/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/kitflask.jpg'><meta property='article:published_time' content='2018-08-13T15:31:00Z'/><meta property='article:modified_time' content='2018-08-13T15:31:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:published_time' content='2018-08-13T15:31:00Z'/><meta property='article:modified_time' content='2018-08-13T15:31:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -191,7 +190,9 @@ die-on-term = true
 
 <p>There is also a backlog for uwsgi meaning that if all workers (uwsgi processes) are busy with requests, excessive requests will be put in a queue of size 100 by default. Requests above that level will be dropped by uwsgi, but we will eventually have nginx in front of it with it&rsquo;s own backlog.</p>
 
-<pre><code>[uWSGI] getting INI configuration from uwsgi.ini                                             
+<p>This is the output you should see when running <code>uwsgi</code> command and provide with <code>uwsgi.ini</code> (<code>uwsgi --ini uwsgi.ini</code>):</p>
+
+<pre><code class="language-bash">[uWSGI] getting INI configuration from uwsgi.ini                                             
 *** Starting uWSGI 2.0.17.1 (64bit) on [Fri Aug  3 22:29:18 2018] ***                        
 compiled with version: 7.2.0 on 03 August 2018 22:23:17                                      
 os: Linux-4.13.0-46-generic #51-Ubuntu SMP Tue Jun 12 12:36:29 UTC 2018                      
@@ -228,22 +229,20 @@ spawned uWSGI worker 5 (pid: 23927, cores: 1)
 
 <p>Also this will create a socket file, that will be referred later in nginx configuration.</p>
 
-<pre><code>~ ls -la /tmp/uwsgi.socket  
+<pre><code class="language-bash">~ ls -la /tmp/uwsgi.socket  
 srwxrwxr-x 1 as as 0 aug  3 22:29 /tmp/uwsgi.socket
 
 </code></pre>
 
-<p>Another thing is the user which runs <code>uwsgi</code> processes and owns a socket. Ideally you need to use user with minimum access right. With <code>uid</code>/<code>gid</code> options I&rsquo;ve specified <code>www-data</code> - standard user used by web servers. If you run uwsgi manually from bash it will use your user for socket and processes. But in Docker we will run it as root so these options are needed to downgrade it to <code>www-data</code>.</p>
-
-<p>Also I&rsquo;ve seen that some distributions clean /tmp or some daemons have different view but it&rsquo;s not the case with the base distribution for the image I&rsquo;m using.</p>
+<p>Another thing is the user which runs <code>uwsgi</code> processes and owns a socket. Ideally you need to use user with minimum access right. <code>uid</code>/<code>gid</code> options are set to <code>www-data</code> here - standard user for web servers. If you run uwsgi manually from bash it will use your user for socket and processes. But in Docker you will run it as root so these options are needed to downgrade it to <code>www-data</code>.</p>
 
 <p>Uwsgi has a lot of configuration options. There is a good list you need to check if you need to troubleshoot/tune your application that can be found <a href="https://uwsgi-docs.readthedocs.io/en/latest/ThingsToKnow.html" target="_blank">here</a></p>
 
 <h2 id="nginx">nginx</h2>
 
-<p>Nginx will serve as a proxy to uwsgi. It&rsquo;s nginx that will listen on ports <sup>80</sup>&frasl;<sub>443</sub> and forward requests to the socket.It&rsquo;s config (named <code>nginx.conf</code>) is pretty straightforward (I&rsquo;m omitting SSL config)</p>
+<p>Nginx will serve as a proxy to uwsgi. It&rsquo;s nginx that will listen on ports <sup>80</sup>&frasl;<sub>443</sub> and forward requests to the socket. It&rsquo;s config (named <code>nginx.conf</code>) is pretty straightforward (I&rsquo;m omitting SSL part for brevity)</p>
 
-<pre><code>user www-data;
+<pre><code class="language-nginx">user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
 
@@ -285,7 +284,7 @@ http {
 
 <p>I&rsquo;ve added redirection of access and error logs to stdout so both will be accessible through <code>docker logs</code> command. Uwsgi logs are streamed to stdout by default.</p>
 
-<p>One interesting thing I found is about long lasting requests. Nginx itself may kill these requests. So it&rsquo;s worth adding this config to <code>location</code> block:</p>
+<p>One interesting thing I found is about long lasting requests. Nginx itself may kill these requests. So it&rsquo;s worth adding this parameters to the <code>location</code> block:</p>
 
 <pre><code>uwsgi_read_timeout 1h;
 uwsgi_send_timeout 1h;
@@ -298,7 +297,7 @@ proxy_read_timeout 1h;
 
 <p>This is a simple startup script that will be used as default for executing container. Name of the file will be <code>start.sh</code> and it will be referred in Dockerfile.</p>
 
-<pre><code>#!/usr/bin/env bash
+<pre><code class="language-bash">#!/usr/bin/env bash
 service nginx start
 uwsgi --ini uwsgi.ini
 
@@ -322,20 +321,18 @@ Werkzeug==0.14.1
 
 <p>I&rsquo;ve tried a couple of ready-made images from Docker hub and found them overcomplicated or edited in a way by their maintainers making them unusable. So I&rsquo;ll start with basic python image.</p>
 
-<pre><code>FROM python:3.6-slim
-
+<pre><code class="language-Dockerfile">FROM python:3.6-slim
 </code></pre>
 
 <p>First thing let&rsquo;s copy <code>hello.py</code>, <code>uwsgi.ini</code>, <code>requirements.txt</code> and <code>start.sh</code> to working directory:</p>
 
-<pre><code>COPY . /srv/flask_app
+<pre><code class="language-Dockerfile">COPY . /srv/flask_app
 WORKDIR /srv/flask_app
-
 </code></pre>
 
 <p>Base image doesn&rsquo;t have nginx and some useful packages</p>
 
-<pre><code>RUN apt-get clean \
+<pre><code class="language-Dockerfile">RUN apt-get clean \
     &amp;&amp; apt-get -y update
 
 RUN apt-get -y install nginx \
@@ -346,13 +343,13 @@ RUN apt-get -y install nginx \
 
 <p>Now let&rsquo;s install python requirements</p>
 
-<pre><code>RUN pip install -r requirements.txt --src /usr/local/src
+<pre><code class="language-Dockerfile">RUN pip install -r requirements.txt --src /usr/local/src
 
 </code></pre>
 
 <p>Finally, copy nginx config to the proper location, add execution rights to startup script and set is as default.</p>
 
-<pre><code>COPY nginx.conf /etc/nginx
+<pre><code class="language-Dockerfile">COPY nginx.conf /etc/nginx
 RUN chmod +x ./start.sh
 CMD [&quot;./start.sh&quot;]
 
@@ -362,8 +359,7 @@ CMD [&quot;./start.sh&quot;]
 
 <p>Image build can be done like so:</p>
 
-<pre><code>docker build . -t flask_image
-
+<pre><code class="language-bash">docker build . -t flask_image
 </code></pre>
 
 <p>It creates an image named <code>flask_image</code> that can be run with this command:</p>

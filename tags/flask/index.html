@@ -37,7 +37,7 @@
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/flask/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='website'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2020-12-21T18:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='website'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2021-01-12T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -143,7 +143,7 @@
       <h1 class="title"><a href="https://smirnov-am.github.io/flask-s3/">Uploading files to AWS S3 with Flask</a></h1>
       <div class="content">
         One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
-I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
+And with horizontal scaling you need to mount an external storage to every running instance that supports replication.
 Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.
         
         <a class="button is-link" href="https://smirnov-am.github.io/flask-s3/" style="height:28px">
@@ -170,8 +170,8 @@ Another option is to use object storage - like AWS S3 - and upload files directl
       <h2 class="subtitle is-6 date">July 9, 2020</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/flask-stripe/">Accepting payments in Flask with Stripe</a></h1>
       <div class="content">
-        Introduction In this article you&rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. Our example will be a webshop, that has a single page for selling 5$ T-shirts.
-Main page Let&rsquo;s create a Flask route that serves the webshop page.
+        Introduction In this article you&rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. THe example will be a webshop, that has a single page for selling 5$ T-shirts.
+Main page Create a Flask route that serves the webshop page.
 The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
 @app.route('/') def webshop(): return &quot;&quot;&quot;&lt;html&gt; &lt;head&gt;&lt;/head&gt; &lt;body&gt; &lt;a href=&quot;#&quot; id=&quot;checkout&quot;&gt;Buy T-shirt for 5$&lt;/a&gt; &lt;script src=&quot;https://code.
         
@@ -199,7 +199,7 @@ The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - s
       <h2 class="subtitle is-6 date">May 7, 2020</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/flask-perf/">How to increase Flask performance</a></h1>
       <div class="content">
-        When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.
+        When Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified you can fight an underlying cause.
 And here I assume that the underlying platform that runs Flask has enough resources to do so.
         
         <a class="button is-link" href="https://smirnov-am.github.io/flask-perf/" style="height:28px">
@@ -228,7 +228,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
       <h2 class="subtitle is-6 date">April 12, 2020</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/deploy-flask/">5 ways to deploy Flask</a></h1>
       <div class="content">
-        In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&rsquo;m going to use a simple app from Flask docs:
+        In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&rsquo;m going to use a simple app from Flask docs:
 app.py
 from flask import Flask app = Flask(__name__) @app.route('/') def hello_world(): return 'Hello, World!' if __name__ == '__main__': app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.
         
@@ -256,7 +256,7 @@ from flask import Flask app = Flask(__name__) @app.route('/') def hello_world():
       <h2 class="subtitle is-6 date">October 23, 2019</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/run-flask-on-aws-ecs/">Run Flask on AWS ECS (Fargate)</a></h1>
       <div class="content">
-        There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.Source code
+        There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.Source code
 Here are the details of these templates:
         
         <a class="button is-link" href="https://smirnov-am.github.io/run-flask-on-aws-ecs/" style="height:28px">
@@ -283,8 +283,8 @@ Here are the details of these templates:
       <h2 class="subtitle is-6 date">December 12, 2018</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/">Streaming timeseries with Flask and Plotly</a></h1>
       <div class="content">
-        This simple app for streaming cpu utilization to a web page. I&rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.
-  Flask app I&rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.
+        This post describes simple app for streaming cpu utilization to a web page. It uses Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.js for visualization.
+Flask app Follow flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.
         
         <a class="button is-link" href="https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/" style="height:28px">
           Read more
@@ -311,9 +311,9 @@ Here are the details of these templates:
       <h1 class="title"><a href="https://smirnov-am.github.io/background-jobs-with-flask/">Background jobs with Flask</a></h1>
       <div class="content">
         Basic request lifecycle with Flask goes like this:
- Flask get request parse parameters does calculations returns result  This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.
+ Flask gets a request is parses input parameters does necessary calculations and finally returns the result  This synchronous task is fine when a user needs the result of calculation immediately. Another use case is when the result is not relevant right now and the user just wants to schedule an execution of the task asynchronously.
 Such scenarios include:
- sending email creating thumbnails from uploaded image    Common implementation Asynchronous tasks are usually implemented like this:
+ sending an email creating thumbnails from uploaded images starting a calculation for a long CPU intensive task  Common implementation Asynchronous tasks are usually implemented like this:
         
         <a class="button is-link" href="https://smirnov-am.github.io/background-jobs-with-flask/" style="height:28px">
           Read more
@@ -339,8 +339,8 @@ Such scenarios include:
       <h2 class="subtitle is-6 date">October 26, 2018</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/multitenancy-with-flask/">Multitenancy with Flask</a></h1>
       <div class="content">
-        What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
-  Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI gives connection info and database name.
+        What is multi-tenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
+Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI for connection information for it.
         
         <a class="button is-link" href="https://smirnov-am.github.io/multitenancy-with-flask/" style="height:28px">
           Read more
@@ -362,9 +362,10 @@ Such scenarios include:
       <h2 class="subtitle is-6 date">September 27, 2018</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/flask-pagination-macro/">Flask pagination macro</a></h1>
       <div class="content">
-        In this post I will cover how to create a pagination with Jinja macro feature.
-  Requirements:
- show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
+        In this post you&rsquo;ll find out how to create a pagination with Jinja macro feature.
+Requirements:
+ show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.
+First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
  head - holds content of the &lt;head&gt; tag and defines title, metas, styles body - holds content of the &lt;body&gt; tag and defines navbar, content, scripts navbar - for navigation bar content - for boostrap container (tag with class=&quot;container&quot;) scripts - goes in the end of the body, here is why  Blocks may be extended or/and overwritten in the later templatesThis template follows Bootstrap4 intro guide
         
         <a class="button is-link" href="https://smirnov-am.github.io/flask-pagination-macro/" style="height:28px">
@@ -416,9 +417,10 @@ Such scenarios include:
       <h2 class="subtitle is-6 date">July 11, 2018</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/securing-flask-web-applications/">Securing Flask web applications</a></h1>
       <div class="content">
-        I&rsquo;ve just recently finished a web security training and in this post I&rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
+        In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.
+&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt; &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt; &lt;input type=&quot;submit&quot;&gt; &lt;/form&gt;  And a template to show tweets by other users where user input from above form passed unprocessed:
         
         <a class="button is-link" href="https://smirnov-am.github.io/securing-flask-web-applications/" style="height:28px">
           Read more

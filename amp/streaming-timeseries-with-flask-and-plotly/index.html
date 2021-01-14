@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Streaming timeseries with Flask and Plotly",
         "headline" : "Streaming timeseries with Flask and Plotly",
-        "description" : "This simple app for streaming cpu utilization to a web page. I\x26rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.\n  Flask app I\x26rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.",
+        "description" : "How to stream data from Flask to frontend with Plotly",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2018-12-12 18:43:00 \x2b0000 UTC",
         "dateModified" : "2018-12-12 18:43:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/streaming-timeseries-with-flask-and-plotly\/",
-        "wordCount" : "672",
+        "wordCount" : "690",
         "keywords" : [ "Flask","Python","Blog" ]
     }
     </script>
@@ -34,11 +34,10 @@
 <title>Streaming timeseries with Flask and Plotly | Alexey Smirnov</title>
 
 <meta property='og:title' content='Streaming timeseries with Flask and Plotly - Alexey Smirnov'>
-<meta property='og:description' content='This simple app for streaming cpu utilization to a web page. I&rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.
-  Flask app I&rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.'>
+<meta property='og:description' content='How to stream data from Flask to frontend with Plotly'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/streaming-timeseries-with-flask-and-plotly/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/task-manager-3-.png'><meta property='article:published_time' content='2018-12-12T18:43:00Z'/><meta property='article:modified_time' content='2018-12-12T18:43:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2018-12-12T18:43:00Z'/><meta property='article:modified_time' content='2018-12-12T18:43:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -144,25 +143,22 @@
     <div class="content">
       
 
-<p>This simple app for streaming cpu utilization to a web page. I&rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.</p>
+<p>This post describes simple app for streaming cpu utilization to a web page. It uses Flask as websockets server (<code>flask-socketio</code> plugin), <code>socket.io</code> as client library and <code>plotly.js</code> for visualization.</p>
 
-<figure>
-    <img src="https://smirnov-am.github.io/content/images/2019/04/demo--2-.gif"/> 
-</figure>
-
+<p><img src="https://smirnov-am.github.io/content/images/streaming_demo.gif" alt="demo" /></p>
 
 <h2 id="flask-app">Flask app</h2>
 
-<p>I&rsquo;m following a flask-socketio <a href="https://flask-socketio.readthedocs.io/en/latest/" target="_blank">doc</a> to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</p>
+<p>Follow <code>flask-socketio</code> <a href="https://flask-socketio.readthedocs.io/en/latest/" target="_blank">doc</a> to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</p>
 
-<pre><code>def create_app(register_blueprint=True):
+<pre><code class="language-python">def create_app(register_blueprint=True):
     app = Flask(__name__)
     app.secret_key = os.urandom(42)
     if register_blueprint:
         app.register_blueprint(plotting_blueprint)
 
     socketio = SocketIO(app, message_queue='redis://localhost:6379/')
-    socketio.on_event('connect', bootstrap_on_connect)
+    socketio.on_event('connect', bootstrap_on_connect) # (1)
     return socketio, app
 
 
@@ -174,11 +170,11 @@ if __name__ == '__main__':
 
 </code></pre>
 
-<p>Here I&rsquo;m defining first hook - when client connects we are going to send him some history data - the task for <code>bootstrap_on_connect</code> functions.</p>
+<p>(1) Here first hook is defined - when client connects we are going to send him some history data - the task for <code>bootstrap_on_connect</code> functions.</p>
 
-<p>The blueprint I&rsquo;m defining is simple one that has only one route that serves a static page. This page will load client&rsquo;s javascript. The only parameter is window size - I&rsquo;d like to see only last 100 seconds of data.</p>
+<p>The blueprint <code>plotting_blueprint</code> is a simple one that has only one route that serves a static page. This page will load client&rsquo;s javascript. The only parameter is window size - I&rsquo;d like to see only last 100 seconds of data.</p>
 
-<pre><code>from flask import Blueprint, render_template
+<pre><code class="language-python">from flask import Blueprint, render_template
 
 plotting_blueprint = Blueprint('plotting', __name__)
 
@@ -186,15 +182,13 @@ plotting_blueprint = Blueprint('plotting', __name__)
 @plotting_blueprint.route('/')
 def index():
     return render_template('index.html', x_window=100)
-
-
 </code></pre>
 
 <h2 id="template-and-client-code">Template and client code</h2>
 
-<p>In the template I&rsquo;m putting window size inside meta tag so JS will be able to read that. Also I&rsquo;m loading all libraries in the end of body</p>
+<p>In the Jinja2 HTML template I&rsquo;m putting window size inside meta tag so JS will be able to read that. Also I&rsquo;m loading all libraries in the end of body</p>
 
-<pre><code>&lt;!DOCTYPE html&gt;
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -215,29 +209,33 @@ def index():
 
 <p><code>plot.js</code> will contain all client-side logic.</p>
 
-<pre><code>var url = 'http://' + document.domain + ':' + location.port
+<pre><code class="language-javascript">var url = 'http://' + document.domain + ':' + location.port
 var socket = io.connect(url);
 
-socket.on('connect', function(msg) {
+socket.on('connect', function(msg) { // (1)
     console.log('connected to websocket on ' + url);
 });
 
-socket.on('bootstrap', function (msg) {
+socket.on('bootstrap', function (msg) { // (2)
     plot_start = msg.x[0];
     makePlotly( msg.x, msg.y )
 });
 
-socket.on('update', function (msg) {
+socket.on('update', function (msg) { // (3)
     streamPlotly( msg.x, msg.y )
 });
 
 </code></pre>
 
-<p>First we connect to websocket (using HTTP, not WS protocol). When connected Flask will send us <code>bootstrap</code> message with initial data. Here <code>makePlotly</code> function is invoked. It will initialize plotly stuff. When <code>update</code> message is received <code>streamPlotly</code> will use <code>Plotly.extendTraces</code> to add data to plotly traces. It also updates the layout so we&rsquo;ll have nice sliding window.</p>
+<p>(1) First we connect to websocket (using HTTP, not WS protocol).</p>
+
+<p>(2) When connected Flask will send us <code>bootstrap</code> message with initial data. Here <code>makePlotly</code> function is invoked. It will initialize plotly stuff.</p>
+
+<p>(3) When <code>update</code> message is received <code>streamPlotly</code> will use <code>Plotly.extendTraces</code> to add data to plotly traces. It also updates the layout so we&rsquo;ll have nice sliding window.</p>
 
 <h2 id="running-the-app">Running the app</h2>
 
-<p>To run the app I&rsquo;m using uwsgi with gevent. uwsgi config:</p>
+<p>To run the app use uwsgi with gevent. uwsgi config looks like this:</p>
 
 <pre><code>[uwsgi]
 module = app:application
@@ -248,15 +246,13 @@ http = 127.0.0.1:5000
 gevent-monkey-patch = true
 http-websockets = true
 gevent = 1000
-
-
 </code></pre>
 
 <p>Protocol for websockets is going to be HTTP so uwsgi will listen on port 5000 instead of communication through UNIX socket with nginx.</p>
 
 <p>Nginx config should create a separate location for websocket url</p>
 
-<pre><code>server {
+<pre><code class="language-nginx">server {
     listen       80 default_server;
     listen       [::]:80 default_server;
     server_name  localhost;
@@ -282,11 +278,11 @@ gevent = 1000
 
 <h3 id="background-job">Background job</h3>
 
-<p>A separate process gets CPU utilization with <code>psutil</code> and pushes message to clients. Also it defines bootstrap function - but I&rsquo;m just starting with empty lists for now.</p>
+<p>A separate process gets CPU utilization with <code>psutil</code> and pushes messages to clients. Also it defines bootstrap function - but I&rsquo;m just starting with empty lists for now.</p>
 
 <p><code>streaming.py</code>:</p>
 
-<pre><code>#!/usr/bin/env python
+<pre><code class="language-python">#!/usr/bin/env python
 import time
 from datetime import datetime
 from psutil import cpu_percent
@@ -318,13 +314,13 @@ if __name__ == '__main__':
 <ol>
 <li>Install redis server and nginx</li>
 <li>Run uwsgi with <code>uwsgi --ini uwsgi.ini</code></li>
-<li>Install all dependencies from requirements.txt into virtual environment</li>
-<li>Run streaming.py (<code>chmod +x streaming.py &amp;&amp; ./streaming.py</code>)</li>
+<li>Install all dependencies from <code>requirements.txt</code> into virtual environment</li>
+<li>Run <code>streaming.py</code> (<code>chmod +x streaming.py &amp;&amp; ./streaming.py</code>)</li>
 </ol>
 
 <h2 id="further-thoughts">Further thoughts</h2>
 
-<p>There is no persistence to the data and newly connected client won&rsquo;t be able to see the history. For this some kind of storage is needed. Another approach is to periodically call Flask from javascript to get the data though AJAX call. I find a websocket solution more interesting - but more complex - because it allowsto have a separate process to update clients, that offloads some work from web server.</p>
+<p>There is no persistence to the data and newly connected client won&rsquo;t be able to see the history. For this some kind of storage is needed. Another approach is to periodically call Flask from javascript to get the data though AJAX call. I find a websocket solution more interesting - but more complex - because it requires to have a separate process to update clients, that offloads some work from web server.</p>
 
 <p>Full code is available from this <a href="https://github.com/smirnov-am/flask-streaming" target="_blank">repo</a></p>
 

@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Flask pagination macro",
         "headline" : "Flask pagination macro",
-        "description" : "In this post I will cover how to create a pagination with Jinja macro feature.\n  Requirements:\n show preconfigured limited number of pages at once collapse invisible pages under ... provide previous\/next navigation buttons  Jinja templates for Bootstrap4 I\x26rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:\n head - holds content of the \x26lt;head\x26gt; tag and defines title, metas, styles body - holds content of the \x26lt;body\x26gt; tag and defines navbar, content, scripts navbar - for navigation bar content - for boostrap container (tag with class=\x26quot;container\x26quot;) scripts - goes in the end of the body, here is why  Blocks may be extended or\/and overwritten in the later templatesThis template follows Bootstrap4 intro guide",
+        "description" : "Jinja2 macros to display nice pagination widget in Flask",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2018-09-27 15:35:00 \x2b0000 UTC",
         "dateModified" : "2018-09-27 15:35:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/flask-pagination-macro\/",
-        "wordCount" : "683",
+        "wordCount" : "686",
         "keywords" : [ "Flask","Blog" ]
     }
     </script>
@@ -34,13 +34,10 @@
 <title>Flask pagination macro | Alexey Smirnov</title>
 
 <meta property='og:title' content='Flask pagination macro - Alexey Smirnov'>
-<meta property='og:description' content='In this post I will cover how to create a pagination with Jinja macro feature.
-  Requirements:
- show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
- head - holds content of the &lt;head&gt; tag and defines title, metas, styles body - holds content of the &lt;body&gt; tag and defines navbar, content, scripts navbar - for navigation bar content - for boostrap container (tag with class=&quot;container&quot;) scripts - goes in the end of the body, here is why  Blocks may be extended or/and overwritten in the later templatesThis template follows Bootstrap4 intro guide'>
+<meta property='og:description' content='Jinja2 macros to display nice pagination widget in Flask'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/flask-pagination-macro/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/Pager-in-hand-684x513.jpg'><meta property='article:published_time' content='2018-09-27T15:35:00Z'/><meta property='article:modified_time' content='2018-09-27T15:35:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:published_time' content='2018-09-27T15:35:00Z'/><meta property='article:modified_time' content='2018-09-27T15:35:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -142,12 +139,9 @@
     <div class="content">
       
 
-<p>In this post I will cover how to create a pagination with Jinja macro feature.</p>
+<p>In this post you&rsquo;ll find out how to create a pagination with Jinja macro feature.</p>
 
-<figure>
-    <img src="https://smirnov-am.github.io/content/images/2019/04/demo.gif"/> 
-</figure>
-
+<p><img src="https://smirnov-am.github.io/content/images/pagination_demo.gif" alt="pagination demo" /></p>
 
 <p>Requirements:</p>
 
@@ -159,7 +153,9 @@
 
 <h2 id="jinja-templates-for-bootstrap4">Jinja templates for Bootstrap4</h2>
 
-<p>I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.<strong>First</strong> - <code>bootstrap4_base.html</code> - loads css and js files from CDN and defines major blocks:</p>
+<p>I&rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.</p>
+
+<p><strong>First</strong> - <code>bootstrap4_base.html</code> - loads css and js files from CDN and defines major blocks:</p>
 
 <ul>
 <li><code>head</code> - holds content of the <code>&lt;head&gt;</code> tag and defines <code>title</code>, <code>metas</code>, <code>styles</code></li>
@@ -192,7 +188,7 @@
 
 <h2 id="jinja-pagination-macro">Jinja pagination macro</h2>
 
-<p>Macros are comparable with functions in regular programming languages. They are useful to put often used idioms into reusable functions to not repeat yourself (“DRY”).Macro is a bare block that starts with <code>{% macro function_name(formal_params) %}</code>. It holds the HTML, or rather templated Jinja code that will be reused.I&rsquo;m putting it&rsquo;s code into separate file - <code>_macros.html</code>.</p>
+<p>Macros are comparable with functions in regular programming languages. They are useful for putting often used idioms into reusable functions to not repeat yourself (“DRY”). Macro is a bare block that starts with <code>{% macro function_name(formal_params) %}</code>. It holds the HTML, or rather templated Jinja code that will be reused. I&rsquo;m putting it&rsquo;s code into separate file - <code>_macros.html</code>.</p>
 
 <p>Usage:</p>
 
@@ -268,7 +264,7 @@ def index():
 
 <p>This class prepares a <code>pages</code> list for macro. To do the calculations it needs the number of all items and the current page. Page size and a number of visible pages are read from app config.</p>
 
-<p>Difficult part was to show exactly predefined number if links to another pages. Invisible pages are collapsed under <code>...</code>.</p>
+<p>Difficult part was to show exactly predefined number of links to another pages. Invisible pages are collapsed under <code>...</code>.</p>
 
 <h3 id="app-configuration">App configuration</h3>
 
@@ -277,7 +273,7 @@ def index():
 <ol>
 <li><code>PAGE_SIZE</code> - how many elements show in a page</li>
 
-<li><p><code>VISIBLE_PAGE_COUNT</code> - how may links to pages how in pages inculding <code>...</code>s</p>
+<li><p><code>VISIBLE_PAGE_COUNT</code> - how may links to pages how in pages including <code>...</code>s</p>
 
 <pre><code>app = Flask(__name__)
 app.secret_key = os.urandom(42)

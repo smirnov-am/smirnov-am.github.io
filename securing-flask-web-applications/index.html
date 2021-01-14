@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Securing Flask web applications",
         "headline" : "Securing Flask web applications",
-        "description" : "I\x26rsquo;ve just recently finished a web security training and in this post I\x26rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I\x26rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.\nXSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source\nExploit Consider a form asking for a user input.",
+        "description" : "Mitigation of some OWASP vulnerabilities in Flask",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2018-07-11 15:26:00 \x2b0000 UTC",
         "dateModified" : "2018-07-11 15:26:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/securing-flask-web-applications\/",
-        "wordCount" : "1806",
+        "wordCount" : "1796",
         "keywords" : [ "Python","Flask","Security","Blog" ]
     }
     </script>
@@ -34,12 +34,10 @@
 <title>Securing Flask web applications | Alexey Smirnov</title>
 
 <meta property='og:title' content='Securing Flask web applications - Alexey Smirnov'>
-<meta property='og:description' content='I&rsquo;ve just recently finished a web security training and in this post I&rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
-XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
-Exploit Consider a form asking for a user input.'>
+<meta property='og:description' content='Mitigation of some OWASP vulnerabilities in Flask'>
 <meta property='og:url' content='https://smirnov-am.github.io/securing-flask-web-applications/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://smirnov-am.github.io/images/2019/04/flask11.jpg'><meta property='article:published_time' content='2018-07-11T15:26:00Z'/><meta property='article:modified_time' content='2018-07-11T15:26:00Z'/><meta name='twitter:card' content='summary_large_image'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Python'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Security'><meta property='article:published_time' content='2018-07-11T15:26:00Z'/><meta property='article:modified_time' content='2018-07-11T15:26:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
 <link href="https://smirnov-am.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Alexey Smirnov" />
@@ -147,7 +145,7 @@ Exploit Consider a form asking for a user input.'>
     <div class="content">
       
 
-<p>I&rsquo;ve just recently finished a web security training and in this post I&rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.</p>
+<p>In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.</p>
 
 <h2 id="xss">XSS</h2>
 
@@ -157,7 +155,7 @@ Exploit Consider a form asking for a user input.'>
 
 <p>Consider a form asking for a user input.</p>
 
-<pre><code>&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt;
+<pre><code class="language-html">&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt;
   &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt;
   &lt;input type=&quot;submit&quot;&gt;
 &lt;/form&gt;
@@ -166,7 +164,7 @@ Exploit Consider a form asking for a user input.'>
 
 <p>And a template to show tweets by other users where user input from above form passed unprocessed:</p>
 
-<pre><code>&lt;title&gt;Hello from flask twitter&lt;/title&gt;
+<pre><code class="language-html">&lt;title&gt;Hello from flask twitter&lt;/title&gt;
 {% for tweet in tweets %}
   &lt;h1 class={{tweet}}&gt;{{ tweet }}!&lt;/h1&gt;
   &lt;a href=&quot;{{tweet}}&quot;&gt;Like&lt;/a&gt;
@@ -176,7 +174,7 @@ Exploit Consider a form asking for a user input.'>
 
 <p>With the Flask app looking like this:</p>
 
-<pre><code>from flask import Flask, request, render_template, make_response
+<pre><code class="language-python">from flask import Flask, request, render_template, make_response
 app = Flask(__name__)
 
 tweets = []
@@ -208,13 +206,13 @@ if __name__ == '__main__':
 
 <h3 id="mitigation">Mitigation</h3>
 
-<p>When rendering templates Flask configures Jinja2 to automatically escape all values unless explicitly told otherwise. Auto-escaping is not enabled for all templates. The following extensions for templates trigger auto-escaping: .html, .htm, .xml, .xhtml. Templates loaded from a string will have auto-escaping disabled.</p>
+<p>When rendering templates Flask configures Jinja2 to automatically escape all values unless explicitly told otherwise. Auto-escaping is not enabled for all templates. The following extensions for templates trigger auto-escaping: <code>.html</code>, <code>.htm</code>, <code>.xml</code>, <code>.xhtml</code>. Templates loaded from a string will have auto-escaping disabled.</p>
 
 <p>So because of the above exploit using code #3 will be escaped and never executed.</p>
 
 <p>Code #1 gives me <code>ERR_BLOCKED_BY_XSS_AUDITOR</code> error in Chrome Version 65.0.3325.181. This browser behavior can be manipulated by the server with <code>X-XSS-Protection</code> header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection" target="_blank">source</a></p>
 
-<p>The only vulnerable part is href attribute in <code>a</code> tag.We have a following option to mitigate</p>
+<p>The only vulnerable part is href attribute in <code>a</code> tag. There are following options to mitigate</p>
 
 <ul>
 <li>do not use user input with <code>href</code></li>
@@ -222,7 +220,7 @@ if __name__ == '__main__':
 
 <li><p>use <code>Content-Security-Policy</code> header in response:</p>
 
-<pre><code>@app.route('/', methods=['GET', 'POST'])
+<pre><code class="language-python">@app.route('/', methods=['GET', 'POST'])
 def tweet_feed():
 if request.method == 'POST':
     tweet = request.form['tweet']
@@ -242,13 +240,13 @@ return response
 
 <h2 id="csrf">CSRF</h2>
 
-<p>Cross-Site Request Forgery is an attack that allows an attacker to make requests to various sites under victim user. If the victim comes to a site containing a malicious code, a request is sent from her username to another service (social network) performing a destructive action.Unlike XSS the malicious code is stored on hacker controlled server where user is tricked to visit.</p>
+<p>Cross-Site Request Forgery is an attack that allows an attacker to make requests to various sites under victim user. If the victim comes to a site containing a malicious code, a request is sent from her username to another service (social network) performing a destructive action. Unlike XSS the malicious code is stored on hacker controlled server where user is tricked to visit.</p>
 
 <h2 id="exploit-1">Exploit</h2>
 
 <p>Consider a online bank transfer page. You may access it by logging beforehand with the authentication information stored in cookie files.</p>
 
-<pre><code>&lt;!doctype html&gt;
+<pre><code class="language-html">&lt;!doctype html&gt;
 &lt;title&gt;Hello from Flask&lt;/title&gt;
 &lt;h1&gt;Account balance {% raw %}${{ balance }}{% endraw %}&lt;/h1&gt;
 
@@ -263,7 +261,7 @@ return response
 
 <p>With Flaks app looking like this:</p>
 
-<pre><code>from flask import Flask, request, render_template
+<pre><code class="language-python">from flask import Flask, request, render_template
 app = Flask(__name__)
 
 account_balance = 1000
@@ -287,7 +285,7 @@ if __name__ == '__main__':
 
 <p>Now an attacker may trick you to follow a link to his website (I&rsquo;m getting a lot of &lsquo;Your transaction is approved, Follow this link for details&rsquo; spam messages recently). When you follow the link a page with the following script loads:</p>
 
-<pre><code>&lt;form method=&quot;POST&quot; action=&quot;http://0.0.0.0:5005/&quot; id=&quot;hacker_form&quot;&gt;
+<pre><code class="language-html">&lt;form method=&quot;POST&quot; action=&quot;http://0.0.0.0:5005/&quot; id=&quot;hacker_form&quot;&gt;
    &lt;input type=&quot;text&quot; name=&quot;destination_account&quot; value=&quot;123123123&quot;/&gt;
    &lt;input type=&quot;number&quot; name=&quot;amount&quot; value=&quot;1000&quot;/&gt;
    &lt;input type=&quot;submit&quot; value=&quot;Transfer&quot;&gt;
@@ -318,9 +316,9 @@ if __name__ == '__main__':
 
 <h3 id="exploit-2">Exploit</h3>
 
-<p>Consider bank transfer form from the above example with the following Flask app (I&rsquo;m using SQLAlchemy here and trying to put things simple, but usually it&rsquo;s not how you manage database session in Flask app)</p>
+<p>Consider bank transfer form the above example with the following Flask app (I&rsquo;m using SQLAlchemy here and trying to put things simple, but usually it&rsquo;s not how you manage database session in Flask app)</p>
 
-<pre><code>from flask import Flask, request, render_template, make_response, redirect, url_for
+<pre><code class="language-python">from flask import Flask, request, render_template, make_response, redirect, url_for
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -350,13 +348,13 @@ def transfer():
 
 </code></pre>
 
-<p>I&rsquo;ve tried to break all the rules here: building raw queries and concatenating query string with user input directly (I might have used <code>.format</code> as well). So when entering <code>2222;DROP DATABASE;</code> in destination account input field I expected this particular line<code>session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)</code>execute an update and then drop database. But it gave me that error <code>sqlite3.Warning: You can only execute one statement at a time.</code> and no changes were made to database. Not all drivers have that protection, while <a href="http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html" target="_blank">some</a> allow multiple statement to be executed like so.</p>
+<p>I&rsquo;ve tried to break all the rules here: building raw queries and concatenating query string with user input directly (I might have used <code>.format</code> as well). So when entering <code>2222;DROP DATABASE;</code> in destination account input field I expected this particular line <code>session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)</code> execute an update and then drop database. But it gave me that error <code>sqlite3.Warning: You can only execute one statement at a time.</code> and no changes were made to database. Not all drivers have that protection, while <a href="http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html" target="_blank">some</a> allow multiple statement to be executed like so.</p>
 
 <h3 id="mitigation-2">Mitigation</h3>
 
 <p>The proper way to avoid that is to use ORMs. In that case the Flask app will be like this:</p>
 
-<pre><code>from flask import Flask, request, render_template, make_response, redirect, url_for
+<pre><code class="language-python">from flask import Flask, request, render_template, make_response, redirect, url_for
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -431,7 +429,7 @@ Cookie: session=XXXXXXX
 
 <p>Flask by default uses <code>session</code> cookie and its flags are set by configuring <code>app</code>:</p>
 
-<pre><code>app.config.update(
+<pre><code class="language-python">app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
@@ -441,7 +439,7 @@ Cookie: session=XXXXXXX
 
 <p>User defined cookies are set with response:</p>
 
-<pre><code>response.set_cookie('key', 'value', secure=True, httponly=True, samesite='Lax')
+<pre><code class="language-python">response.set_cookie('key', 'value', secure=True, httponly=True, samesite='Lax')
 
 </code></pre>
 
@@ -453,9 +451,9 @@ Cookie: session=XXXXXXX
 <h3>Similar articles:</h3>
 <ul>
 	
-	<li><a href="https://smirnov-am.github.io/extracting-keyphrases-from-texts-unsupervised-algorithm-topicrank/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
+	<li><a href="https://smirnov-am.github.io/keyphrases/">Extracting keyphrases from texts: unsupervised algorithm TopicRank</a></li>
 	
-	<li><a href="https://smirnov-am.github.io/2018-04-08-e-commerce-recommendation-systems-html/">E-commerce recommendation systems: basket analysis. Performance comparison of most common algorithms.</a></li>
+	<li><a href="https://smirnov-am.github.io/basket-analysis/">E-commerce recommendation systems: basket analysis.</a></li>
 	
 </ul>
 </div>

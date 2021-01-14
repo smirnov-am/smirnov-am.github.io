@@ -19,7 +19,7 @@
       
       <guid>https://smirnov-am.github.io/flask-s3/</guid>
       <description>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
-I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
+And with horizontal scaling you need to mount an external storage to every running instance that supports replication.
 Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
     </item>
     
@@ -29,8 +29,8 @@ Another option is to use object storage - like AWS S3 - and upload files directl
       <pubDate>Thu, 09 Jul 2020 23:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/flask-stripe/</guid>
-      <description>Introduction In this article you&amp;rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. Our example will be a webshop, that has a single page for selling 5$ T-shirts.
-Main page Let&amp;rsquo;s create a Flask route that serves the webshop page.
+      <description>Introduction In this article you&amp;rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. THe example will be a webshop, that has a single page for selling 5$ T-shirts.
+Main page Create a Flask route that serves the webshop page.
 The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
 @app.route(&#39;/&#39;) def webshop(): return &amp;quot;&amp;quot;&amp;quot;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; id=&amp;quot;checkout&amp;quot;&amp;gt;Buy T-shirt for 5$&amp;lt;/a&amp;gt; &amp;lt;script src=&amp;quot;https://code.</description>
     </item>
@@ -41,7 +41,7 @@ The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - s
       <pubDate>Thu, 07 May 2020 23:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/flask-perf/</guid>
-      <description>When our Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified we can fight an underlying cause.
+      <description>When Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified you can fight an underlying cause.
 And here I assume that the underlying platform that runs Flask has enough resources to do so.</description>
     </item>
     
@@ -51,7 +51,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
       <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/deploy-flask/</guid>
-      <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
+      <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
 app.py
 from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
     </item>
@@ -62,7 +62,7 @@ from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_
       <pubDate>Wed, 23 Oct 2019 14:26:16 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/run-flask-on-aws-ecs/</guid>
-      <description>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - is to run Flask on ECS Fargate. This serverless (you don&amp;rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&amp;rsquo;m sharing CloudFormation templates that will create them automatically.Source code
+      <description>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - run Flask on ECS Fargate. This serverless (you don&amp;rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&amp;rsquo;m sharing CloudFormation templates that will create them automatically.Source code
 Here are the details of these templates:</description>
     </item>
     
@@ -72,8 +72,8 @@ Here are the details of these templates:</description>
       <pubDate>Wed, 12 Dec 2018 18:43:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</guid>
-      <description>This simple app for streaming cpu utilization to a web page. I&amp;rsquo;m using Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.jsfor visualization.
-  Flask app I&amp;rsquo;m following a flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</description>
+      <description>This post describes simple app for streaming cpu utilization to a web page. It uses Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.js for visualization.
+Flask app Follow flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</description>
     </item>
     
     <item>
@@ -83,9 +83,9 @@ Here are the details of these templates:</description>
       
       <guid>https://smirnov-am.github.io/background-jobs-with-flask/</guid>
       <description>Basic request lifecycle with Flask goes like this:
- Flask get request parse parameters does calculations returns result  This synchronous task is fine when user needs the result of calculation immediately. Another use case is when the result is not relevant right now and user just wants to schedule an execution of the task asynchronously.
+ Flask gets a request is parses input parameters does necessary calculations and finally returns the result  This synchronous task is fine when a user needs the result of calculation immediately. Another use case is when the result is not relevant right now and the user just wants to schedule an execution of the task asynchronously.
 Such scenarios include:
- sending email creating thumbnails from uploaded image    Common implementation Asynchronous tasks are usually implemented like this:</description>
+ sending an email creating thumbnails from uploaded images starting a calculation for a long CPU intensive task  Common implementation Asynchronous tasks are usually implemented like this:</description>
     </item>
     
     <item>
@@ -94,8 +94,8 @@ Such scenarios include:
       <pubDate>Fri, 26 Oct 2018 15:59:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/multitenancy-with-flask/</guid>
-      <description>What is multitenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
-  Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI gives connection info and database name.</description>
+      <description>What is multi-tenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
+Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI for connection information for it.</description>
     </item>
     
     <item>
@@ -104,9 +104,10 @@ Such scenarios include:
       <pubDate>Thu, 27 Sep 2018 15:35:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/flask-pagination-macro/</guid>
-      <description>In this post I will cover how to create a pagination with Jinja macro feature.
-  Requirements:
- show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&amp;rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
+      <description>In this post you&amp;rsquo;ll find out how to create a pagination with Jinja macro feature.
+Requirements:
+ show preconfigured limited number of pages at once collapse invisible pages under ... provide previous/next navigation buttons  Jinja templates for Bootstrap4 I&amp;rsquo;ve created 3 tier structure of Jinja templates to use Bootstrap4.
+First - bootstrap4_base.html - loads css and js files from CDN and defines major blocks:
  head - holds content of the &amp;lt;head&amp;gt; tag and defines title, metas, styles body - holds content of the &amp;lt;body&amp;gt; tag and defines navbar, content, scripts navbar - for navigation bar content - for boostrap container (tag with class=&amp;quot;container&amp;quot;) scripts - goes in the end of the body, here is why  Blocks may be extended or/and overwritten in the later templatesThis template follows Bootstrap4 intro guide</description>
     </item>
     
@@ -126,9 +127,10 @@ Such scenarios include:
       <pubDate>Wed, 11 Jul 2018 15:26:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/securing-flask-web-applications/</guid>
-      <description>I&amp;rsquo;ve just recently finished a web security training and in this post I&amp;rsquo;d like to investigate security mechanisms of my beloved web framework - Flask.I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
+      <description>In this post I&amp;rsquo;d like to investigate security mechanisms available in Flask. I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
-Exploit Consider a form asking for a user input.</description>
+Exploit Consider a form asking for a user input.
+&amp;lt;form method=&amp;quot;post&amp;quot; action=&amp;quot;/&amp;quot;&amp;gt; &amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;tweet&amp;quot;&amp;gt;&amp;lt;br&amp;gt; &amp;lt;input type=&amp;quot;submit&amp;quot;&amp;gt; &amp;lt;/form&amp;gt;  And a template to show tweets by other users where user input from above form passed unprocessed:</description>
     </item>
     
   </channel>

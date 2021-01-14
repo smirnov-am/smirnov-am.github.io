@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Uploading files to AWS S3 with Flask",
         "headline" : "Uploading files to AWS S3 with Flask",
-        "description" : "One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.\nI found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.\nAnother option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.",
+        "description" : "AWS S3 as file storage for Flask applications",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2020-09-14 23:03:00 \x2b0000 UTC",
         "dateModified" : "2020-09-14 23:03:00 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/flask-s3\/",
-        "wordCount" : "579",
+        "wordCount" : "576",
         "keywords" : [ "Flask","Python","Blog" ]
     }
     </script>
@@ -34,9 +34,7 @@
 <title>Uploading files to AWS S3 with Flask | Alexey Smirnov</title>
 
 <meta property='og:title' content='Uploading files to AWS S3 with Flask - Alexey Smirnov'>
-<meta property='og:description' content='One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
-I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.
-Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.'>
+<meta property='og:description' content='AWS S3 as file storage for Flask applications'>
 <meta property='og:url' content='https://smirnov-am.github.io/flask-s3/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Flask'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-09-14T23:03:00Z'/><meta property='article:modified_time' content='2020-09-14T23:03:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -145,14 +143,14 @@ Another option is to use object storage - like AWS S3 - and upload files directl
     <div class="content">
       <p>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.</p>
 
-<p>I found that with horizontally scaling you need to mount an external storage to every running instance that supports replication.</p>
+<p>And with horizontal scaling you need to mount an external storage to every running instance that supports replication.</p>
 
 <p>Another option is to use object storage - like AWS S3 - and upload files directly from the frontend.
 In that case Flask will have a route that just generates and URL a frontend will upload to. In that case files are not consumed by Flask.</p>
 
 <p><img src="https://smirnov-am.github.io/content/images/s3/flasks3.png" alt="scheme" /></p>
 
-<p>First, let&rsquo;s create a Bucket using AWS CLI:</p>
+<p>First, create a Bucket using AWS CLI:</p>
 
 <pre><code class="language-bash">~ aws s3 mb s3://flask-s3-upload
 make_bucket: flask-s3-upload
@@ -184,7 +182,7 @@ Open AWS console, find your bucket, navigate to Bucket Permissions -&gt; CORS co
 &lt;/CORSConfiguration&gt;
 </code></pre>
 
-<p>Next you need to create a user that our code in Flask app will use to generate upload URL. Follow these steps:</p>
+<p>Next you need to create a user that a code in the Flask app will use to generate upload URL. Follow these steps:</p>
 
 <p>1) Go to AWS IAM and create a user
 2) Create a user with programmatic access:</p>
@@ -222,7 +220,7 @@ Open AWS console, find your bucket, navigate to Bucket Permissions -&gt; CORS co
 
 <p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-policy1.png" alt="scheme" /></p>
 
-<p>Now, let&rsquo;s create 2 Flask routes. First will just serve our frontend. Second is an API that generates data frontend use to upload file to S3:</p>
+<p>Now, create 2 Flask routes. First will just serve the frontend. Second is an API that generates data frontend use to upload file to S3:</p>
 
 <pre><code class="language-python">@app.route('/')
 def index():
@@ -255,7 +253,7 @@ def upload_url():
 <li>Call <code>generate_presigned_post</code> of the boto3 client providing filename and bucket name</li>
 </ol>
 
-<p>Then, let&rsquo;s create our frontend. Don&rsquo;t throw rotten tomatoes, but I&rsquo;m using jQuery here (I do backend mostly). In this first part there is only a HTML form:</p>
+<p>Then, create the frontend code. Don&rsquo;t throw rotten tomatoes, but I&rsquo;m using jQuery here (I do backend mostly). In this first part there is only a HTML form:</p>
 
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
