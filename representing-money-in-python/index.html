@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Representing money in Python",
         "headline" : "Representing money in Python",
-        "description" : "Python\x26rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.\nDoubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence b1, b2, .. b53 so that a sum: b1*(0.5)^1 \x2b b2*(0.5)^2 \x2b .. \x2bb53*(0.5)^53 is close to the number as possible.",
+        "description" : "Python\x26rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.\nDoubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \\(b_1, b_2 ... b_{53}\\) so that a sum:\n$$ b_1(\\frac{1}{2})^{1} \x2b b_2(\\frac{1}{2})^{2} \x2b ... \x2b b_{53}(\\frac{1}{2})^{53} $$ is close to the number as possible.",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -26,7 +26,7 @@
         "datePublished": "2019-09-15 14:30:10 \x2b0000 UTC",
         "dateModified" : "2019-09-15 14:30:10 \x2b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/representing-money-in-python\/",
-        "wordCount" : "460",
+        "wordCount" : "492",
         "keywords" : [ "Python","Blog" ]
     }
     </script>
@@ -35,7 +35,8 @@
 
 <meta property='og:title' content='Representing money in Python - Alexey Smirnov'>
 <meta property='og:description' content='Python&rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
-Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence b1, b2, .. b53 so that a sum: b1*(0.5)^1 &#43; b2*(0.5)^2 &#43; .. &#43;b53*(0.5)^53 is close to the number as possible.'>
+Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
+$$ b_1(\frac{1}{2})^{1} &#43; b_2(\frac{1}{2})^{2} &#43; ... &#43; b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.'>
 <meta property='og:url' content='https://smirnov-am.github.io/representing-money-in-python/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2019-09-15T14:30:10Z'/><meta property='article:modified_time' content='2019-09-15T14:30:10Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -140,50 +141,72 @@ Doubles contain 53 bits of precision. When the machine is trying to represent th
     <div class="content">
       <p>Python&rsquo;s <code>float</code> type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.</p>
 
-<p>Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence <code>b1, b2, .. b53</code> so that a sum: <code>b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53</code> is close to the number as possible. So, values such as 0.1 cannot be exactly represented. Let&rsquo;s see how it can hinder money operations. A banana costs $1.01, I&rsquo;m lowering the price to $0.99 and want to calculate lost revenue if I sell quintillion bananas (one with 18 zeros):</p>
+<p>Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence <code>\(b_1, b_2 ... b_{53}\)</code> so that a sum:</p>
+
+<div>$$
+b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53}
+$$</div>
+
+<p>is close to the number as possible. So, values such as 0.1 cannot be exactly represented. You may find this famous example in official <a href="https://docs.python.org/3/tutorial/floatingpoint.html" target="_blank">Python docs</a>:</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; .1 + .1 + .1 == .3
+False
+</code></pre>
+
+<p>It happens because 0.1 is not exactly <sup>1</sup>&frasl;<sub>10</sub>.</p>
+
+<p>Let&rsquo;s see how it can hinder money operations.</p>
+
+<p>A web shop sells an item for 1.01. The web shop buys it form its supplier for 0.99 and the owner wants to calculate a revenue if quintillion items (one with 18 zeros) are sold:</p>
 
 <pre><code class="language-python">format((1.01 - 0.99)*1e18, '.2f')
 &gt;&gt;&gt;  '20000000000000016.00'
 </code></pre>
 
-<p>I expected a 2 with 16 zeros, but there are an additional 16 dollars. It will take a lot of time to sell so many bananas, but the calculation is wrong anyway.</p>
+<p>You expected a 2 with 16 zeros (2 cent revenue per item times 1e18), but there are an additional 16 dollars. It will take a lot of time to sell so many items, but the calculation is wrong anyway.</p>
 
-<p><strong>Integers</strong></p>
+<p><strong>More real life example</strong></p>
 
-<p>One of the possible solutions is to use integer. So $1.01 is represented as 101, and 0.99 as 99 (simply multiplying everything by 100).</p>
+<p>You have a deposit of 93 cents in a bank with 2.25% interest rate. You came back in thousand years to withdraw it. Happened to this guy:</p>
 
-<pre><code class="language-python">format((101 - 99)*1e18 / 100, '.2f')
-&gt;&gt;&gt; '20000000000000000.00'
+<p><img src="https://smirnov-am.github.io/content/images/fry.jpg" alt="fry" /></p>
+
+<p>For that you need to calculate a <a href="https://www.investopedia.com/terms/f/futurevalue.asp" target="_blank">future value</a>:</p>
+
+<pre><code class="language-python">deposit = 0.93
+future_value = deposit * ((1 + (0.0225))**1000)
+future_value
+&gt;&gt;&gt; 4283508449.7111807
 </code></pre>
 
-<p>It gives a correct answer, but it requires extra commitment from a developer to remember to convert the number coming to and from the application to the original format. Also, I don&rsquo;t still understand how to use it in the more complex operations. Let&rsquo;s calculate an amount of money we get from a bank if we deposit $10000, with 15% annual rate compounded daily:</p>
-
-<pre><code class="language-python">deposit = 10000
-deposit_internal = deposit * 100
-future_value_internal = deposit_internal * (1 + (0.15/365))**365
-future_value = future_value_internal/100
-format(future_value, '.2f')
-&gt;&gt;&gt; '11617.98'
-</code></pre>
-
-<p>Now let&rsquo;s use the preferred way to represent exact fractional amounts:</p>
+<p>Almost 4.3 billion. But is it accurate since we are using float here?</p>
 
 <p><strong>Decimal</strong></p>
 
-<p>It&rsquo;s a part of a standard library and provides a representation of real numbers. Interestingly that if I use Decimal in the deposit example from the above, I&rsquo;ll get a slightly different result:</p>
+<p>It&rsquo;s a part of a <a href="https://docs.python.org/3/library/decimal.html" target="_blank">standard library</a> and provides a representation of real numbers. The web shop revenue calculation is now correct:</p>
 
-<pre><code class="language-python">from decimal import Decimal, getcontext
-deposit = Decimal('10000')
-future_value = deposit * (1 + (Decimal('0.15')/Decimal('365')))**Decimal('365')
-future_value
-&gt;&gt;&gt; Decimal('11618.16')
+<pre><code class="language-python">from decimal import Decimal
+sell_price = Decimal('1.01')
+buy_price = Decimal('0.99')
+items_sold = Decimal('1e18')
+profit = (sell_price - buy_price) * items_sold
+profit
+&gt;&gt;&gt; Decimal('2E+16')
 </code></pre>
 
-<p>Yay! Additional 18 cents.</p>
+<p>And for future value:</p>
+
+<pre><code class="language-python">deposit = Decimal('0.93')
+decimal_future_value = deposit * (1 + (Decimal('0.0225')))**Decimal('1000')
+decimal_future_value
+&gt;&gt;&gt; Decimal('4283508449.711328779924154334')
+</code></pre>
+
+<p>The difference with float in that case is quite small - 4th digit after decimal point. But it&rsquo;s still present.</p>
 
 <p><strong>Performance</strong></p>
 
-<p>Float is not that bad. In most of the cases, it&rsquo;s precision is more than enough. It also appears more fast than Decimal:</p>
+<p>Float also appears more fast than Decimal:</p>
 
 <pre><code>In [2]: def float_order(item_price, item_count):
    ...:     return sum([item_price for _ in range(item_count)])
@@ -204,6 +227,29 @@ In [6]: %timeit decimal_order('1.01', 10000)
 </code></pre>
 
 <p>Have you ever experiences problems when working with monetary values represented by <code>float</code>? Connect with me on <a href="https://www.linkedin.com/in/smirnovam" target="_blank">LinkedIn</a></p>
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$','$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    processEnvironments: true
+    },
+    options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+};
+
+window.addEventListener('load', (event) => {
+    document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
       
       <div class="related">

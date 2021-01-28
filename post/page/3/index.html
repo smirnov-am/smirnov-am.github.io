@@ -164,7 +164,8 @@ To achieve continues delivery connect the GitHub repo storing the source to Code
       <h1 class="title"><a href="https://smirnov-am.github.io/representing-money-in-python/">Representing money in Python</a></h1>
       <div class="content">
         Python&rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
-Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence b1, b2, .. b53 so that a sum: b1*(0.5)^1 + b2*(0.5)^2 + .. +b53*(0.5)^53 is close to the number as possible.
+Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
+$$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.
         
         <a class="button is-link" href="https://smirnov-am.github.io/representing-money-in-python/" style="height:28px">
           Read more
