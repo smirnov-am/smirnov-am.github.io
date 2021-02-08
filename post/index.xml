@@ -18,7 +18,7 @@
       <pubDate>Tue, 12 Jan 2021 23:03:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/matting/</guid>
-      <description>Separating a foreground element of an image from its background for later compositing into a new scene is one of the most basic and common tasks in visual effects production. This problem is typically called matting when applied to film, or keying when applied to video.
+      <description>One of the most basic problems in VFX is separating an object in a video from its background. The object then composited back into new environment or scene. This task has different names such as matting, keying or more popular term rotoscoping.
 In this demo you can see how a church in the foreground is separated from the background blue sky, which was later replaced with a sky full of stars.</description>
     </item>
     
