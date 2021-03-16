@@ -23,17 +23,6 @@
     </item>
     
     <item>
-      <title>Uploading files to AWS S3 with Flask</title>
-      <link>https://smirnov-am.github.io/flask-s3/</link>
-      <pubDate>Mon, 14 Sep 2020 23:03:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/flask-s3/</guid>
-      <description>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.
-And with horizontal scaling you need to mount an external storage to every running instance that supports replication.
-Another option is to use object storage - like AWS S3 - and upload files directly from the frontend. In that case Flask will have a route that just generates and URL a frontend will upload to.</description>
-    </item>
-    
-    <item>
       <title>Advanced fixtures with pytest</title>
       <link>https://smirnov-am.github.io/pytest-advanced-fixtures/</link>
       <pubDate>Sun, 06 Sep 2020 18:41:00 +0000</pubDate>
@@ -231,39 +220,6 @@ In this tutorial, you’ll learn how to:
     </item>
     
     <item>
-      <title>Accepting payments in Flask with Stripe</title>
-      <link>https://smirnov-am.github.io/flask-stripe/</link>
-      <pubDate>Thu, 09 Jul 2020 23:03:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/flask-stripe/</guid>
-      <description>Introduction In this article you&amp;rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. THe example will be a webshop, that has a single page for selling 5$ T-shirts.
-Main page Create a Flask route that serves the webshop page.
-The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
-@app.route(&#39;/&#39;) def webshop(): return &amp;quot;&amp;quot;&amp;quot;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; id=&amp;quot;checkout&amp;quot;&amp;gt;Buy T-shirt for 5$&amp;lt;/a&amp;gt; &amp;lt;script src=&amp;quot;https://code.</description>
-    </item>
-    
-    <item>
-      <title>How to increase Flask performance</title>
-      <link>https://smirnov-am.github.io/flask-perf/</link>
-      <pubDate>Thu, 07 May 2020 23:03:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/flask-perf/</guid>
-      <description>When Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified you can fight an underlying cause.
-And here I assume that the underlying platform that runs Flask has enough resources to do so.</description>
-    </item>
-    
-    <item>
-      <title>5 ways to deploy Flask</title>
-      <link>https://smirnov-am.github.io/deploy-flask/</link>
-      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/deploy-flask/</guid>
-      <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
-app.py
-from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
-    </item>
-    
-    <item>
       <title>Python linters for better code quality</title>
       <link>https://smirnov-am.github.io/python-linters-for-better-code-quality/</link>
       <pubDate>Mon, 04 Nov 2019 20:23:49 +0000</pubDate>
@@ -293,50 +249,6 @@ $$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} 
       <guid>https://smirnov-am.github.io/ci-cd-pipeline-for-aws-lambda-python-runtime/</guid>
       <description>Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. This post walks through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:
  getting message from SQS that contains the number to calculate sqrt for checks if the calculation was done before by querying DynamoDB if there is not cached answer in DynamoDB - calculate sqrt and saves the result print the result so it&amp;rsquo;s visible in CloudWatch logs  Things I&amp;rsquo;d like the pipeline to do:</description>
-    </item>
-    
-    <item>
-      <title>Streaming timeseries with Flask and Plotly</title>
-      <link>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</link>
-      <pubDate>Wed, 12 Dec 2018 18:43:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</guid>
-      <description>This post describes simple app for streaming cpu utilization to a web page. It uses Flask as websockets server (flask-socketio plugin), socket.io as client library and plotly.js for visualization.
-Flask app Follow flask-socketio doc to create a flask app. SocketIO is going to use Redis as message broker as there will be a separate process that pushes messages to clients. Flask websocket server and this process will communicate through Redis.</description>
-    </item>
-    
-    <item>
-      <title>Background jobs with Flask</title>
-      <link>https://smirnov-am.github.io/background-jobs-with-flask/</link>
-      <pubDate>Tue, 27 Nov 2018 18:41:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/background-jobs-with-flask/</guid>
-      <description>Basic request lifecycle with Flask goes like this:
- Flask gets a request is parses input parameters does necessary calculations and finally returns the result  This synchronous task is fine when a user needs the result of calculation immediately. Another use case is when the result is not relevant right now and the user just wants to schedule an execution of the task asynchronously.
-Such scenarios include:
- sending an email creating thumbnails from uploaded images starting a calculation for a long CPU intensive task  Common implementation Asynchronous tasks are usually implemented like this:</description>
-    </item>
-    
-    <item>
-      <title>Multitenancy with Flask</title>
-      <link>https://smirnov-am.github.io/multitenancy-with-flask/</link>
-      <pubDate>Fri, 26 Oct 2018 15:59:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/multitenancy-with-flask/</guid>
-      <description>What is multi-tenancy Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.
-Flask-SQLAlchemy Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines SQLALCHEMY_DATABASE_URI for connection information for it.</description>
-    </item>
-    
-    <item>
-      <title>Securing Flask web applications</title>
-      <link>https://smirnov-am.github.io/securing-flask-web-applications/</link>
-      <pubDate>Wed, 11 Jul 2018 15:26:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/securing-flask-web-applications/</guid>
-      <description>In this post I&amp;rsquo;d like to investigate security mechanisms available in Flask. I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
-XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
-Exploit Consider a form asking for a user input.
-&amp;lt;form method=&amp;quot;post&amp;quot; action=&amp;quot;/&amp;quot;&amp;gt; &amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;tweet&amp;quot;&amp;gt;&amp;lt;br&amp;gt; &amp;lt;input type=&amp;quot;submit&amp;quot;&amp;gt; &amp;lt;/form&amp;gt;  And a template to show tweets by other users where user input from above form passed unprocessed:</description>
     </item>
     
     <item>
