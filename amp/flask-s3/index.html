@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-14 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-14 23:03:00 \x2b0000 UTC",
+        "datePublished": "2020-09-14 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2020-09-14 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/flask-s3\/",
-        "wordCount" : "576",
+        "wordCount" : "571",
         "keywords" : [ "Flask","Blog" ]
     }
     </script>
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -148,179 +153,154 @@
     
     <div class="content">
       <p>One way to upload files using Flask is to literally create a route that accepts HTTP POST and saves bytes received on the disk.</p>
-
 <p>And with horizontal scaling you need to mount an external storage to every running instance that supports replication.</p>
-
 <p>Another option is to use object storage - like AWS S3 - and upload files directly from the frontend.
 In that case Flask will have a route that just generates and URL a frontend will upload to. In that case files are not consumed by Flask.</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/s3/flasks3.png" alt="scheme" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/s3/flasks3.png" alt="scheme"></p>
 <p>First, create a Bucket using AWS CLI:</p>
-
-<pre><code class="language-bash">~ aws s3 mb s3://flask-s3-upload
-make_bucket: flask-s3-upload
-</code></pre>
-
-<p>You won&rsquo;t be able to create your bucket with the same name as they must be unique between all AWS users.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>~ aws s3 mb s3://flask-s3-upload
+</span></span><span style="display:flex;"><span>make_bucket: flask-s3-upload
+</span></span></code></pre></div><p>You won&rsquo;t be able to create your bucket with the same name as they must be unique between all AWS users.</p>
 <p>Then you need to apply a CORS configuration, since frontend calls S3 directly.
 Open AWS console, find your bucket, navigate to Bucket Permissions -&gt; CORS configuration and put the following XML:</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;CORSConfiguration xmlns=&quot;http://s3.amazonaws.com/doc/2006-03-01/&quot;&gt;
-&lt;CORSRule&gt;
-    &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
-    &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;
-    &lt;MaxAgeSeconds&gt;3000&lt;/MaxAgeSeconds&gt;
-    &lt;AllowedHeader&gt;Authorization&lt;/AllowedHeader&gt;
-&lt;/CORSRule&gt;
-&lt;CORSRule&gt;
-    &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
-    &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;
-    &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;
-&lt;/CORSRule&gt;
-&lt;CORSRule&gt;
-    &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
-    &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
-    &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;
-&lt;/CORSRule&gt;
-&lt;/CORSConfiguration&gt;
-</code></pre>
-
-<p>Next you need to create a user that a code in the Flask app will use to generate upload URL. Follow these steps:</p>
-
-<p>1) Go to AWS IAM and create a user
-2) Create a user with programmatic access:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-user.png" alt="scheme" /></p>
-
-<p>3) In the last 5th screen copy access key and secret access key:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-key.png" alt="scheme" /></p>
-
-<p>4) When the user is create add inline policy:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-policy.png" alt="scheme" /></p>
-
-<p>In the summary click add inline policy and add the following policy as a json:</p>
-
-<pre><code class="language-json">{
-    &quot;Version&quot;: &quot;2012-10-17&quot;,
-    &quot;Statement&quot;: [
-        {
-            &quot;Effect&quot;: &quot;Allow&quot;,
-            &quot;Action&quot;: [
-                &quot;s3:PutObject&quot;,
-                &quot;s3:GetObject&quot;,
-                &quot;s3:AbortMultipartUpload&quot;,
-                &quot;s3:PutBucketCORS&quot;
-            ],
-            &quot;Resource&quot;: &quot;arn:aws:s3:::flask-s3-upload/*&quot;
-        }
-    ]
-}
-</code></pre>
-
-<p>5) By the end you&rsquo;ll see a user with proper permissions created:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-policy1.png" alt="scheme" /></p>
-
-<p>Now, create 2 Flask routes. First will just serve the frontend. Second is an API that generates data frontend use to upload file to S3:</p>
-
-<pre><code class="language-python">@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-def sanitize_filename(filename): # (1)
-    for sep in ('/', '\\'):
-        if sep in filename:
-            filename = filename.split(sep)[-1]
-    filename = secure_filename(filename)
-    return filename
-
-
-@app.route('/upload_url')
-def upload_url():
-    filename = sanitize_filename(request.args.get('upload_file'))
-    s3_client = boto3.client('s3', # (2)
-                             aws_access_key_id='AKIAWHPGZFZEA62ISOPU',
-                             aws_secret_access_key='E58Jx8yM078rY3XXXXXXXXXXX')
-    upload_data = s3_client.generate_presigned_post('flask-s3-upload', # (3)
-                                                    filename,
-                                                    ExpiresIn=3600)
-    return jsonify(upload_data)
-</code></pre>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;CORSConfiguration</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://s3.amazonaws.com/doc/2006-03-01/&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;CORSRule&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedOrigin&gt;</span>*<span style="color:#f92672">&lt;/AllowedOrigin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedMethod&gt;</span>POST<span style="color:#f92672">&lt;/AllowedMethod&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;MaxAgeSeconds&gt;</span>3000<span style="color:#f92672">&lt;/MaxAgeSeconds&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedHeader&gt;</span>Authorization<span style="color:#f92672">&lt;/AllowedHeader&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/CORSRule&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;CORSRule&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedOrigin&gt;</span>*<span style="color:#f92672">&lt;/AllowedOrigin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedMethod&gt;</span>POST<span style="color:#f92672">&lt;/AllowedMethod&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedHeader&gt;</span>*<span style="color:#f92672">&lt;/AllowedHeader&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/CORSRule&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;CORSRule&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedOrigin&gt;</span>*<span style="color:#f92672">&lt;/AllowedOrigin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedMethod&gt;</span>GET<span style="color:#f92672">&lt;/AllowedMethod&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;AllowedHeader&gt;</span>*<span style="color:#f92672">&lt;/AllowedHeader&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/CORSRule&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/CORSConfiguration&gt;</span>
+</span></span></code></pre></div><p>Next you need to create a user that a code in the Flask app will use to generate upload URL. Follow these steps:</p>
 <ol>
+<li>Go to AWS IAM and create a user</li>
+<li>Create a user with programmatic access:</li>
+</ol>
+<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-user.png" alt="scheme"></p>
+<ol start="3">
+<li>In the last 5th screen copy access key and secret access key:</li>
+</ol>
+<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-key.png" alt="scheme"></p>
+<ol start="4">
+<li>When the user is create add inline policy:</li>
+</ol>
+<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-policy.png" alt="scheme"></p>
+<p>In the summary click add inline policy and add the following policy as a json:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;s3:PutObject&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;s3:GetObject&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;s3:AbortMultipartUpload&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;s3:PutBucketCORS&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:s3:::flask-s3-upload/*&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol start="5">
+<li>By the end you&rsquo;ll see a user with proper permissions created:</li>
+</ol>
+<p><img src="https://smirnov-am.github.io/content/images/s3/s3-iam-policy1.png" alt="scheme"></p>
+<p>Now, create 2 Flask routes. First will just serve the frontend. Second is an API that generates data frontend use to upload file to S3:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">index</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#39;index.html&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sanitize_filename</span>(filename): <span style="color:#75715e"># (1)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> sep <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;/&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">&#39;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> sep <span style="color:#f92672">in</span> filename:
+</span></span><span style="display:flex;"><span>            filename <span style="color:#f92672">=</span> filename<span style="color:#f92672">.</span>split(sep)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    filename <span style="color:#f92672">=</span> secure_filename(filename)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> filename
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/upload_url&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">upload_url</span>():
+</span></span><span style="display:flex;"><span>    filename <span style="color:#f92672">=</span> sanitize_filename(request<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;upload_file&#39;</span>))
+</span></span><span style="display:flex;"><span>    s3_client <span style="color:#f92672">=</span> boto3<span style="color:#f92672">.</span>client(<span style="color:#e6db74">&#39;s3&#39;</span>, <span style="color:#75715e"># (2)</span>
+</span></span><span style="display:flex;"><span>                             aws_access_key_id<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;AKIAWHPGZFZEA62ISOPU&#39;</span>,
+</span></span><span style="display:flex;"><span>                             aws_secret_access_key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;E58Jx8yM078rY3XXXXXXXXXXX&#39;</span>)
+</span></span><span style="display:flex;"><span>    upload_data <span style="color:#f92672">=</span> s3_client<span style="color:#f92672">.</span>generate_presigned_post(<span style="color:#e6db74">&#39;flask-s3-upload&#39;</span>, <span style="color:#75715e"># (3)</span>
+</span></span><span style="display:flex;"><span>                                                    filename,
+</span></span><span style="display:flex;"><span>                                                    ExpiresIn<span style="color:#f92672">=</span><span style="color:#ae81ff">3600</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jsonify(upload_data)
+</span></span></code></pre></div><ol>
 <li>Extract safe filename from parameters, received from frontend</li>
 <li>Init boto3 client with credentials from the user created above</li>
 <li>Call <code>generate_presigned_post</code> of the boto3 client providing filename and bucket name</li>
 </ol>
-
 <p>Then, create the frontend code. Don&rsquo;t throw rotten tomatoes, but I&rsquo;m using jQuery here (I do backend mostly). In this first part there is only a HTML form:</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Title&lt;/title&gt;
-
-&lt;/head&gt;
-&lt;body&gt;
-&lt;form id=&quot;upload_form&quot;&gt;
-    &lt;input type=&quot;file&quot; id=&quot;upload_file&quot; name=&quot;upload_file&quot; class=&quot;custom-file-input&quot; required/&gt;
-&lt;/div&gt;
-&lt;input type=&quot;submit&quot; id=&quot;submitBtn&quot; name=&quot;submit&quot; class=&quot;btn btn-dark btn-block&quot; value=&quot;Upload&quot; /&gt;
-
-&lt;/form&gt;
-&lt;script src=&quot;https://code.jquery.com/jquery-3.2.1.min.js&quot; integrity=&quot;sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-</code></pre>
-
-<p>Then here comes a couple of AJAX calls:</p>
-
-<pre><code class="language-javascript">&lt;script&gt;
-$(&quot;#upload_form&quot;).submit(function(event){
-event.preventDefault();
-
-$.ajax({url: &quot;http://localhost:5000/upload_url&quot;, // (1)
-        type: &quot;GET&quot;,
-        crossDomain: true,
-        data: {
-            upload_file: $(&quot;#upload_file&quot;).val()
-        },
-        success: function(result) {
-
-            var formData = new FormData(); // (2)
-            formData.append(&quot;key&quot;, result[&quot;fields&quot;][&quot;key&quot;]);
-            formData.append(&quot;AWSAccessKeyId&quot;, result[&quot;fields&quot;][&quot;AWSAccessKeyId&quot;]);
-            formData.append(&quot;policy&quot;, result[&quot;fields&quot;][&quot;policy&quot;]);
-            formData.append(&quot;signature&quot;, result[&quot;fields&quot;][&quot;signature&quot;]);
-            formData.append(&quot;file&quot;, $(&quot;#upload_file&quot;).get()[0].files[0]);
-
-            $.ajax({url : result[&quot;url&quot;], // (3)
-                    type : &quot;POST&quot;,
-                    data : formData,
-                    contentType: false,
-                    processData: false,
-                    success : function(result) {
-                        alert(&quot;File uploaded&quot;);
-                    },
-                    error: function(error) {
-                        alert(&quot;Upload failed :(&quot;);
-                    }
-            });
-        },
-        error: function(error) {
-            alert(&quot;cannot start uploading :( try again later&quot;);
-        }
-});
-});
-&lt;/script&gt;
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">title</span>&gt;Title&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;upload_form&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;upload_file&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;upload_file&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;custom-file-input&#34;</span> <span style="color:#a6e22e">required</span>/&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submitBtn&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btn btn-dark btn-block&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Upload&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://code.jquery.com/jquery-3.2.1.min.js&#34;</span> <span style="color:#a6e22e">integrity</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f&#34;</span> <span style="color:#a6e22e">crossorigin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;anonymous&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><p>Then here comes a couple of AJAX calls:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#upload_form&#34;</span>).<span style="color:#a6e22e">submit</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">event</span>){
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">preventDefault</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({<span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;http://localhost:5000/upload_url&#34;</span>, <span style="color:#75715e">// (1)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;GET&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">crossDomain</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">data</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">upload_file</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#upload_file&#34;</span>).<span style="color:#a6e22e">val</span>()
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">success</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">result</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">formData</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">FormData</span>(); <span style="color:#75715e">// (2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;key&#34;</span>, <span style="color:#a6e22e">result</span>[<span style="color:#e6db74">&#34;fields&#34;</span>][<span style="color:#e6db74">&#34;key&#34;</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;AWSAccessKeyId&#34;</span>, <span style="color:#a6e22e">result</span>[<span style="color:#e6db74">&#34;fields&#34;</span>][<span style="color:#e6db74">&#34;AWSAccessKeyId&#34;</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;policy&#34;</span>, <span style="color:#a6e22e">result</span>[<span style="color:#e6db74">&#34;fields&#34;</span>][<span style="color:#e6db74">&#34;policy&#34;</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;signature&#34;</span>, <span style="color:#a6e22e">result</span>[<span style="color:#e6db74">&#34;fields&#34;</span>][<span style="color:#e6db74">&#34;signature&#34;</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">formData</span>.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;file&#34;</span>, <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#upload_file&#34;</span>).<span style="color:#a6e22e">get</span>()[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">files</span>[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({<span style="color:#a6e22e">url</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">result</span>[<span style="color:#e6db74">&#34;url&#34;</span>], <span style="color:#75715e">// (3)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#a6e22e">type</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">data</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">formData</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">contentType</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">processData</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">success</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">result</span>) {
+</span></span><span style="display:flex;"><span>                        <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;File uploaded&#34;</span>);
+</span></span><span style="display:flex;"><span>                    },
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>                        <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;Upload failed :(&#34;</span>);
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#34;cannot start uploading :( try again later&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span></code></pre></div><ol>
 <li>AJAX call to the Flask app to get URL and other data needed to upload a file to S3</li>
 <li>Create a form and populate it with the data received from Flask</li>
 <li>Final AJAX to AWS S3 with the file itself</li>

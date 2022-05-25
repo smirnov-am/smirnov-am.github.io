@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2021</copyright>
-    <lastBuildDate>Wed, 09 May 2018 15:22:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://smirnov-am.github.io/tags/serverless/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 09 May 2018 15:22:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/serverless/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Using NLTK library with AWS Lambda</title>
       <link>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</link>
@@ -20,8 +16,8 @@
       <guid>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</guid>
       <description>This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.
 1 Create virtual environment In order to separate system-wide dependencies from this app, create a separate virtual environment with:
-~ mkvirtualenv nltk_env  2 Install nltk In the virtual environment use pip to install nltk package:
-(nltk_env) ~ pip install nltk  3 Download nltk data Pip doesn&amp;rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</description>
+~ mkvirtualenv nltk_env 2 Install nltk In the virtual environment use pip to install nltk package:
+(nltk_env) ~ pip install nltk 3 Download nltk data Pip doesn&amp;rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</description>
     </item>
     
   </channel>

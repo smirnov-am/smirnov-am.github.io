@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Hello, World!",
         "headline" : "Hello, World!",
-        "description" : "Other pytest articles:\nWhy testing is important\nTypes of tests\nTest driven Development\nHello, World!\nSelecting tests with pytest\nTesting HTTP client with pytest\nTesting database with pytest\nAdvanced fixtures with pytest\nPytest plugins\nIn this course, we will be working on a mobile phone number validation application.\nThe application: - Accepts a number as input - For every number in the list - Normalize the number - Check cache if this number was validated before - If it’s not in cache call external service REST API to validate the number - print the normalized number and the result of validation",
+        "description" : "Other pytest articles:\nWhy testing is important\nTypes of tests\nTest driven Development\nHello, World!\nSelecting tests with pytest\nTesting HTTP client with pytest\nTesting database with pytest\nAdvanced fixtures with pytest\nPytest plugins\nIn this course, we will be working on a mobile phone number validation application.\nThe application:\n Accepts a number as input For every number in the list  Normalize the number Check cache if this number was validated before If it’s not in cache call external service REST API to validate the number print the normalized number and the result of validation    Let’s start with the Normalize step.",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-06 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-06 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-09-06 18:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-09-06 18:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/pytest-hello-world\/",
-        "wordCount" : "744",
+        "wordCount" : "738",
         "keywords" : [ "Python","pytest","Blog" ]
     }
     </script>
@@ -45,7 +45,8 @@ Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
 In this course, we will be working on a mobile phone number validation application.
-The application: - Accepts a number as input - For every number in the list - Normalize the number - Check cache if this number was validated before - If it’s not in cache call external service REST API to validate the number - print the normalized number and the result of validation'>
+The application:
+ Accepts a number as input For every number in the list  Normalize the number Check cache if this number was validated before If it’s not in cache call external service REST API to validate the number print the normalized number and the result of validation    Let’s start with the Normalize step.'>
 <meta property='og:url' content='https://smirnov-am.github.io/pytest-hello-world/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Python'><meta property='article:tag' content='pytest'><meta property='article:published_time' content='2020-09-06T18:41:00Z'/><meta property='article:modified_time' content='2020-09-06T18:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -143,6 +144,11 @@ The application: - Accepts a number as input - For every number in the list - No
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -163,161 +169,118 @@ The application: - Accepts a number as input - For every number in the list - No
     
     <div class="content">
       <p>Other pytest articles:</p>
-
 <p><a href="https://smirnov-am.github.io/pytest-why-testing">Why testing is important</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-test-types">Types of tests</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-tdd">Test driven Development</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-hello-world">Hello, World!</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-selecting_tests">Selecting tests with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_http_client">Testing HTTP client with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_database">Testing database with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-advanced-fixtures">Advanced fixtures with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-plugins">Pytest plugins</a></p>
-
 <p>In this course, we will be working on a mobile phone number validation application.</p>
-
-<p>The application:
-- Accepts a number as input
-- For every number in the list
-  - Normalize the number
-  - Check cache if this number was validated before
-  - If it’s not in cache  call external service REST API to validate the number
-  - print the normalized number and the result of validation</p>
-
+<p>The application:</p>
+<ul>
+<li>Accepts a number as input</li>
+<li>For every number in the list
+<ul>
+<li>Normalize the number</li>
+<li>Check cache if this number was validated before</li>
+<li>If it’s not in cache  call external service REST API to validate the number</li>
+<li>print the normalized number and the result of validation</li>
+</ul>
+</li>
+</ul>
 <p>Let’s start with the Normalize step.
 Numbers can contain hyphens, spaces, brackets and can start with a plus sign. Normalize function should leave plus sign and remove all others.</p>
-
 <p>First we need to install pytest. Most obvious option is to use pip.</p>
-
-<pre><code class="language-bash">pip install pytest
-</code></pre>
-
-<p>Let’s write first unit test cases describing these requirements. All of them will be inside <code>test_normalize.py</code> file.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install pytest
+</span></span></code></pre></div><p>Let’s write first unit test cases describing these requirements. All of them will be inside <code>test_normalize.py</code> file.</p>
 <p>First test case for spaces. Test case is just a function:</p>
-
-<pre><code class="language-python">from normalize import normalize
-
-def test_spaces():
-    number = '555 12 34' # input number
-    normalized_number = normalize(number) # our code we will write later
-    assert normalized_number == '5551234' # expected result
-</code></pre>
-
-<p>As an input we have a number with spaces, and as an output we assume that the number won’t have them. Normalized number is a result of our normalized function. And we put an assertion at the end of the test that we get what we expect.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> normalize <span style="color:#f92672">import</span> normalize
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_spaces</span>():
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;555 12 34&#39;</span> <span style="color:#75715e"># input number</span>
+</span></span><span style="display:flex;"><span>    normalized_number <span style="color:#f92672">=</span> normalize(number) <span style="color:#75715e"># our code we will write later</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> normalized_number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;5551234&#39;</span> <span style="color:#75715e"># expected result</span>
+</span></span></code></pre></div><p>As an input we have a number with spaces, and as an output we assume that the number won’t have them. Normalized number is a result of our normalized function. And we put an assertion at the end of the test that we get what we expect.</p>
 <p>Basically assert is the main part of the test - we compare expected and actual results of some calculation and if they are not equal assert fail with an exception and pytest will show that test as failed. In more complex cases than that one it’s wise to have only one assertion in the end of the test case.</p>
-
 <p>Next test case for hyphens:</p>
-
-<pre><code class="language-python">def test_hyphens():
-    number = '555-12-34'
-    normalized_number = normalize(number)
-    assert normalized_number == '5551234'
-</code></pre>
-
-<p>Then for brackets:</p>
-
-<pre><code class="language-python">def test_brackets():
-    number = '31(0)5551234'
-    normalized_number = normalize(number)
-    assert normalized_number == '3105551234'
-</code></pre>
-
-<p>Now let run the tests. Pytest will look for files starting with test in current directory and its subdirectories. It will find the functions starting with <code>test_</code> and recognize them as an individual test cases.</p>
-
-<pre><code class="language-bash">~ pytest .
-
-=== ERRORS ===
-___ ERROR collecting test_normalize.py ___
-ImportError while importing test module 'testing_python_with_pytest/test_normalize.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-test_normalize.py:3: in &lt;module&gt;
-    from normalize import normalize
-E   ModuleNotFoundError: No module named 'normalize'
-=== short test summary info ===
-ERROR test_normalize.py
-!!! Interrupted: 1 error during collection !!!
-=== 1 error in 0.24s ===
-</code></pre>
-
-<p>Now we are on a RED step of TDD - write a test that doesn’t work.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_hyphens</span>():
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;555-12-34&#39;</span>
+</span></span><span style="display:flex;"><span>    normalized_number <span style="color:#f92672">=</span> normalize(number)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> normalized_number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;5551234&#39;</span>
+</span></span></code></pre></div><p>Then for brackets:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_brackets</span>():
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;31(0)5551234&#39;</span>
+</span></span><span style="display:flex;"><span>    normalized_number <span style="color:#f92672">=</span> normalize(number)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> normalized_number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;3105551234&#39;</span>
+</span></span></code></pre></div><p>Now let run the tests. Pytest will look for files starting with test in current directory and its subdirectories. It will find the functions starting with <code>test_</code> and recognize them as an individual test cases.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>~ pytest .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> ERRORS <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>___ ERROR collecting test_normalize.py ___
+</span></span><span style="display:flex;"><span>ImportError <span style="color:#66d9ef">while</span> importing test module <span style="color:#e6db74">&#39;testing_python_with_pytest/test_normalize.py&#39;</span>.
+</span></span><span style="display:flex;"><span>Hint: make sure your test modules/packages have valid Python names.
+</span></span><span style="display:flex;"><span>Traceback:
+</span></span><span style="display:flex;"><span>test_normalize.py:3: in &lt;module&gt;
+</span></span><span style="display:flex;"><span>    from normalize import normalize
+</span></span><span style="display:flex;"><span>E   ModuleNotFoundError: No module named <span style="color:#e6db74">&#39;normalize&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> short test summary info <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>ERROR test_normalize.py
+</span></span><span style="display:flex;"><span>!!! Interrupted: <span style="color:#ae81ff">1</span> error during collection !!!
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> <span style="color:#ae81ff">1</span> error in 0.24s <span style="color:#f92672">===</span>
+</span></span></code></pre></div><p>Now we are on a RED step of TDD - write a test that doesn’t work.</p>
 <p>Let’s create dummy function  in <code>normalize.py</code></p>
-
-<pre><code class="language-python">def normalize(number):
-    return '1123455'
-</code></pre>
-
-<p>The output has changed - now we see that all tests failed (red Fs) and in the FAILURES section there is a description of every failure.</p>
-
-<pre><code class="language-bash">test_normalize.py FFF                                                                                        [100%]
-
-=== FAILURES ===
-___ test_spaces  ___
-
-    def test_spaces():
-        number = '555 12 34'
-        normalized_number = normalize(number)
-&gt;       assert normalized_number == '5551234'
-E       AssertionError: assert '1123455' == '5551234'
-E         - 5551234
-E         + 1123455
-....
-test_normalize.py:21: AssertionError
-=== short test summary info ===
-FAILED test_normalize.py::test_spaces - AssertionError: assert '1123455' == '5551234'
-FAILED test_normalize.py::test_hyphens - AssertionError: assert '1123455' == '5551234'
-FAILED test_normalize.py::test_brackets - AssertionError: assert '1123455' == '3105551234'
-=== 3 failed in 0.17s ===
-</code></pre>
-
-<p>Now I&rsquo;m going to implement a normalize partially</p>
-
-<pre><code class="language-python">import re
-
-def normalize(number):
-    return re.sub(r'[ \-()]', '', number)
-</code></pre>
-
-<p>Now all the tests are green</p>
-
-<pre><code class="language-bash">pytest .
-==== test session starts ===
-collected 3 items
-
-test_normalize.py ...                                                                                        [100%]
-
-=== 3 passed in 0.04s ===
-</code></pre>
-
-<p>There seems to be some duplication - we have 3 cases that does the same. Pytest has a parametrization feature to combine them in one case to avoid duplication</p>
-
-<pre><code class="language-python">import pytest
-
-@pytest.mark.parametrize(&quot;test_input,expected&quot;, # 1
-                         [('555 12 34', '5551234'), # 2
-                          ('31(0)5551234', '3105551234'),
-                          ('31(0)5551234', '3105551234')])
-def test_normalize(test_input, expected): # 3
-    assert expected == normalize(test_input)
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">normalize</span>(number):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;1123455&#39;</span>
+</span></span></code></pre></div><p>The output has changed - now we see that all tests failed (red Fs) and in the FAILURES section there is a description of every failure.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>test_normalize.py FFF                                                                                        <span style="color:#f92672">[</span>100%<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> FAILURES <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>___ test_spaces  ___
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    def test_spaces<span style="color:#f92672">()</span>:
+</span></span><span style="display:flex;"><span>        number <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;555 12 34&#39;</span>
+</span></span><span style="display:flex;"><span>        normalized_number <span style="color:#f92672">=</span> normalize<span style="color:#f92672">(</span>number<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt;       assert normalized_number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;5551234&#39;</span>
+</span></span><span style="display:flex;"><span>E       AssertionError: assert <span style="color:#e6db74">&#39;1123455&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;5551234&#39;</span>
+</span></span><span style="display:flex;"><span>E         - <span style="color:#ae81ff">5551234</span>
+</span></span><span style="display:flex;"><span>E         + <span style="color:#ae81ff">1123455</span>
+</span></span><span style="display:flex;"><span>....
+</span></span><span style="display:flex;"><span>test_normalize.py:21: AssertionError
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> short test summary info <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>FAILED test_normalize.py::test_spaces - AssertionError: assert <span style="color:#e6db74">&#39;1123455&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;5551234&#39;</span>
+</span></span><span style="display:flex;"><span>FAILED test_normalize.py::test_hyphens - AssertionError: assert <span style="color:#e6db74">&#39;1123455&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;5551234&#39;</span>
+</span></span><span style="display:flex;"><span>FAILED test_normalize.py::test_brackets - AssertionError: assert <span style="color:#e6db74">&#39;1123455&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;3105551234&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> <span style="color:#ae81ff">3</span> failed in 0.17s <span style="color:#f92672">===</span>
+</span></span></code></pre></div><p>Now I&rsquo;m going to implement a normalize partially</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">normalize</span>(number):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;[ \-()]&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>, number)
+</span></span></code></pre></div><p>Now all the tests are green</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pytest .
+</span></span><span style="display:flex;"><span><span style="color:#f92672">====</span> test session starts <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>collected <span style="color:#ae81ff">3</span> items
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>test_normalize.py ...                                                                                        <span style="color:#f92672">[</span>100%<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> <span style="color:#ae81ff">3</span> passed in 0.04s <span style="color:#f92672">===</span>
+</span></span></code></pre></div><p>There seems to be some duplication - we have 3 cases that does the same. Pytest has a parametrization feature to combine them in one case to avoid duplication</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>mark<span style="color:#f92672">.</span>parametrize(<span style="color:#e6db74">&#34;test_input,expected&#34;</span>, <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>                         [(<span style="color:#e6db74">&#39;555 12 34&#39;</span>, <span style="color:#e6db74">&#39;5551234&#39;</span>), <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>                          (<span style="color:#e6db74">&#39;31(0)5551234&#39;</span>, <span style="color:#e6db74">&#39;3105551234&#39;</span>),
+</span></span><span style="display:flex;"><span>                          (<span style="color:#e6db74">&#39;31(0)5551234&#39;</span>, <span style="color:#e6db74">&#39;3105551234&#39;</span>)])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_normalize</span>(test_input, expected): <span style="color:#75715e"># 3</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> expected <span style="color:#f92672">==</span> normalize(test_input)
+</span></span></code></pre></div><ol>
 <li>parametrize decorator accepts comma separated list of parameters - input number and expected normalized version as a first argument</li>
 <li>second argument is a list of tuples, representing cases, in each tuple we have an input number and the expected result</li>
 <li>test case function definition should contain 2 input arguments - same as we have in #1</li>
 </ol>
-
 <p>In this unit you&rsquo;ve learned how to launch pytest and create test cases. In the next unit we&rsquo;ll cover how to select test and test exceptions.</p>
 
 

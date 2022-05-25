@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2018",
-        "datePublished": "2018-04-16 15:17:00 \x2b0000 UTC",
-        "dateModified" : "2018-04-16 15:17:00 \x2b0000 UTC",
+        "datePublished": "2018-04-16 15:17:00 \u002b0000 UTC",
+        "dateModified" : "2018-04-16 15:17:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/keyphrases\/",
         "wordCount" : "358",
         "keywords" : [ "Python","machine learning","NLP","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -153,80 +158,57 @@
     <h1 class="title">Extracting keyphrases from texts: unsupervised algorithm TopicRank</h1>
     
     <div class="content">
-      
-
-<p>Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</p>
-
+      <p>Keyphrase extraction is the task of identifying single or multi-word expressions that represent the main topics of a document. There are 2 approaches to extract topics (and/or keyphrases) from a text: supervised and unsupervised.</p>
 <h3 id="supervised-approach">Supervised approach</h3>
-
 <p>This is a multi-label, multi-class classification algorithm, where following features can be used as an input:</p>
-
 <ul>
-<li>text converted to <a href="https://en.wikipedia.org/wiki/Bag-of-words_model" target="_blank">bag-of-words</a></li>
-<li>text is treated as a stream of vectors, which are pre-trained <a href="https://en.wikipedia.org/wiki/Word_embedding" target="_blank">word embeddings</a></li>
+<li>text converted to <a href="https://en.wikipedia.org/wiki/Bag-of-words_model">bag-of-words</a></li>
+<li>text is treated as a stream of vectors, which are pre-trained <a href="https://en.wikipedia.org/wiki/Word_embedding">word embeddings</a></li>
 </ul>
-
-<p>For bag-of-words <a href="http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html#evaluation-of-the-performance-on-the-test-set" target="_blank">linear SVM</a> is a good classifier. For word embeddings RNN are a <a href="http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/" target="_blank">better fit</a></p>
-
+<p>For bag-of-words <a href="http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html#evaluation-of-the-performance-on-the-test-set">linear SVM</a> is a good classifier. For word embeddings RNN are a <a href="http://colah.github.io/posts/2014-07-NLP-RNNs-Representations/">better fit</a></p>
 <p>Later, when the model is trained it may be used to classify unseen text.</p>
-
 <p>Limitations:</p>
-
 <ul>
 <li>large amount of data is needed to train classifiers</li>
 <li>training dataset should be labeled</li>
 <li>labels/topics are predefined</li>
 <li>RNN-LTSM are slow</li>
 </ul>
-
 <p>Advantages:</p>
-
 <ul>
 <li>good accuracy</li>
 <li>extracted entities are not keyphrases from the text itself, but more general topics</li>
 </ul>
-
 <h3 id="unsupervised-learning">Unsupervised learning</h3>
-
-<p><a href="http://www.aclweb.org/anthology/I13-1062" target="_blank">Adrien Bougouin</a> proposed a method to extract keyphrases that represent topics of the document without prior model training.</p>
-
-<p>My implementation of his algorithm can be found <a href="https://github.com/smirnov-am/pytopicrank" target="_blank">here</a> which goes like this:</p>
-
+<p><a href="http://www.aclweb.org/anthology/I13-1062">Adrien Bougouin</a> proposed a method to extract keyphrases that represent topics of the document without prior model training.</p>
+<p>My implementation of his algorithm can be found <a href="https://github.com/smirnov-am/pytopicrank">here</a> which goes like this:</p>
 <ul>
 <li>tokenize text and identify part-of-speech of each token</li>
 <li>identify longest sequences of adjectives and nouns - they constitute keyphrases</li>
 <li>convert each keyphrase to term frequency vector using bag of words, apply stemmer for better compression</li>
 <li>find clusters of keyphrases using Hierarchical Agglomerative Clustering (HAC) algorithm to form topics:</li>
 <li>use average strategy</li>
-<li>identify cluster by max depth of 0.74 (good explanation if HAC can be found <a href="https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters" target="_blank">here</a></li>
+<li>identify cluster by max depth of 0.74 (good explanation if HAC can be found <a href="https://joernhees.de/blog/2015/08/26/scipy-hierarchical-clustering-and-dendrogram-tutorial/#Selecting-a-Distance-Cut-Off-aka-Determining-the-Number-of-Clusters">here</a></li>
 <li>use clusters as graph vertices and sum of distances between each keyphrase of topic pairs as edge weight</li>
 <li>apply PageRank to identify most prominent topics (implemented in <code>networkx</code>)</li>
 </ul>
-
 <p>For topN topics extract most significant keyphrases that represent this topic. Possible strategies:</p>
-
 <ul>
 <li>use a keyphrase which is closer to the beginning of the text</li>
 <li>use center of the cluster from p.4</li>
 <li>use most frequent</li>
 </ul>
-
 <p>Limitations:</p>
-
 <ul>
 <li>topics are represented by words from the text itself</li>
 </ul>
-
 <p>Advantages:</p>
-
 <ul>
 <li>fast</li>
 <li>no training needed</li>
-<li>unlike <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">LDA</a> topics are easily interpreted by humans</li>
+<li>unlike <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">LDA</a> topics are easily interpreted by humans</li>
 </ul>
-
 <h2 id="tests">Tests</h2>
-
 <p>I ran the code agains the original article on this algoithms and it gave: <code>document</code>, <code>topics</code>, <code>keyphrase</code>, <code>graph</code>, <code>method</code>, <code>topicrank</code>, <code>word</code>, <code>vertices</code>, <code>keyphrase candidate</code>, <code>datasets</code> as keyphrases, which is pretty close to what article is about.</p>
 
 

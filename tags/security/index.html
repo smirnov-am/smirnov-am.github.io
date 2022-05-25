@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2018",
-        "datePublished": "2018-07-11 15:26:00 \x2b0000 UTC",
-        "dateModified" : "2018-07-11 15:26:00 \x2b0000 UTC",
+        "datePublished": "2018-07-11 15:26:00 \u002b0000 UTC",
+        "dateModified" : "2018-07-11 15:26:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/tags\/security\/",
         "wordCount" : "0",
         "keywords" : [ "Blog" ]
@@ -33,7 +33,7 @@
 
 <title>Security | Alexey Smirnov</title>
 
-<meta property='og:title' content='Tag: Security - Alexey Smirnov'>
+<meta property='og:title' content='Security - Alexey Smirnov'>
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/security/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
@@ -155,7 +155,7 @@
         In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.
-&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt; &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt; &lt;input type=&quot;submit&quot;&gt; &lt;/form&gt;  And a template to show tweets by other users where user input from above form passed unprocessed:
+&lt;form method=&#34;post&#34; action=&#34;/&#34;&gt;  &lt;input type=&#34;text&#34; name=&#34;tweet&#34;&gt;&lt;br&gt;  &lt;input type=&#34;submit&#34;&gt; &lt;/form&gt; And a template to show tweets by other users where user input from above form passed unprocessed:
         
         <a class="button is-link" href="https://smirnov-am.github.io/securing-flask-web-applications/" style="height:28px">
           Read more

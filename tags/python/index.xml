@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2021</copyright>
-    <lastBuildDate>Mon, 21 Dec 2020 18:41:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 21 Dec 2020 18:41:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to become a Python developer</title>
       <link>https://smirnov-am.github.io/how-to-become-python-developer/</link>
@@ -58,7 +54,8 @@ Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
 In this course, we will be working on a mobile phone number validation application.
-The application: - Accepts a number as input - For every number in the list - Normalize the number - Check cache if this number was validated before - If it’s not in cache call external service REST API to validate the number - print the normalized number and the result of validation</description>
+The application:
+ Accepts a number as input For every number in the list  Normalize the number Check cache if this number was validated before If it’s not in cache call external service REST API to validate the number print the normalized number and the result of validation    Let’s start with the Normalize step.</description>
     </item>
     
     <item>
@@ -155,7 +152,8 @@ Testing HTTP client with pytest
 Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
-Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs: - It’s a REST API - We need to use HTTP GET - We provide a number in query parameters - The result is a json {‘existing’: True | False}</description>
+Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs:
+ It’s a REST API We need to use HTTP GET We provide a number in query parameters The result is a json {‘existing’: True | False}  I’m going to create this 3rd party API myself and run it from my local environment so we can see the access logs.</description>
     </item>
     
     <item>
@@ -204,8 +202,8 @@ Flexible If you don’t have tests for your code - every change to the code is a
       <pubDate>Sun, 23 Aug 2020 22:41:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/producer-consumer/</guid>
-      <description>Let&amp;rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
-Very simple implementation of this pipeline can be like this one:</description>
+      <description>Let&amp;rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
+ VALUE column holding original number ROOT column for the result of calculation  Very simple implementation of this pipeline can be like this one:</description>
     </item>
     
     <item>
@@ -238,7 +236,7 @@ In this tutorial, you’ll learn how to:
       <guid>https://smirnov-am.github.io/representing-money-in-python/</guid>
       <description>Python&amp;rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
-$$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.</description>
+is close to the number as possible. So, values such as 0.</description>
     </item>
     
     <item>

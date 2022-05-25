@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2019",
-        "datePublished": "2019-10-23 14:26:16 \x2b0000 UTC",
-        "dateModified" : "2019-10-23 14:26:16 \x2b0000 UTC",
+        "datePublished": "2019-10-23 14:26:16 \u002b0000 UTC",
+        "dateModified" : "2019-10-23 14:26:16 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/run-flask-on-aws-ecs\/",
         "wordCount" : "859",
         "keywords" : [ "Flask","AWS","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -151,110 +156,64 @@
     <h1 class="title">Run Flask on AWS ECS (Fargate)</h1>
     
     <div class="content">
-      
-
-<p>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.<a href="https://github.com/smirnov-am/aws_ecs_flask" target="_blank">Source code</a></p>
-
+      <p>There is an alternative to run Flask on AWS Elastic Beanstalk that allow numerous customization options - run Flask on ECS Fargate. This serverless (you don&rsquo;t have to manage a cluster of EC2) solution runs Docker images and can run Flask web server. There is a lot of AWS resources involved to make it work. I&rsquo;m sharing CloudFormation templates that will create them automatically.<a href="https://github.com/smirnov-am/aws_ecs_flask">Source code</a></p>
 <p>Here are the details of these templates:</p>
-
 <h2 id="resources">Resources</h2>
-
 <p><code>flask_resources.yaml</code> - is a CloudFormation template that will create services that won&rsquo;t change much. It consists of three parts.</p>
-
 <h3 id="dns">DNS</h3>
-
 <p>The input for that template is a domain name. I&rsquo;m using <code>flask.com</code> as an example. <code>Route53::HostedZone</code> is created for that domain to host DNS records. It will also contain NS records to be used when you need to set up your domain registrar. <code>Route53::RecordSet</code> is a DNS A record then points <code>flask.com</code> to application load balancer (ALB).</p>
-
 <h3 id="vpc">VPC</h3>
-
-<p>A virtual private cloud (VPC) is a logical isolation of the resources. It&rsquo;s necessary for ALB to work. I&rsquo;m following this <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/cloudformation-vpc-template.html" target="_blank">example</a> that creates a pair of private subnets (where our containers will live), a pair of public subnets (in different AZs) and all the wiring - routing tables and default routes, internet and NAT gateways.</p>
-
+<p>A virtual private cloud (VPC) is a logical isolation of the resources. It&rsquo;s necessary for ALB to work. I&rsquo;m following this <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/cloudformation-vpc-template.html">example</a> that creates a pair of private subnets (where our containers will live), a pair of public subnets (in different AZs) and all the wiring - routing tables and default routes, internet and NAT gateways.</p>
 <h3 id="loadbalancer">LoadBalancer</h3>
-
-<p>This one consists of a <code>ElasticLoadBalancingV2::LoadBalancer</code> that resides in 2 public subnets. There is one config parameter I have in the template, which is <code>idle_timeout.timeout_seconds</code>. More in it <a href="https://aws.amazon.com/blogs/aws/elb-idle-timeout-control/" target="_blank">here</a>.LoadBalancer drive traffic to <code>ElasticLoadBalancingV2::Listener</code> which drives further to <code>ElasticLoadBalancingV2::TargetGroup</code>. There could be another additional listener for HTTPS. The listener is a very powerful thing. It can do SSL off-load and even Cognito authentication.  <code>ElasticLoadBalancingV2::TargetGroup</code> config will define how often it will call out Flask <code>health_check</code> endpoint to decide if the container is alive and available for accepting requests.</p>
-
+<p>This one consists of a <code>ElasticLoadBalancingV2::LoadBalancer</code> that resides in 2 public subnets. There is one config parameter I have in the template, which is <code>idle_timeout.timeout_seconds</code>. More in it <a href="https://aws.amazon.com/blogs/aws/elb-idle-timeout-control/">here</a>.LoadBalancer drive traffic to <code>ElasticLoadBalancingV2::Listener</code> which drives further to <code>ElasticLoadBalancingV2::TargetGroup</code>. There could be another additional listener for HTTPS. The listener is a very powerful thing. It can do SSL off-load and even Cognito authentication.  <code>ElasticLoadBalancingV2::TargetGroup</code> config will define how often it will call out Flask <code>health_check</code> endpoint to decide if the container is alive and available for accepting requests.</p>
 <h3 id="ecs">ECS</h3>
-
 <p><code>ECR::Repository</code> will hold Docker images. I&rsquo;m building them locally, but it&rsquo;s also possible to use CodeBuild and have a full CI/CD pipeline for that (Maybe another post?)<code>ECS::Cluster</code> is a placeholder for the Flask stack.<code>flask_resources.yaml</code> stack export some variables to be used in <code>flask_stack.yaml</code>. The former will create a ECS task. I&rsquo;ve tried to move as name resources to the first stack and leave only essentials in the second one.</p>
-
 <h2 id="stack">Stack</h2>
-
-<p><code>flask_stack.yaml</code> contains a <code>ECS::Service</code>. It run and maintains a number if running Docker containers (tasks) and associates load balancers with them.<code>ECS::TaskDefinition</code> is an instruction on how to run Docker container. Environment variables can be specified there as well as CPU and Memory that will be used by a task. See this <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ecs-taskdefinition.html#cfn-ecs-taskdefinition-memory" target="_blank">doc</a> for a reference. TaskDefinition also specifies where to put stdout&amp;stderr logs. I&rsquo;m putting them into Cloudwatch. The inputs for that stack are CPU, Memory and tag. See <strong>Building image</strong> for tag.</p>
-
+<p><code>flask_stack.yaml</code> contains a <code>ECS::Service</code>. It run and maintains a number if running Docker containers (tasks) and associates load balancers with them.<code>ECS::TaskDefinition</code> is an instruction on how to run Docker container. Environment variables can be specified there as well as CPU and Memory that will be used by a task. See this <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ecs-taskdefinition.html#cfn-ecs-taskdefinition-memory">doc</a> for a reference. TaskDefinition also specifies where to put stdout&amp;stderr logs. I&rsquo;m putting them into Cloudwatch. The inputs for that stack are CPU, Memory and tag. See <strong>Building image</strong> for tag.</p>
 <h2 id="iam-roles">IAM roles</h2>
-
 <p>There are a couple of roles created by both stacks: <strong>- TaskExecutionRole</strong> - a role that containers in this task can assume.  Its uses build in (managed) AmazonECSTaskExecutionRolePolicy <strong>- TaskRole</strong> - a role that grants containers in the task permission to call AWS APIs. I&rsquo;ve left a single policy that grants access to all DynamoDB tables. But of course, these policies should be as restrictive as possible (only necessary actions and resources/tables) If Flask will be using RDS/Aurora, then these resources should be placed in the same VPC. There is no need for an additional role.</p>
-
 <h2 id="enabling-ssl">Enabling SSL</h2>
-
 <p>First, the certificate is needed:</p>
-
-<pre><code class="language-yaml">Certificate:
-    Type: &quot;AWS::CertificateManager::Certificate&quot;
-    Properties:
-      DomainName: !Sub &quot;*.${Domain}&quot;
-      SubjectAlternativeNames:
-        - !Ref Domain
-</code></pre>
-
-<p>Then this certificate is used by additional load balancer listener:</p>
-
-<pre><code class="language-yaml">HTTPSListener:
-Type: &quot;AWS::ElasticLoadBalancingV2::Listener&quot;
-    Properties:
-      Certificates:
-        - CertificateArn: !Ref Certificate
-      DefaultActions:
-        - TargetGroupArn: !Ref TargetGroup
-          Type: forward
-      LoadBalancerArn: !Ref LoadBalancer
-      Port: 443
-      Protocol: HTTPS
-</code></pre>
-
-<p>Then a redirect should be added in <code>nginx.conf</code> inside a location section:</p>
-
-<pre><code class="language-nginx">if ($http_x_forwarded_proto != &quot;https&quot;) {
-    rewrite ^(.*)$ https://$host$request_uri permanent;
-}
-</code></pre>
-
-<h2 id="building-image">Building image</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">Certificate</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">Type</span>: <span style="color:#e6db74">&#34;AWS::CertificateManager::Certificate&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">Properties</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">DomainName</span>: !<span style="color:#ae81ff">Sub &#34;*.${Domain}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">SubjectAlternativeNames</span>:
+</span></span><span style="display:flex;"><span>        - !<span style="color:#ae81ff">Ref Domain</span>
+</span></span></code></pre></div><p>Then this certificate is used by additional load balancer listener:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">HTTPSListener</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">Type</span>: <span style="color:#e6db74">&#34;AWS::ElasticLoadBalancingV2::Listener&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">Properties</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">Certificates</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">CertificateArn</span>: !<span style="color:#ae81ff">Ref Certificate</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">DefaultActions</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">TargetGroupArn</span>: !<span style="color:#ae81ff">Ref TargetGroup</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">Type</span>: <span style="color:#ae81ff">forward</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">LoadBalancerArn</span>: !<span style="color:#ae81ff">Ref LoadBalancer</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">Port</span>: <span style="color:#ae81ff">443</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">Protocol</span>: <span style="color:#ae81ff">HTTPS</span>
+</span></span></code></pre></div><p>Then a redirect should be added in <code>nginx.conf</code> inside a location section:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#e6db74">(</span>$http_x_forwarded_proto <span style="color:#e6db74">!=</span> <span style="color:#e6db74">&#34;https&#34;)</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rewrite</span> <span style="color:#e6db74">^(.*)</span>$ <span style="color:#e6db74">https://</span>$host$request_uri <span style="color:#e6db74">permanent</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="building-image">Building image</h2>
 <p>I&rsquo;m building a Docker image locally and pushing it to AWS ECR.</p>
-
 <p><strong>1.</strong> Login to ERC <code>$(aws ecr get-login --region eu-west-1 --no-include-email)</code></p>
-
 <p><strong>2.</strong> Build image locally <code>docker build . -t flask_image</code>See a folder <code>flask.com</code> in the repo.</p>
-
 <p><strong>3.</strong> Get the image ID by issuing <code>docker images</code></p>
-
 <p><strong>4.</strong> Tag image. For that you&rsquo;ll need you AWS account number and region. Put the tag that will be passed to CF template.</p>
-
 <p><code>docker tag &lt;image_id&gt; &lt;aws_account_number&gt;.dkr.ecr..amazonaws.com/:&lt;my_tag&gt;</code></p>
-
 <p><strong>5.</strong> Upload the image <code>docker push &lt;aws_account_number&gt;.dkr.ecr.&lt;region&gt;.amazonaws.com/&lt;domain&gt;</code></p>
-
 <h2 id="bringing-it-all-together">Bringing it all together</h2>
-
 <p><strong>1.</strong> Create a stack from resources CloudFormation template</p>
-
 <p><strong>2.</strong> Build and push the image to ECR</p>
-
 <p><strong>3.</strong> Create a stack from stack.yaml CloudFormation template</p>
-
 <p><strong>4.</strong> In Route53 locate a newly created hosted zone and find a A record with ALIAS. Open load balancer hostname in browser - you&rsquo;ll see a response from Flask</p>
-
 <p><strong>5.</strong> Rewrite NS records in registrar to use the ones from the Hosted zone. (So example <code>flask.com</code> will lead to the deployed server)</p>
-
 <h2 id="further-thoughts">Further thoughts</h2>
-
 <p>The stacks are missing some important things:</p>
-
 <p><strong>-</strong> Scaling. In <code>ECS::Service</code> a DesiredCount attribute can be specified to define the number of simultaneous running containers. But it doesn&rsquo;t change based on the load.</p>
-
 <p><strong>-</strong> Alarms. There are logs on CloudWatch. An alarm can be created based on these logs, like a number of excessive 4XX, 5XX HTTP responses, to long load balance response</p>
-
 <p><strong>-</strong> CI/CD. Images are built locally, CodePipeline+CodeBuild can be used for that.</p>
 
 

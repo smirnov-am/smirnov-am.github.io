@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-06 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-06 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-09-06 18:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-09-06 18:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/pytest-advanced-fixtures\/",
         "wordCount" : "540",
         "keywords" : [ "Python","pytest","Blog" ]
@@ -142,6 +142,11 @@ Now let’s create another test - it will test integration between our 2 compone
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -162,129 +167,91 @@ Now let’s create another test - it will test integration between our 2 compone
     
     <div class="content">
       <p>Other pytest articles:</p>
-
 <p><a href="https://smirnov-am.github.io/pytest-why-testing">Why testing is important</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-test-types">Types of tests</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-tdd">Test driven Development</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-hello-world">Hello, World!</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-selecting_tests">Selecting tests with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_http_client">Testing HTTP client with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_database">Testing database with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-advanced-fixtures">Advanced fixtures with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-plugins">Pytest plugins</a></p>
-
 <p>Now let’s create another test - it will test integration between our 2 components that talk to external systems - API and database cache. Let’s test that when we query a number twice - we call API only once that the result is saved to the database and fetched from it on the second call.</p>
-
 <p>I’m going to use responses for mocking API and in memory sqlite for database, So I will have to fixtures passed - sessions and responses patch. I’m going to use some number for that test. First I’m going to check if the number is not in the database cache yet.
 Then there are going to be two call to some function we are yet to write.
 After those two calls I’ll check that the number is in the database.
 And also I’ll check that API was called only once.</p>
-
-<pre><code class="language-python">import pytest
-from database import CacheService
-from number_checker import check_number
-
-@pytest.mark.usefixtures(&quot;setup_db&quot;) # 1
-def test_integration_external_calls(session, api_response): # 2
-    number = &quot;+311234555&quot;
-    cache = CacheService(session)
-    assert not cache.get_status(number)
-
-    
-    check_number(number, cache)
-    check_number(number, cache)
-
-    assert cache.get_status(number)
-    assert len(api_response.calls) == 1
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pytest
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> database <span style="color:#f92672">import</span> CacheService
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> number_checker <span style="color:#f92672">import</span> check_number
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>mark<span style="color:#f92672">.</span>usefixtures(<span style="color:#e6db74">&#34;setup_db&#34;</span>) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_integration_external_calls</span>(session, api_response): <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;+311234555&#34;</span>
+</span></span><span style="display:flex;"><span>    cache <span style="color:#f92672">=</span> CacheService(session)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> <span style="color:#f92672">not</span> cache<span style="color:#f92672">.</span>get_status(number)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    check_number(number, cache)
+</span></span><span style="display:flex;"><span>    check_number(number, cache)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> cache<span style="color:#f92672">.</span>get_status(number)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> len(api_response<span style="color:#f92672">.</span>calls) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><ol>
 <li>Use setup DB fixture automatically</li>
 <li>Some test case to check whole app</li>
 </ol>
-
 <p>Now a number of our tests use this setup_db fixture. We can modify it so pytest will invoke it automatically</p>
-
-<pre><code class="language-python">@pytest.fixture(autouse=True) # 1
-def setup_db(session):
-    session.execute('''CREATE TABLE numbers
-                          (number text, existing boolean)''')
-    session.execute('INSERT INTO numbers VALUES (&quot;+3155512345&quot;, 1)')
-    session.connection.commit()
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture(autouse<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setup_db</span>(session):
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;&#39;&#39;CREATE TABLE numbers
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                          (number text, existing boolean)&#39;&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;INSERT INTO numbers VALUES (&#34;+3155512345&#34;, 1)&#39;</span>)
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>connection<span style="color:#f92672">.</span>commit()
+</span></span></code></pre></div><ol>
 <li>Use this fixture for every test case</li>
 </ol>
-
 <p>Now we can get rid of <code>@pytest.mark.usefixtures(&quot;setup_db&quot;)</code></p>
-
 <p>But pytest will invoke for every test case, which is a waste of time if we use this fixture to load some data in database. We can control the scope of the session with the scope parameter.</p>
-
 <p>With this version we invoke create_db only once per testing session:</p>
-
-<pre><code class="language-python">@pytest.fixture(autouse=True, scope='session')
-def setup_db(session):
-    ...
-</code></pre>
-
-<p>In that example session fixture needs to have a matching scope:</p>
-
-<pre><code class="language-python">@pytest.fixture(scope='session') # 1
-def session():
-    ...
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture(autouse<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, scope<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;session&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setup_db</span>(session):
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span></code></pre></div><p>In that example session fixture needs to have a matching scope:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture(scope<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;session&#39;</span>) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">session</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span></code></pre></div><ol>
 <li>This fixture will be invoked once per pytest run</li>
 </ol>
-
 <p>Possible values for scope are: function, class, module, package or session.
 Session - once per pytest run
-package, module (in our case test<em>*.py file) or class (test in pytest can be grouped in a class) - once in the corresponding unit
-function - default, get new session for each test</em>* function.</p>
-
+package, module (in our case test_<em>.py file) or class (test in pytest can be grouped in a class) - once in the corresponding unit
+function - default, get new session for each test_</em> function.</p>
 <p>Fixtures can be also parametrized. For example, we have a sample database already in data.db file. We can create 2 session fixtures like so:</p>
-
-<pre><code class="language-python">@pytest.fixture(scope='session', params=[':memory:', 'data.db']) # 1
-def session(request):
-    print(&quot;using db &quot;+request.param)
-    connection = sqlite3.connect(request.param)
-    db_session = connection.cursor()
-    yield db_session
-    connection.close()
-</code></pre>
-
-<ol>
-<li>This will produce 2 test cases for each parameter
-<br /></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture(scope<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;session&#39;</span>, params<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;:memory:&#39;</span>, <span style="color:#e6db74">&#39;data.db&#39;</span>]) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">session</span>(request):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;using db &#34;</span><span style="color:#f92672">+</span>request<span style="color:#f92672">.</span>param)
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> sqlite3<span style="color:#f92672">.</span>connect(request<span style="color:#f92672">.</span>param)
+</span></span><span style="display:flex;"><span>    db_session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">yield</span> db_session
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>close()
+</span></span></code></pre></div><ol>
+<li>This will produce 2 test cases for each parameter</li>
 </ol>
-
 <p>We provide list of parameters in the decorator, pass a spacial <code>request</code> parameter to the fixture and access the data with <code>request.param</code>.</p>
-
 <p>Now when I run pytest it gives generated 2 test cases</p>
-
-<pre><code class="language-bash">~ pytest test_integration.py -vs
-=== test session starts ================================================
-collected 2 items
-
-test_integration.py::test_integration_external_calls[:memory:] using db :memory:
-PASSED
-test_integration.py::test_integration_external_calls[data.db] using db data.db
-PASSED
-
-=== 2 passed in 0.06s ===
-</code></pre>
-
-<p>In this unit you&rsquo;ve learned advanced usages of pytest fixtures, in the next we&rsquo;ll cover pytest plugins.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>~ pytest test_integration.py -vs
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> test session starts <span style="color:#f92672">================================================</span>
+</span></span><span style="display:flex;"><span>collected <span style="color:#ae81ff">2</span> items
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>test_integration.py::test_integration_external_calls<span style="color:#f92672">[</span>:memory:<span style="color:#f92672">]</span> using db :memory:
+</span></span><span style="display:flex;"><span>PASSED
+</span></span><span style="display:flex;"><span>test_integration.py::test_integration_external_calls<span style="color:#f92672">[</span>data.db<span style="color:#f92672">]</span> using db data.db
+</span></span><span style="display:flex;"><span>PASSED
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> <span style="color:#ae81ff">2</span> passed in 0.06s <span style="color:#f92672">===</span>
+</span></span></code></pre></div><p>In this unit you&rsquo;ve learned advanced usages of pytest fixtures, in the next we&rsquo;ll cover pytest plugins.</p>
 
 
       <section class="section">

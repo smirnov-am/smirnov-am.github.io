@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-05-07 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2020-05-07 23:03:00 \x2b0000 UTC",
+        "datePublished": "2020-05-07 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2020-05-07 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/flask-perf\/",
-        "wordCount" : "1332",
+        "wordCount" : "1330",
         "keywords" : [ "Flask","Blog" ]
     }
     </script>
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -147,162 +152,114 @@
     <h1 class="title">How to increase Flask performance</h1>
     
     <div class="content">
-      
-
-<p>When Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified you can fight an underlying cause.</p>
-
+      <p>When Flask app runs slow we need to identify what is the bottleneck. It can be an overloaded database, unresponsive external API, or heavy, CPU-intensive computation. This is the whole recipe on how to speed up Flask - find the source of sluggish performance. After the bottleneck is identified you can fight an underlying cause.</p>
 <p>And here I assume that the underlying platform that runs Flask has enough resources to do so. In the rest of this post, I&rsquo;ll explore some instruments that help with identifying bottlenecks.</p>
-
 <h2 id="db-model">DB model</h2>
-
 <p>Our app will use MySQL with many-to-many mapping from Students tables to Classes table - students can sign up for multiple classes and each class can accommodate many students.</p>
-
 <p>I&rsquo;m using Flask-SQLAlchemy here:</p>
-
-<pre><code class="language-python">from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://localhost:33066/perf'
-db = SQLAlchemy(app)
-
-student_identifier = db.Table('student_identifier',
-                              db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id')),
-                              db.Column('student_id', db.Integer, db.ForeignKey('students.student_id')))
-
-
-class Student(db.Model):
-    __tablename__ = 'students'
-    student_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    classes = db.relationship(&quot;Class&quot;, secondary=student_identifier)
-
-
-class Class(db.Model):
-    __tablename__ = 'classes'
-    class_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    students = db.relationship(&quot;Student&quot;, secondary=student_identifier)
-</code></pre>
-
-<h2 id="views">Views</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask_sqlalchemy <span style="color:#f92672">import</span> SQLAlchemy
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SQLALCHEMY_DATABASE_URI&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mysql+pymysql://localhost:33066/perf&#39;</span>
+</span></span><span style="display:flex;"><span>db <span style="color:#f92672">=</span> SQLAlchemy(app)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>student_identifier <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Table(<span style="color:#e6db74">&#39;student_identifier&#39;</span>,
+</span></span><span style="display:flex;"><span>                              db<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;class_id&#39;</span>, db<span style="color:#f92672">.</span>Integer, db<span style="color:#f92672">.</span>ForeignKey(<span style="color:#e6db74">&#39;classes.class_id&#39;</span>)),
+</span></span><span style="display:flex;"><span>                              db<span style="color:#f92672">.</span>Column(<span style="color:#e6db74">&#39;student_id&#39;</span>, db<span style="color:#f92672">.</span>Integer, db<span style="color:#f92672">.</span>ForeignKey(<span style="color:#e6db74">&#39;students.student_id&#39;</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>(db<span style="color:#f92672">.</span>Model):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;students&#39;</span>
+</span></span><span style="display:flex;"><span>    student_id <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>Integer, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    name <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>String(<span style="color:#ae81ff">80</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    classes <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>relationship(<span style="color:#e6db74">&#34;Class&#34;</span>, secondary<span style="color:#f92672">=</span>student_identifier)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Class</span>(db<span style="color:#f92672">.</span>Model):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;classes&#39;</span>
+</span></span><span style="display:flex;"><span>    class_id <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>Integer, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    name <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>String(<span style="color:#ae81ff">80</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    students <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>relationship(<span style="color:#e6db74">&#34;Student&#34;</span>, secondary<span style="color:#f92672">=</span>student_identifier)
+</span></span></code></pre></div><h2 id="views">Views</h2>
 <p>Let&rsquo;s create a couple of views. One to query all the students signed up for a class</p>
-
-<pre><code class="language-python">@app.route('/roster')
-def roster():
-    class_id = request.args.get('class_id')
-    class_orm = Class.query.filter_by(class_id=class_id).first_or_404()
-    return jsonify([c.name for c in class_orm.students])
-</code></pre>
-
-<p>Another will query all classes a student has sighed up for.</p>
-
-<pre><code class="language-python">@app.route('/my_class')
-def my_class():
-    student_id = request.args.get('student_id')
-    student_orm = Student.query.filter_by(student_id=student_id).first_or_404()
-    return render_template_string('&lt;html&gt;&lt;body&gt;data: {{ data }}&lt;/body&gt;&lt;/html&gt;', data=[c.name for c in student_orm.classes])
-</code></pre>
-
-<p>I&rsquo;ll run flask in a development mode, as I&rsquo;d like to find the bottleneck in my code and not in middleware such as nginx or uwsgi</p>
-
-<pre><code class="language-python">if __name__ == '__main__':
-    app.run(debug=True)
-</code></pre>
-
-<h2 id="profiling-with-werkzeug-profiler">Profiling with werkzeug profiler</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/roster&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">roster</span>():
+</span></span><span style="display:flex;"><span>    class_id <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;class_id&#39;</span>)
+</span></span><span style="display:flex;"><span>    class_orm <span style="color:#f92672">=</span> Class<span style="color:#f92672">.</span>query<span style="color:#f92672">.</span>filter_by(class_id<span style="color:#f92672">=</span>class_id)<span style="color:#f92672">.</span>first_or_404()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jsonify([c<span style="color:#f92672">.</span>name <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> class_orm<span style="color:#f92672">.</span>students])
+</span></span></code></pre></div><p>Another will query all classes a student has sighed up for.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/my_class&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">my_class</span>():
+</span></span><span style="display:flex;"><span>    student_id <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;student_id&#39;</span>)
+</span></span><span style="display:flex;"><span>    student_orm <span style="color:#f92672">=</span> Student<span style="color:#f92672">.</span>query<span style="color:#f92672">.</span>filter_by(student_id<span style="color:#f92672">=</span>student_id)<span style="color:#f92672">.</span>first_or_404()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> render_template_string(<span style="color:#e6db74">&#39;&lt;html&gt;&lt;body&gt;data: {{ data }}&lt;/body&gt;&lt;/html&gt;&#39;</span>, data<span style="color:#f92672">=</span>[c<span style="color:#f92672">.</span>name <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> student_orm<span style="color:#f92672">.</span>classes])
+</span></span></code></pre></div><p>I&rsquo;ll run flask in a development mode, as I&rsquo;d like to find the bottleneck in my code and not in middleware such as nginx or uwsgi</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><h2 id="profiling-with-werkzeug-profiler">Profiling with werkzeug profiler</h2>
 <p>There is a built-in profiler in werkzeug - Flask’s development web server. To use it modify the main of the app.py:</p>
-
-<pre><code class="language-python">if __name__ == '__main__':
-    from werkzeug.middleware.profiler import ProfilerMiddleware
-    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[5], profile_dir='./profile')
-    app.run(debug=True)
-
-</code></pre>
-
-<p>The profiler has 2 parameters:
-- a number of slowest performing functions to show - I&rsquo;m putting 5
-- a directory where to put the details of the function calls</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> werkzeug.middleware.profiler <span style="color:#f92672">import</span> ProfilerMiddleware
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>wsgi_app <span style="color:#f92672">=</span> ProfilerMiddleware(app<span style="color:#f92672">.</span>wsgi_app, restrictions<span style="color:#f92672">=</span>[<span style="color:#ae81ff">5</span>], profile_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;./profile&#39;</span>)
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><p>The profiler has 2 parameters:</p>
+<ul>
+<li>a number of slowest performing functions to show - I&rsquo;m putting 5</li>
+<li>a directory where to put the details of the function calls</li>
+</ul>
 <p>The result is available in the stdout:</p>
-
-<pre><code class="language-bash">PATH: '/my_class'
-         8887 function calls (8615 primitive calls) in 0.038 seconds
-
-   Ordered by: internal time, call count
-   List reduced from 994 to 5 due to restriction &lt;5&gt;
-
-   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        3    0.004    0.001    0.004    0.001 {method 'recv_into' of '_socket.socket' objects}
-        2    0.001    0.000    0.001    0.000 /Users/as/.virtualenvs/flask-perf/lib/python3.6/site-packages/sqlalchemy/orm/interfaces.py:558(create_row_processor)
-       28    0.001    0.000    0.001    0.000 {method 'update' of 'dict' objects}
-       57    0.001    0.000    0.001    0.000 /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/_weakrefset.py:58(__iter__)
-      309    0.001    0.000    0.001    0.000 {built-in method builtins.getattr}
-</code></pre>
-
-<p>It shows that most of the time the program spent communication over the network. Now let&rsquo;s have a look at what was accessing the sockets.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PATH: <span style="color:#e6db74">&#39;/my_class&#39;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#ae81ff">8887</span> <span style="color:#66d9ef">function</span> calls <span style="color:#f92672">(</span><span style="color:#ae81ff">8615</span> primitive calls<span style="color:#f92672">)</span> in 0.038 seconds
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Ordered by: internal time, call count
+</span></span><span style="display:flex;"><span>   List reduced from <span style="color:#ae81ff">994</span> to <span style="color:#ae81ff">5</span> due to restriction &lt;5&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   ncalls  tottime  percall  cumtime  percall filename:lineno<span style="color:#f92672">(</span><span style="color:#66d9ef">function</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">3</span>    0.004    0.001    0.004    0.001 <span style="color:#f92672">{</span>method <span style="color:#e6db74">&#39;recv_into&#39;</span> of <span style="color:#e6db74">&#39;_socket.socket&#39;</span> objects<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">2</span>    0.001    0.000    0.001    0.000 /Users/as/.virtualenvs/flask-perf/lib/python3.6/site-packages/sqlalchemy/orm/interfaces.py:558<span style="color:#f92672">(</span>create_row_processor<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">28</span>    0.001    0.000    0.001    0.000 <span style="color:#f92672">{</span>method <span style="color:#e6db74">&#39;update&#39;</span> of <span style="color:#e6db74">&#39;dict&#39;</span> objects<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#ae81ff">57</span>    0.001    0.000    0.001    0.000 /Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/_weakrefset.py:58<span style="color:#f92672">(</span>__iter__<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">309</span>    0.001    0.000    0.001    0.000 <span style="color:#f92672">{</span>built-in method builtins.getattr<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>It shows that most of the time the program spent communication over the network. Now let&rsquo;s have a look at what was accessing the sockets.</p>
 <p>Profiler puts details of the requests in <code>profile-dir</code> directory in a *.prof files.
-We can use <a href="https://github.com/jiffyclub/snakeviz/" target="_blank">snakeviz</a> to visualize it:</p>
-
-<pre><code class="language-bash">pip install snakeviz
-snakeviz profile/GET.my_class.38ms.1588862067.prof
-</code></pre>
-
-<p>It will open a diagram in a browser. In my case it looks like that:
-<img src="https://smirnov-am.github.io/content/images/flask-perf/prof_viz1.png" alt="prof_viz1" />.</p>
-
+We can use <a href="https://github.com/jiffyclub/snakeviz/">snakeviz</a> to visualize it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install snakeviz
+</span></span><span style="display:flex;"><span>snakeviz profile/GET.my_class.38ms.1588862067.prof
+</span></span></code></pre></div><p>It will open a diagram in a browser. In my case it looks like that:
+<img src="https://smirnov-am.github.io/content/images/flask-perf/prof_viz1.png" alt="prof_viz1">.</p>
 <p>Hover over boxes on each call level to see what&rsquo;s the function being called and how long did it take. If you want to find this costly method &lsquo;recv_into&rsquo; of &lsquo;_socket.socket&rsquo; you need to click on a box to zoom in.</p>
-
 <p>Another way of visualizing of the profiler output is to use <code>gprof2dot</code> to convert prof file to
 a dot file and <code>xdot</code> draw a graph from dot file</p>
-
-<pre><code class="language-bash">pip install gprof2dot
-gprof2dot -f pstats profile/GET.my_class.38ms.1588862067.prof -o calling_graph.dot
-xdot calling_graph.dot
-</code></pre>
-
-<p>The resulting graph is:
-<img src="https://smirnov-am.github.io/content/images/flask-perf/dot.png" alt="dot" /></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install gprof2dot
+</span></span><span style="display:flex;"><span>gprof2dot -f pstats profile/GET.my_class.38ms.1588862067.prof -o calling_graph.dot
+</span></span><span style="display:flex;"><span>xdot calling_graph.dot
+</span></span></code></pre></div><p>The resulting graph is:
+<img src="https://smirnov-am.github.io/content/images/flask-perf/dot.png" alt="dot"></p>
 <p>After investigating this visualization it&rsquo;s clear that most time is spent executing sqlachemy code (no surprise - we only do a query to the database in the Flask)</p>
-
 <h2 id="getting-slow-sql-queries">Getting slow SQL queries</h2>
-
 <p>Since now we know that querying the database slows us down let&rsquo;s investigate what queries we execute. There is an SQLAlchemy feature that allows us to get all the queries executed during the request. I&rsquo;ll use <code>after_request</code> Flask hook to print them when the request is over:</p>
-
-<pre><code class="language-python">from flask_sqlalchemy import get_debug_queries
-
-app.config['SQLALCHEMY_RECORD_QUERIES'] = True
-
-@app.after_request
-def after_request(response):
-    for query in get_debug_queries():
-        if query.duration &gt;= 0:
-            print(query.statement, query.parameters, query.duration, query.context)
-    return response
-</code></pre>
-
-<p>Each query returned by <code>get_debug_queries</code> has a duration attribute. In my case, I&rsquo;m printing all queries (duration &gt;= 0) but in a real case, I&rsquo;ll be interested in ones that are longer than say 1s.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask_sqlalchemy <span style="color:#f92672">import</span> get_debug_queries
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SQLALCHEMY_RECORD_QUERIES&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>after_request
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">after_request</span>(response):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> query <span style="color:#f92672">in</span> get_debug_queries():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> query<span style="color:#f92672">.</span>duration <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            print(query<span style="color:#f92672">.</span>statement, query<span style="color:#f92672">.</span>parameters, query<span style="color:#f92672">.</span>duration, query<span style="color:#f92672">.</span>context)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span></code></pre></div><p>Each query returned by <code>get_debug_queries</code> has a duration attribute. In my case, I&rsquo;m printing all queries (duration &gt;= 0) but in a real case, I&rsquo;ll be interested in ones that are longer than say 1s.</p>
 <p>In stdout I now can wee the queries:</p>
-
-<pre><code class="language-bash">SELECT students.student_id AS students_student_id, students.name AS students_name 
-FROM students 
-WHERE students.student_id = %(student_id_1)s 
- LIMIT %(param_1)s {'student_id_1': '43', 'param_1': 1} 0.01108407974243164 /Users/as/Desktop/flask-perf/app.py:40 (my_class)
-</code></pre>
-
-<p>Now I can substitute bind variables with values and put EXPLAIN before the query in SQL console to see how it was executed by the server:</p>
-
-<pre><code class="language-bash">EXPLAIN SELECT students.student_id AS students_student_id, students.name AS students_name 
-FROM students 
-WHERE students.student_id = 42 
-LIMIT 1;
-</code></pre>
-
-<table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SELECT students.student_id AS students_student_id, students.name AS students_name 
+</span></span><span style="display:flex;"><span>FROM students 
+</span></span><span style="display:flex;"><span>WHERE students.student_id <span style="color:#f92672">=</span> %<span style="color:#f92672">(</span>student_id_1<span style="color:#f92672">)</span>s 
+</span></span><span style="display:flex;"><span> LIMIT %<span style="color:#f92672">(</span>param_1<span style="color:#f92672">)</span>s <span style="color:#f92672">{</span><span style="color:#e6db74">&#39;student_id_1&#39;</span>: <span style="color:#e6db74">&#39;43&#39;</span>, <span style="color:#e6db74">&#39;param_1&#39;</span>: 1<span style="color:#f92672">}</span> 0.01108407974243164 /Users/as/Desktop/flask-perf/app.py:40 <span style="color:#f92672">(</span>my_class<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Now I can substitute bind variables with values and put EXPLAIN before the query in SQL console to see how it was executed by the server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>EXPLAIN SELECT students.student_id AS students_student_id, students.name AS students_name 
+</span></span><span style="display:flex;"><span>FROM students 
+</span></span><span style="display:flex;"><span>WHERE students.student_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">42</span> 
+</span></span><span style="display:flex;"><span>LIMIT 1;
+</span></span></code></pre></div><table>
 <thead>
 <tr>
 <th>id</th>
@@ -319,7 +276,6 @@ LIMIT 1;
 <th>Extra</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
@@ -337,106 +293,73 @@ LIMIT 1;
 </tr>
 </tbody>
 </table>
-
 <p>The <code>type</code> column says that it was an ALL type query and it means that MySQL was unable to identify any keys that can be used. So if we set a proper index the query should run faster.</p>
-
 <h2 id="flask-debugtoolbar">Flask-DebugToolbar</h2>
-
 <p>More high-level tools can profile Flask. One of them is a <code>flask-debugtoolbar</code>. It&rsquo;s simple to install with <code>pip install flask-debugtoolbar</code>.</p>
-
-<pre><code class="language-python">from flask_debugtoolbar import DebugToolbarExtension
-
-app.config['SECRET_KEY'] = 'verysecretsuchwow'
-app.config['DEBUG_TB_PROFILER_ENABLED'] = True
-app.debug = True
-
-toolbar = DebugToolbarExtension(app)
-</code></pre>
-
-<p>Now in every response with an HTML page, there will be a toolbar on a right-hand sight. There we can see SQLAlchemy queries and execute EXPLAIN right from the browser:<img src="debtb1.png" alt="tb1" /></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask_debugtoolbar <span style="color:#f92672">import</span> DebugToolbarExtension
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SECRET_KEY&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;verysecretsuchwow&#39;</span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;DEBUG_TB_PROFILER_ENABLED&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>debug <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>toolbar <span style="color:#f92672">=</span> DebugToolbarExtension(app)
+</span></span></code></pre></div><p>Now in every response with an HTML page, there will be a toolbar on a right-hand sight. There we can see SQLAlchemy queries and execute EXPLAIN right from the browser:<img src="debtb1.png" alt="tb1"></p>
 <p>There is a profiler output as well:
-<img src="https://smirnov-am.github.io/content/images/flask-perf/debtb2.png" alt="tb2" /></p>
-
+<img src="https://smirnov-am.github.io/content/images/flask-perf/debtb2.png" alt="tb2"></p>
 <h2 id="api-monitoring">API monitoring</h2>
-
 <p>All the mentioned methods need you to make an actual call to get the profiler data. They do not store the results of your user&rsquo;s call, nor they provide statistics on what endpoints perform worst.</p>
-
 <p>2 plugins allow monitoring such a performance: <code>Flask-MonitoringDashboard</code> and <code>flask-profiler</code></p>
-
 <p>Installation of both plugins is simple:</p>
-
-<pre><code class="language-bash">pip install flask_profiler Flask-MonitoringDashboard
-</code></pre>
-
-<h3 id="flask-monitoringdashboard">Flask-MonitoringDashboard</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install flask_profiler Flask-MonitoringDashboard
+</span></span></code></pre></div><h3 id="flask-monitoringdashboard">Flask-MonitoringDashboard</h3>
 <p>The setup for the dashboard looks like this:</p>
-
-<pre><code class="language-python">import flask_monitoringdashboard as dashboard
-dashboard.bind(app)
-</code></pre>
-
-<p>The dashboard is using SQLite by default (you&rsquo;ll get a .db file in the root directory of the project). The dashboard is available under <code>/dashboard</code> (default credentials are admin/admin)</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> flask_monitoringdashboard <span style="color:#66d9ef">as</span> dashboard
+</span></span><span style="display:flex;"><span>dashboard<span style="color:#f92672">.</span>bind(app)
+</span></span></code></pre></div><p>The dashboard is using SQLite by default (you&rsquo;ll get a .db file in the root directory of the project). The dashboard is available under <code>/dashboard</code> (default credentials are admin/admin)</p>
 <p>In the API performance section, you can find statistics (nice block diagrams) showing response time distributions of our endpoints:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fdb1.png" alt="fdb1" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fdb1.png" alt="fdb1"></p>
 <p>In the overview section, you can select a log level. If you select #3 you will access a profiler data that shows the call stack and timings for every request being made</p>
-
-<p><img src="fdb2.png" alt="fdb2" /></p>
-
-<p>There are a bunch of configuration options this a profiler. See the docs <a href="https://flask-monitoringdashboard.readthedocs.io/en/latest/configuration.html" target="_blank">here</a></p>
-
+<p><img src="fdb2.png" alt="fdb2"></p>
+<p>There are a bunch of configuration options this a profiler. See the docs <a href="https://flask-monitoringdashboard.readthedocs.io/en/latest/configuration.html">here</a></p>
 <h3 id="flask-profiler">flask-profiler</h3>
-
 <p>Setup the profiler like so:</p>
-
-<pre><code class="language-python">from flask_profiler import Profiler
-app.config[&quot;flask_profiler&quot;] = {
-    &quot;enabled&quot;: app.config[&quot;DEBUG&quot;],
-    &quot;storage&quot;: {
-        &quot;engine&quot;: &quot;sqlite&quot;
-    },
-    &quot;basicAuth&quot;:{
-        &quot;enabled&quot;: True,
-        &quot;username&quot;: &quot;admin&quot;,
-        &quot;password&quot;: &quot;admin&quot;
-    },
-    &quot;ignore&quot;: [
-        &quot;^/static/.*&quot;
-    ]
-}
-
-Profiler(app)
-</code></pre>
-
-<p>The dashboard is also using SQLite by default (but MongoDB and SQLAlchemy are available backends). The dashboard is available under /flask-profile (default credentials are admin/admin)</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask_profiler <span style="color:#f92672">import</span> Profiler
+</span></span><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#34;flask_profiler&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;enabled&#34;</span>: app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#34;DEBUG&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;storage&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;engine&#34;</span>: <span style="color:#e6db74">&#34;sqlite&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;basicAuth&#34;</span>:{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;enabled&#34;</span>: <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;admin&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;admin&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;ignore&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;^/static/.*&#34;</span>
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Profiler(app)
+</span></span></code></pre></div><p>The dashboard is also using SQLite by default (but MongoDB and SQLAlchemy are available backends). The dashboard is available under /flask-profile (default credentials are admin/admin)</p>
 <p>On the overview page there is a statistics of our endpoint&rsquo;s usage:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fpf1.png" alt="fpf1" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fpf1.png" alt="fpf1"></p>
 <p>In the settings there is a list of all requests where we can see that was  passed to the server:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fpf2.png" alt="fpf2" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/flask-perf/fpf2.png" alt="fpf2"></p>
 <p>Both dashboards are meant to be used when Flask is in debug mode and I wouldn&rsquo;t put them on in a production environment. So the best approach to work with them is to enable them on a development machine and run a test using ab, siege, or JMeter and analyze the results afterward.</p>
-
 <h2 id="final-thoughts">Final thoughts</h2>
-
 <p>Only after identifying an underlying cause for slow responses, you can start dealing with them. In my career I&rsquo;ve encountered such situations:</p>
-
 <ul>
-<li><p>In case if slow DB queries - use EXPLAIN to see if the server uses the index for querying the data.</p></li>
-
-<li><p>Or you may spin up a read-replica DB to steer read requests to it if you&rsquo;ve reached a limit with vertical scaling of the DB server.</p></li>
-
-<li><p>If it&rsquo;s a slow API or CPU intensive job - consider putting it in an <a href="https://smirnov-am.github.io/background-jobs-with-flask/" target="_blank">async background job</a>.</p></li>
+<li>
+<p>In case if slow DB queries - use EXPLAIN to see if the server uses the index for querying the data.</p>
+</li>
+<li>
+<p>Or you may spin up a read-replica DB to steer read requests to it if you&rsquo;ve reached a limit with vertical scaling of the DB server.</p>
+</li>
+<li>
+<p>If it&rsquo;s a slow API or CPU intensive job - consider putting it in an <a href="https://smirnov-am.github.io/background-jobs-with-flask/">async background job</a>.</p>
+</li>
 </ul>
-
-<p>Please, reach me out on <a href="linkedin.com/in/smirnovam" target="_blank">LinkedIn</a> you you find this post useful and want to share your experience with
+<p>Please, reach me out on <a href="linkedin.com/in/smirnovam">LinkedIn</a> you you find this post useful and want to share your experience with
 slow Flask performance</p>
 
 

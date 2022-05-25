@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2018",
-        "datePublished": "2018-08-13 15:31:00 \x2b0000 UTC",
-        "dateModified" : "2018-08-13 15:31:00 \x2b0000 UTC",
+        "datePublished": "2018-08-13 15:31:00 \u002b0000 UTC",
+        "dateModified" : "2018-08-13 15:31:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/running-flask-in-production-with-docker\/",
-        "wordCount" : "1331",
+        "wordCount" : "1320",
         "keywords" : [ "Flask","Blog" ]
     }
     </script>
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -147,41 +152,26 @@
     <h1 class="title">Running Flask in production with Docker</h1>
     
     <div class="content">
-      
-
-<p>Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:</p>
-
-<pre><code> * Serving Flask app &quot;app&quot; (lazy loading)
+      <p>Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:</p>
+<pre tabindex="0"><code> * Serving Flask app &#34;app&#34; (lazy loading)
  * Environment: production
    WARNING: Do not use the development server in a production environment.
    Use a production WSGI server instead.
  * Debug mode: on
  * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit)
-
-</code></pre>
-
-<p>I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.</p>
-
+</code></pre><p>I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.</p>
 <h2 id="flask-app">Flask app</h2>
-
-<p>I&rsquo;ll take a basic Flask app from it&rsquo;s official <a href="http://flask.pocoo.org/" target="_blank">docs</a></p>
-
-<pre><code>from flask import Flask
+<p>I&rsquo;ll take a basic Flask app from it&rsquo;s official <a href="http://flask.pocoo.org/">docs</a></p>
+<pre tabindex="0"><code>from flask import Flask
 app = Flask(__name__)
 
-@app.route(&quot;/&quot;)
+@app.route(&#34;/&#34;)
 def hello():
-    return &quot;Hello World!&quot;
-
-</code></pre>
-
-<p>Naming this file as <code>hello.py</code> and running it with <code>FLASK_APP=test.py flask run --port 5555</code> will yield a warning that development server is used in a production environment like above.</p>
-
+    return &#34;Hello World!&#34;
+</code></pre><p>Naming this file as <code>hello.py</code> and running it with <code>FLASK_APP=test.py flask run --port 5555</code> will yield a warning that development server is used in a production environment like above.</p>
 <h2 id="uwsgi">uwsgi</h2>
-
 <p>As suggested by the warning we should use <code>uwsgi</code> to run it. For that to happen let&rsquo;s create a uwsgi configuration file named <code>uwsgi.ini</code></p>
-
-<pre><code>[uwsgi]
+<pre tabindex="0"><code>[uwsgi]
 module = hello:app
 uid = www-data
 gid = www-data
@@ -193,222 +183,148 @@ chmod-sock = 664
 vacuum = true
 
 die-on-term = true
-
-</code></pre>
-
-<p>So running uwsgi app with <code>uwsgi --ini uwsgi.ini</code> will give long output indicating that uwsgi started 5 processes (see <code>processes=5</code> in the config). Development server runs only 1 process thus allowing only 1 request at a time. By increasing this number you will increase the number if simultaneous requests to Flask app, but that will require more RAM and there will be more processes with Python interpreter running.</p>
-
+</code></pre><p>So running uwsgi app with <code>uwsgi --ini uwsgi.ini</code> will give long output indicating that uwsgi started 5 processes (see <code>processes=5</code> in the config). Development server runs only 1 process thus allowing only 1 request at a time. By increasing this number you will increase the number if simultaneous requests to Flask app, but that will require more RAM and there will be more processes with Python interpreter running.</p>
 <p>There is also a backlog for uwsgi meaning that if all workers (uwsgi processes) are busy with requests, excessive requests will be put in a queue of size 100 by default. Requests above that level will be dropped by uwsgi, but we will eventually have nginx in front of it with it&rsquo;s own backlog.</p>
-
 <p>This is the output you should see when running <code>uwsgi</code> command and provide with <code>uwsgi.ini</code> (<code>uwsgi --ini uwsgi.ini</code>):</p>
-
-<pre><code class="language-bash">[uWSGI] getting INI configuration from uwsgi.ini                                             
-*** Starting uWSGI 2.0.17.1 (64bit) on [Fri Aug  3 22:29:18 2018] ***                        
-compiled with version: 7.2.0 on 03 August 2018 22:23:17                                      
-os: Linux-4.13.0-46-generic #51-Ubuntu SMP Tue Jun 12 12:36:29 UTC 2018                      
-nodename: ubuntuvm                                                                                                                                                                           
-machine: x86_64                                                                              
-clock source: unix                            
-detected number of CPU cores: 4               
-current working directory: /home/as/Desktop/blog                                    
-detected binary path: /home/as/.virtualenvs/blog/bin/uwsgi                          
-!!! no internal routing support, rebuild with pcre support !!!                               
-your processes number limit is 63569          
-your memory page size is 4096 bytes  
-detected max file descriptor number: 1024     
-lock engine: pthread robust mutexes                                                          
-thunder lock: disabled (you can enable it with --thunder-lock)                               
-uwsgi socket 0 bound to UNIX address /tmp/uwsgi.socket fd 3                                  
-Python version: 3.6.3 (default, Oct  3 2017, 21:45:48)  [GCC 7.2.0]                          
-*** Python threads support is disabled. You can enable it with --enable-threads ***          
-Python main interpreter initialized at 0x562fb447cb40        i     i         i               
-your server socket listen backlog is limited to 100 connections                              
-your mercy for graceful operations on workers is 60 seconds                                  
-mapped 437520 bytes (427 KB) for 5 cores                                                     
-*** Operational MODE: preforking ***                                                         
-WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x562fb447cb40 pid: 23917 (default app)                                                                                       
-*** uWSGI is running in multiple interpreter mode ***                                        
-spawned uWSGI master process (pid: 23917)     
-spawned uWSGI worker 1 (pid: 23923, cores: 1) 
-spawned uWSGI worker 2 (pid: 23924, cores: 1)                     
-spawned uWSGI worker 3 (pid: 23925, cores: 1)                     
-spawned uWSGI worker 4 (pid: 23926, cores: 1)                     
-spawned uWSGI worker 5 (pid: 23927, cores: 1) 
-
-</code></pre>
-
-<p>Also this will create a socket file, that will be referred later in nginx configuration.</p>
-
-<pre><code class="language-bash">~ ls -la /tmp/uwsgi.socket  
-srwxrwxr-x 1 as as 0 aug  3 22:29 /tmp/uwsgi.socket
-
-</code></pre>
-
-<p>Another thing is the user which runs <code>uwsgi</code> processes and owns a socket. Ideally you need to use user with minimum access right. <code>uid</code>/<code>gid</code> options are set to <code>www-data</code> here - standard user for web servers. If you run uwsgi manually from bash it will use your user for socket and processes. But in Docker you will run it as root so these options are needed to downgrade it to <code>www-data</code>.</p>
-
-<p>Uwsgi has a lot of configuration options. There is a good list you need to check if you need to troubleshoot/tune your application that can be found <a href="https://uwsgi-docs.readthedocs.io/en/latest/ThingsToKnow.html" target="_blank">here</a></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>uWSGI<span style="color:#f92672">]</span> getting INI configuration from uwsgi.ini                                             
+</span></span><span style="display:flex;"><span>*** Starting uWSGI 2.0.17.1 <span style="color:#f92672">(</span>64bit<span style="color:#f92672">)</span> on <span style="color:#f92672">[</span>Fri Aug  <span style="color:#ae81ff">3</span> 22:29:18 2018<span style="color:#f92672">]</span> ***                        
+</span></span><span style="display:flex;"><span>compiled with version: 7.2.0 on <span style="color:#ae81ff">03</span> August <span style="color:#ae81ff">2018</span> 22:23:17                                      
+</span></span><span style="display:flex;"><span>os: Linux-4.13.0-46-generic <span style="color:#75715e">#51-Ubuntu SMP Tue Jun 12 12:36:29 UTC 2018                      </span>
+</span></span><span style="display:flex;"><span>nodename: ubuntuvm                                                                                                                                                                           
+</span></span><span style="display:flex;"><span>machine: x86_64                                                                              
+</span></span><span style="display:flex;"><span>clock source: unix                            
+</span></span><span style="display:flex;"><span>detected number of CPU cores: <span style="color:#ae81ff">4</span>               
+</span></span><span style="display:flex;"><span>current working directory: /home/as/Desktop/blog                                    
+</span></span><span style="display:flex;"><span>detected binary path: /home/as/.virtualenvs/blog/bin/uwsgi                          
+</span></span><span style="display:flex;"><span>!!! no internal routing support, rebuild with pcre support !!!                               
+</span></span><span style="display:flex;"><span>your processes number limit is <span style="color:#ae81ff">63569</span>          
+</span></span><span style="display:flex;"><span>your memory page size is <span style="color:#ae81ff">4096</span> bytes  
+</span></span><span style="display:flex;"><span>detected max file descriptor number: <span style="color:#ae81ff">1024</span>     
+</span></span><span style="display:flex;"><span>lock engine: pthread robust mutexes                                                          
+</span></span><span style="display:flex;"><span>thunder lock: disabled <span style="color:#f92672">(</span>you can enable it with --thunder-lock<span style="color:#f92672">)</span>                               
+</span></span><span style="display:flex;"><span>uwsgi socket <span style="color:#ae81ff">0</span> bound to UNIX address /tmp/uwsgi.socket fd <span style="color:#ae81ff">3</span>                                  
+</span></span><span style="display:flex;"><span>Python version: 3.6.3 <span style="color:#f92672">(</span>default, Oct  <span style="color:#ae81ff">3</span> 2017, 21:45:48<span style="color:#f92672">)</span>  <span style="color:#f92672">[</span>GCC 7.2.0<span style="color:#f92672">]</span>                          
+</span></span><span style="display:flex;"><span>*** Python threads support is disabled. You can enable it with --enable-threads ***          
+</span></span><span style="display:flex;"><span>Python main interpreter initialized at 0x562fb447cb40        i     i         i               
+</span></span><span style="display:flex;"><span>your server socket listen backlog is limited to <span style="color:#ae81ff">100</span> connections                              
+</span></span><span style="display:flex;"><span>your mercy <span style="color:#66d9ef">for</span> graceful operations on workers is <span style="color:#ae81ff">60</span> seconds                                  
+</span></span><span style="display:flex;"><span>mapped <span style="color:#ae81ff">437520</span> bytes <span style="color:#f92672">(</span><span style="color:#ae81ff">427</span> KB<span style="color:#f92672">)</span> <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">5</span> cores                                                     
+</span></span><span style="display:flex;"><span>*** Operational MODE: preforking ***                                                         
+</span></span><span style="display:flex;"><span>WSGI app <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>mountpoint<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">)</span> ready in <span style="color:#ae81ff">1</span> seconds on interpreter 0x562fb447cb40 pid: <span style="color:#ae81ff">23917</span> <span style="color:#f92672">(</span>default app<span style="color:#f92672">)</span>                                                                                       
+</span></span><span style="display:flex;"><span>*** uWSGI is running in multiple interpreter mode ***                                        
+</span></span><span style="display:flex;"><span>spawned uWSGI master process <span style="color:#f92672">(</span>pid: 23917<span style="color:#f92672">)</span>     
+</span></span><span style="display:flex;"><span>spawned uWSGI worker <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>pid: 23923, cores: 1<span style="color:#f92672">)</span> 
+</span></span><span style="display:flex;"><span>spawned uWSGI worker <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>pid: 23924, cores: 1<span style="color:#f92672">)</span>                     
+</span></span><span style="display:flex;"><span>spawned uWSGI worker <span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>pid: 23925, cores: 1<span style="color:#f92672">)</span>                     
+</span></span><span style="display:flex;"><span>spawned uWSGI worker <span style="color:#ae81ff">4</span> <span style="color:#f92672">(</span>pid: 23926, cores: 1<span style="color:#f92672">)</span>                     
+</span></span><span style="display:flex;"><span>spawned uWSGI worker <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>pid: 23927, cores: 1<span style="color:#f92672">)</span> 
+</span></span></code></pre></div><p>Also this will create a socket file, that will be referred later in nginx configuration.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>~ ls -la /tmp/uwsgi.socket  
+</span></span><span style="display:flex;"><span>srwxrwxr-x <span style="color:#ae81ff">1</span> as as <span style="color:#ae81ff">0</span> aug  <span style="color:#ae81ff">3</span> 22:29 /tmp/uwsgi.socket
+</span></span></code></pre></div><p>Another thing is the user which runs <code>uwsgi</code> processes and owns a socket. Ideally you need to use user with minimum access right. <code>uid</code>/<code>gid</code> options are set to <code>www-data</code> here - standard user for web servers. If you run uwsgi manually from bash it will use your user for socket and processes. But in Docker you will run it as root so these options are needed to downgrade it to <code>www-data</code>.</p>
+<p>Uwsgi has a lot of configuration options. There is a good list you need to check if you need to troubleshoot/tune your application that can be found <a href="https://uwsgi-docs.readthedocs.io/en/latest/ThingsToKnow.html">here</a></p>
 <h2 id="nginx">nginx</h2>
-
-<p>Nginx will serve as a proxy to uwsgi. It&rsquo;s nginx that will listen on ports <sup>80</sup>&frasl;<sub>443</sub> and forward requests to the socket. It&rsquo;s config (named <code>nginx.conf</code>) is pretty straightforward (I&rsquo;m omitting SSL part for brevity)</p>
-
-<pre><code class="language-nginx">user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
-
-events {
-    worker_connections 1024;
-    use epoll;
-    multi_accept on;
-}
-
-http {
-    access_log /dev/stdout;
-    error_log /dev/stdout;
-
-    sendfile            on;
-    tcp_nopush          on;
-    tcp_nodelay         on;
-    keepalive_timeout   65;
-    types_hash_max_size 2048;
-
-    include             /etc/nginx/mime.types;
-    default_type        application/octet-stream;
-
-    index   index.html index.htm;
-
-    server {
-        listen       80 default_server;
-        listen       [::]:80 default_server;
-        server_name  localhost;
-        root         /var/www/html;
-
-        location / {
-            include uwsgi_params;
-            uwsgi_pass unix:/tmp/uwsgi.socket;
-        }
-    }
-}
-
-</code></pre>
-
-<p>I&rsquo;ve added redirection of access and error logs to stdout so both will be accessible through <code>docker logs</code> command. Uwsgi logs are streamed to stdout by default.</p>
-
+<p>Nginx will serve as a proxy to uwsgi. It&rsquo;s nginx that will listen on ports 80/443 and forward requests to the socket. It&rsquo;s config (named <code>nginx.conf</code>) is pretty straightforward (I&rsquo;m omitting SSL part for brevity)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">user</span> <span style="color:#e6db74">www-data</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">worker_processes</span> <span style="color:#e6db74">auto</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pid</span> <span style="color:#e6db74">/run/nginx.pid</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">events</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">worker_connections</span> <span style="color:#ae81ff">1024</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#e6db74">epoll</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">multi_accept</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">http</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">access_log</span> <span style="color:#e6db74">/dev/stdout</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">error_log</span> <span style="color:#e6db74">/dev/stdout</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">sendfile</span>            <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tcp_nopush</span>          <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tcp_nodelay</span>         <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">keepalive_timeout</span>   <span style="color:#ae81ff">65</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">types_hash_max_size</span> <span style="color:#ae81ff">2048</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">include</span>             <span style="color:#e6db74">/etc/nginx/mime.types</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">default_type</span>        <span style="color:#e6db74">application/octet-stream</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">index</span>   <span style="color:#e6db74">index.html</span> <span style="color:#e6db74">index.htm</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">listen</span>       <span style="color:#ae81ff">80</span> <span style="color:#e6db74">default_server</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">listen</span>       <span style="color:#e6db74">[::]:80</span> <span style="color:#e6db74">default_server</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server_name</span>  <span style="color:#e6db74">localhost</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">root</span>         <span style="color:#e6db74">/var/www/html</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">include</span> <span style="color:#e6db74">uwsgi_params</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">uwsgi_pass</span> <span style="color:#e6db74">unix:/tmp/uwsgi.socket</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I&rsquo;ve added redirection of access and error logs to stdout so both will be accessible through <code>docker logs</code> command. Uwsgi logs are streamed to stdout by default.</p>
 <p>One interesting thing I found is about long lasting requests. Nginx itself may kill these requests. So it&rsquo;s worth adding this parameters to the <code>location</code> block:</p>
-
-<pre><code>uwsgi_read_timeout 1h;
+<pre tabindex="0"><code>uwsgi_read_timeout 1h;
 uwsgi_send_timeout 1h;
 proxy_send_timeout 1h;
 proxy_read_timeout 1h;
-
-</code></pre>
-
-<h2 id="startup-script">Startup script</h2>
-
+</code></pre><h2 id="startup-script">Startup script</h2>
 <p>This is a simple startup script that will be used as default for executing container. Name of the file will be <code>start.sh</code> and it will be referred in Dockerfile.</p>
-
-<pre><code class="language-bash">#!/usr/bin/env bash
-service nginx start
-uwsgi --ini uwsgi.ini
-
-</code></pre>
-
-<h2 id="requirements">requirements</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>service nginx start
+</span></span><span style="display:flex;"><span>uwsgi --ini uwsgi.ini
+</span></span></code></pre></div><h2 id="requirements">requirements</h2>
 <p>Requirements file (<code>requirements.txt</code>) will have only flask and uwsgi and will look like this:</p>
-
-<pre><code>click==6.7
+<pre tabindex="0"><code>click==6.7
 Flask==1.0.2
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 uWSGI==2.0.17.1
 Werkzeug==0.14.1
-
-</code></pre>
-
-<h2 id="dockerfile">Dockerfile</h2>
-
+</code></pre><h2 id="dockerfile">Dockerfile</h2>
 <p>I&rsquo;ve tried a couple of ready-made images from Docker hub and found them overcomplicated or edited in a way by their maintainers making them unusable. So I&rsquo;ll start with basic python image.</p>
-
-<pre><code class="language-Dockerfile">FROM python:3.6-slim
-</code></pre>
-
-<p>First thing let&rsquo;s copy <code>hello.py</code>, <code>uwsgi.ini</code>, <code>requirements.txt</code> and <code>start.sh</code> to working directory:</p>
-
-<pre><code class="language-Dockerfile">COPY . /srv/flask_app
-WORKDIR /srv/flask_app
-</code></pre>
-
-<p>Base image doesn&rsquo;t have nginx and some useful packages</p>
-
-<pre><code class="language-Dockerfile">RUN apt-get clean \
-    &amp;&amp; apt-get -y update
-
-RUN apt-get -y install nginx \
-    &amp;&amp; apt-get -y install python3-dev \
-    &amp;&amp; apt-get -y install build-essential
-
-</code></pre>
-
-<p>Now let&rsquo;s install python requirements</p>
-
-<pre><code class="language-Dockerfile">RUN pip install -r requirements.txt --src /usr/local/src
-
-</code></pre>
-
-<p>Finally, copy nginx config to the proper location, add execution rights to startup script and set is as default.</p>
-
-<pre><code class="language-Dockerfile">COPY nginx.conf /etc/nginx
-RUN chmod +x ./start.sh
-CMD [&quot;./start.sh&quot;]
-
-</code></pre>
-
-<h2 id="building-and-running">Building and running</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> python:3.6-slim</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>First thing let&rsquo;s copy <code>hello.py</code>, <code>uwsgi.ini</code>, <code>requirements.txt</code> and <code>start.sh</code> to working directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> . /srv/flask_app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /srv/flask_app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Base image doesn&rsquo;t have nginx and some useful packages</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> apt-get clean <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get -y update<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get -y install nginx <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get -y install python3-dev <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get -y install build-essential<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Now let&rsquo;s install python requirements</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> pip install -r requirements.txt --src /usr/local/src<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Finally, copy nginx config to the proper location, add execution rights to startup script and set is as default.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> nginx.conf /etc/nginx<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chmod +x ./start.sh<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;./start.sh&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="building-and-running">Building and running</h2>
 <p>Image build can be done like so:</p>
-
-<pre><code class="language-bash">docker build . -t flask_image
-</code></pre>
-
-<p>It creates an image named <code>flask_image</code> that can be run with this command:</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker build . -t flask_image
+</span></span></code></pre></div><p>It creates an image named <code>flask_image</code> that can be run with this command:</p>
 <p><code>docker run --name flask_container -p 80:80 flask_image</code></p>
-
-<p>Now you may navigate to <a href="http://localhost" target="_blank">http://localhost</a> in you browser to see the output.</p>
-
+<p>Now you may navigate to <a href="http://localhost">http://localhost</a> in you browser to see the output.</p>
 <p>Some useful options when running container</p>
-
 <ul>
 <li><code>--name</code> gives the container a name that can be found in <code>docker ps</code> output</li>
 <li><code>-p</code> instructs to publish port 80. Second 80 after semicolons tells what port nginx inside the container listens on</li>
 <li><code>-d</code> runs container detached from terminal. Logs then can be viewed by issuing <code>docker logs</code> command</li>
 </ul>
-
 <h2 id="advantages-of-dockerized-flask">Advantages of dockerized Flask</h2>
-
 <p>I found it very useful to run Flask like that for a number of reasons:</p>
-
 <p>Portability: spinning projects on a different machine with different distribution is a piece of cake, provided docker is installed.</p>
-
 <p>No need to configure process managers (upstart/systemd)</p>
-
 <p>Automatic restart of failed containers. Just use <code>--restart on-failure</code> with <code>docker run</code></p>
-
 <p>It&rsquo;s very easy to start with almost serverless AWS ECS Fargate.</p>
-
 <h2 id="troubleshooting">Troubleshooting</h2>
-
 <p>When running docker container we specified port 80 so you host should have this port available for docker to bind to on you host. If it&rsquo;s not then change it to something else.</p>
-
 <p>If your host runs multiple containers they should listen on different ports and some kind if proxy should be running on host OS to direct requests to the proper container.</p>
-
 <p>To get inside the container issue <code>docker exec -it flask_container /bin/bash</code>. To get the exact container name issue <code>docker ps</code></p>
-
 <p>To follow error and access logs issue <code>docker logs -f flask_container</code></p>
-
-<p>How do you run Flask in production? Drop me a message on LinkedIn <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">https://www.linkedin.com/in/smirnovam/</a></p>
+<p>How do you run Flask in production? Drop me a message on LinkedIn <a href="https://www.linkedin.com/in/smirnovam/">https://www.linkedin.com/in/smirnovam/</a></p>
 
 
       <section class="section">

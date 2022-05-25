@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2019",
-        "datePublished": "2019-10-01 12:41:21 \x2b0000 UTC",
-        "dateModified" : "2019-10-01 12:41:21 \x2b0000 UTC",
+        "datePublished": "2019-10-01 12:41:21 \u002b0000 UTC",
+        "dateModified" : "2019-10-01 12:41:21 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/static-website-on-aws-s3-with-ssl-and-continuous-delivery\/",
         "wordCount" : "343",
         "keywords" : [ "AWS","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -147,23 +152,15 @@
     <h1 class="title">Static website on AWS S3 with SSL and continuous delivery</h1>
     
     <div class="content">
-      
-
-<p>AWS S3 is perfect to host static websites. Basic setup when you have a CNAME DNS record pointing to the bucket endpoint covers a lot of use cases. Couple of things missing are</p>
-
+      <p>AWS S3 is perfect to host static websites. Basic setup when you have a CNAME DNS record pointing to the bucket endpoint covers a lot of use cases. Couple of things missing are</p>
 <ul>
 <li>SSL</li>
 <li>continuous delivery.</li>
 </ul>
-
 <p>For SSL you need CloudFront to serve as a global load balancer and provide SSL offload.</p>
-
 <p>To achieve continues delivery connect the GitHub repo storing the source to CodePipeline. CodePipeline is triggered at every push to the master branch and automatically updates the content of the S3 bucket with changes source files.</p>
-
 <h2 id="stack">Stack</h2>
-
 <p>Let&rsquo;s first create a CloudFormation stack that will create</p>
-
 <ul>
 <li>S3 bucket - a regular bucket to store the files</li>
 <li>BucketPolicy - to allow the read from the bucket</li>
@@ -172,19 +169,14 @@
 <li>SSLCert - the SSL certificate. It&rsquo;s free from AWS and when the stack is being created the owner of the AWS account should receive an email with a confirmation link</li>
 <li>CloudFront Distribution - load balancer that binds it all together. It refers to SSL and drives traffic to S3</li>
 </ul>
-
 <h2 id="pipeline">Pipeline</h2>
-
 <p>CodePipeline is ideal to deliver changes fast. In the case of static website, it&rsquo;s possible to just run <code>aws s3 sync</code> from the command line, but local changes might divert from the remote repo.</p>
-
 <p>The pipeline creates a separate S3 bucket to store artifact - specifically the files it got from GitHub. The pipeline itself consists of 2 steps:</p>
-
 <ul>
-<li>source - it will monitor changes in the master branch. For that to work an access token should be <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html" target="_blank">created in GitHub</a></li>
+<li>source - it will monitor changes in the master branch. For that to work an access token should be <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html">created in GitHub</a></li>
 <li>deploy - it will get the files from the artifact store and upload it to S3 hosting the website</li>
 </ul>
-
-<p>Cloudformation templates for stack and pipeline are available <a href="https://github.com/smirnov-am/s3_static_website_templates" target="_blank">here</a>.</p>
+<p>Cloudformation templates for stack and pipeline are available <a href="https://github.com/smirnov-am/s3_static_website_templates">here</a>.</p>
 
 
       <section class="section">

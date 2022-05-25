@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-14 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-14 23:03:00 \x2b0000 UTC",
+        "datePublished": "2020-09-14 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2020-09-14 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/tags\/flask\/",
         "wordCount" : "0",
         "keywords" : [ "Blog" ]
@@ -33,7 +33,7 @@
 
 <title>Flask | Alexey Smirnov</title>
 
-<meta property='og:title' content='Tag: Flask - Alexey Smirnov'>
+<meta property='og:title' content='Flask - Alexey Smirnov'>
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/flask/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
@@ -174,8 +174,8 @@ Another option is to use object storage - like AWS S3 - and upload files directl
       <div class="content">
         Introduction In this article you&rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. THe example will be a webshop, that has a single page for selling 5$ T-shirts.
 Main page Create a Flask route that serves the webshop page.
-The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
-@app.route('/') def webshop(): return &quot;&quot;&quot;&lt;html&gt; &lt;head&gt;&lt;/head&gt; &lt;body&gt; &lt;a href=&quot;#&quot; id=&quot;checkout&quot;&gt;Buy T-shirt for 5$&lt;/a&gt; &lt;script src=&quot;https://code.
+The page loads some JavaScript as well:
+ a Stripe JS jQuery for AJAX call some custom JavaScript  @app.route(&#39;/&#39;) def webshop():  return &#34;&#34;&#34;&lt;html&gt; &lt;head&gt;&lt;/head&gt; &lt;body&gt; &lt;a href=&#34;#&#34; id=&#34;checkout&#34;&gt;Buy T-shirt for 5$&lt;/a&gt; &lt;script src=&#34;https://code.
         
         <a class="button is-link" href="https://smirnov-am.github.io/flask-stripe/" style="height:28px">
           Read more
@@ -226,7 +226,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
       <div class="content">
         In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&rsquo;m going to use a simple app from Flask docs:
 app.py
-from flask import Flask app = Flask(__name__) @app.route('/') def hello_world(): return 'Hello, World!' if __name__ == '__main__': app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.
+from flask import Flask app = Flask(__name__)  @app.route(&#39;/&#39;) def hello_world():  return &#39;Hello, World!&#39;  if __name__ == &#39;__main__&#39;:  app.run() Local machine This option is used when you need to test your application on a local machine. By simply running app.
         
         <a class="button is-link" href="https://smirnov-am.github.io/deploy-flask/" style="height:28px">
           Read more
@@ -373,7 +373,7 @@ First - bootstrap4_base.html - loads css and js files from CDN and defines major
       <h1 class="title"><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/">Running Flask in production with Docker</a></h1>
       <div class="content">
         Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:
- * Serving Flask app &quot;app&quot; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit)  I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.
+ * Serving Flask app &#34;app&#34; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit) I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.
         
         <a class="button is-link" href="https://smirnov-am.github.io/running-flask-in-production-with-docker/" style="height:28px">
           Read more
@@ -402,7 +402,7 @@ First - bootstrap4_base.html - loads css and js files from CDN and defines major
         In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.
-&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt; &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt; &lt;input type=&quot;submit&quot;&gt; &lt;/form&gt;  And a template to show tweets by other users where user input from above form passed unprocessed:
+&lt;form method=&#34;post&#34; action=&#34;/&#34;&gt;  &lt;input type=&#34;text&#34; name=&#34;tweet&#34;&gt;&lt;br&gt;  &lt;input type=&#34;submit&#34;&gt; &lt;/form&gt; And a template to show tweets by other users where user input from above form passed unprocessed:
         
         <a class="button is-link" href="https://smirnov-am.github.io/securing-flask-web-applications/" style="height:28px">
           Read more

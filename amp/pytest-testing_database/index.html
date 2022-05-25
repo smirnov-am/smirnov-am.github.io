@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-06 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-06 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-09-06 18:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-09-06 18:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/pytest-testing_database\/",
-        "wordCount" : "1210",
+        "wordCount" : "1204",
         "keywords" : [ "Python","pytest","Blog" ]
     }
     </script>
@@ -142,6 +142,11 @@ We are going to use a database in our number testing application as a cache for 
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -162,211 +167,161 @@ We are going to use a database in our number testing application as a cache for 
     
     <div class="content">
       <p>Other pytest articles:</p>
-
 <p><a href="https://smirnov-am.github.io/pytest-why-testing">Why testing is important</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-test-types">Types of tests</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-tdd">Test driven Development</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-hello-world">Hello, World!</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-selecting_tests">Selecting tests with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_http_client">Testing HTTP client with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_database">Testing database with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-advanced-fixtures">Advanced fixtures with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-plugins">Pytest plugins</a></p>
-
 <p>We are going to use a database in our number testing application as a cache for API call results - API calls can be costly and we don’t want to check the same number twice against it.</p>
-
-<p>Let’s think about what we want from the database caching service
-- We should be able to query database to get the validity of the number if it’s present
-- We should be able to save number status that we got from API to database
-- Also we want to generate a report - a percentage of valid numbers in the database</p>
-
+<p>Let’s think about what we want from the database caching service</p>
+<ul>
+<li>We should be able to query database to get the validity of the number if it’s present</li>
+<li>We should be able to save number status that we got from API to database</li>
+<li>Also we want to generate a report - a percentage of valid numbers in the database</li>
+</ul>
 <p>Now we start with writing tests for these user stories, but first let’s think about the design of our service.</p>
-
 <p>Monkey Patching and responses library that we used in the previous unit are python and pytest test specific features, but there is another one that’s used in other programming languages. This approach utilizes a common design pattern called dependency injection.</p>
-
 <p>I propose for this service to be represented as a class. The constructor of the class will accept a DB session so we implement dependency injection that will allow testing the class easily</p>
-
 <p>All test cases will be using a fixture - session.
 The first case will test the get method of the class in case of an existing number
 The second case - same get method but for the number that is not in the database - we expect to receive None</p>
-
-<pre><code class="language-python">def test_get(session): # 1
-    cache = CacheService(session) # 2
-    existing = cache.get_status('+3155512345') # 3
-    assert existing
-
-def test_get_unknown(session):
-    cache = CacheService(session)
-    assert cache.get_status('+315554444') is None
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_get</span>(session): <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>    cache <span style="color:#f92672">=</span> CacheService(session) <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>    existing <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span>get_status(<span style="color:#e6db74">&#39;+3155512345&#39;</span>) <span style="color:#75715e"># 3</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> existing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_get_unknown</span>(session):
+</span></span><span style="display:flex;"><span>    cache <span style="color:#f92672">=</span> CacheService(session)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> cache<span style="color:#f92672">.</span>get_status(<span style="color:#e6db74">&#39;+315554444&#39;</span>) <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><ol>
 <li>Use a fixture <code>session</code> for test cases - see implementation later</li>
 <li>Pass <code>session</code> instance to our Cache class constructor</li>
 <li>Invoke <code>get_status</code> of the class, remember it&rsquo;d TDD. So first tests, then real code</li>
 </ol>
-
 <p>Next test will test the save method, and will utilize the get method again to check if it was saved.</p>
-
-<pre><code class="language-python">def test_save(session):
-    number = '+3155512346'
-    cache = CacheService(session)
-    cache.save_status(number, True)
-    existing = cache.get_status(number)
-    assert existing
-</code></pre>
-
-<p>The last case will generate the report - which is just a ratio of valid numbers in the database. We use a save method to seed tables with data.</p>
-
-<pre><code class="language-python">def test_report(session):
-    cache = CacheService(session)
-    cache.save_status('+3155512346', True)
-    cache.save_status('+3155512347', False)
-    cache.save_status('+3155512348', False)
-    ratio = cache.generate_report()
-    assert ratio == 0.5
-</code></pre>
-
-<p>Of course there is no such fixture as session now and there is no database and tables.
- I’m going to use an in-memory sqlite database and create a table. Now this fixture will be invoked before every time when we pass it as an argument to the test case.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_save</span>(session):
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;+3155512346&#39;</span>
+</span></span><span style="display:flex;"><span>    cache <span style="color:#f92672">=</span> CacheService(session)
+</span></span><span style="display:flex;"><span>    cache<span style="color:#f92672">.</span>save_status(number, <span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    existing <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span>get_status(number)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> existing
+</span></span></code></pre></div><p>The last case will generate the report - which is just a ratio of valid numbers in the database. We use a save method to seed tables with data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_report</span>(session):
+</span></span><span style="display:flex;"><span>    cache <span style="color:#f92672">=</span> CacheService(session)
+</span></span><span style="display:flex;"><span>    cache<span style="color:#f92672">.</span>save_status(<span style="color:#e6db74">&#39;+3155512346&#39;</span>, <span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    cache<span style="color:#f92672">.</span>save_status(<span style="color:#e6db74">&#39;+3155512347&#39;</span>, <span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    cache<span style="color:#f92672">.</span>save_status(<span style="color:#e6db74">&#39;+3155512348&#39;</span>, <span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>    ratio <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span>generate_report()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> ratio <span style="color:#f92672">==</span> <span style="color:#ae81ff">0.5</span>
+</span></span></code></pre></div><p>Of course there is no such fixture as session now and there is no database and tables.
+I’m going to use an in-memory sqlite database and create a table. Now this fixture will be invoked before every time when we pass it as an argument to the test case.</p>
 <p>But the session should be closed afterwards - for that we can separate fixture code in 2 parts that are separated by the yield keyword. First part if executed before the test case, the second - afterwards as a cleanup. And we are going to yield a session from the fixture for it to be used in test case code.</p>
-
-<pre><code class="language-python">@pytest.fixture # 1
-def session():
-    connection = sqlite3.connect(':memory:') # 2
-    db_session = connection.cursor()
-    db_session.execute('''CREATE TABLE numbers
-                          (number text, existing boolean)''') # 3
-    db_session.execute('INSERT INTO numbers VALUES (&quot;+3155512345&quot;, 1)') # 4
-    connection.commit()
-    yield db_session # 5
-    connection.close()
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">session</span>():
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> sqlite3<span style="color:#f92672">.</span>connect(<span style="color:#e6db74">&#39;:memory:&#39;</span>) <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>    db_session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    db_session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;&#39;&#39;CREATE TABLE numbers
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                          (number text, existing boolean)&#39;&#39;&#39;</span>) <span style="color:#75715e"># 3</span>
+</span></span><span style="display:flex;"><span>    db_session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;INSERT INTO numbers VALUES (&#34;+3155512345&#34;, 1)&#39;</span>) <span style="color:#75715e"># 4</span>
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">yield</span> db_session <span style="color:#75715e"># 5</span>
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>close()
+</span></span></code></pre></div><ol>
 <li>Create a new fixture</li>
 <li>Use sqlite3 from standard library and connect to in memory database</li>
 <li>Use DB cursor to create a table</li>
 <li>Put some data in the table</li>
-<li><code>yield</code> splits our fixture in 2 parts
-<br /></li>
+<li><code>yield</code> splits our fixture in 2 parts</li>
 </ol>
-
 <p>Now there are 2 things that the fixture does - it creates a session and sets up the database. I’m going to extract the second part into a separate fixture. It will accept a session as a parameter.</p>
-
-<pre><code class="language-python">@pytest.fixture
-def session(): # 1
-    connection = sqlite3.connect(':memory:')
-    db_session = connection.cursor()
-    yield db_session
-    connection.close()
-
-
-@pytest.fixture
-def setup_db(session): # 2
-    session.execute('''CREATE TABLE numbers
-                          (number text, existing boolean)''')
-    session.execute('INSERT INTO numbers VALUES (&quot;+3155512345&quot;, 1)')
-    session.connection.commit()
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">session</span>(): <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> sqlite3<span style="color:#f92672">.</span>connect(<span style="color:#e6db74">&#39;:memory:&#39;</span>)
+</span></span><span style="display:flex;"><span>    db_session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">yield</span> db_session
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setup_db</span>(session): <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;&#39;&#39;CREATE TABLE numbers
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                          (number text, existing boolean)&#39;&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;INSERT INTO numbers VALUES (&#34;+3155512345&#34;, 1)&#39;</span>)
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>connection<span style="color:#f92672">.</span>commit()
+</span></span></code></pre></div><ol>
 <li>Remove all setup code from fixture <code>session</code></li>
 <li>Use session fixture in another fixture <code>setup_db</code>, where all setup code is moved</li>
 </ol>
-
 <p>Now to use it in the test I’m going to decorate test case with use fixture instead of passing setup_db as a parameter  - we don’t need this fixture in the test case code - we need this fixture only to be executed</p>
-
-<pre><code class="language-python">@pytest.mark.usefixtures(&quot;setup_db&quot;) # 1
-def test_get(session):
-    ...
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>mark<span style="color:#f92672">.</span>usefixtures(<span style="color:#e6db74">&#34;setup_db&#34;</span>) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_get</span>(session):
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span></code></pre></div><ol>
 <li>Fixture is invoked automatically</li>
 </ol>
-
 <p>Also it looks like we instantiate caching service in every test case - there is a lot of duplicate code. Again we can create a fixture - caching service and pass it to the test cases instead of session.</p>
-
-<pre><code class="language-python">@pytest.fixture
-def cache(session): # 1
-    return CacheService(session)
-
-@pytest.mark.usefixtures(&quot;setup_db&quot;)
-def test_get(cache): # 2
-    existing = cache.get_status('+3155512345')
-    assert existing
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>fixture
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cache</span>(session): <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> CacheService(session)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@pytest</span><span style="color:#f92672">.</span>mark<span style="color:#f92672">.</span>usefixtures(<span style="color:#e6db74">&#34;setup_db&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_get</span>(cache): <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>    existing <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span>get_status(<span style="color:#e6db74">&#39;+3155512345&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> existing
+</span></span></code></pre></div><ol>
 <li>Create a more high level fixture that represents our mock in memory Cache</li>
 <li>Use newly created fixture in test case code</li>
 </ol>
-
 <p>Tests and fixtures are covered - it’s time to write actual code. In the test I’ve made a design decision to make it a class with a session injected. Also I decided to use sqlite and it’s driver from the standard python library. The code of the actual cache service is pretty simple in that case.</p>
-
-<pre><code class="language-python">class CacheService:
-    def __init__(self, session): # 1
-        self.session = session # 2
-
-    def get_status(self, number):
-        self.session.execute('SELECT existing FROM numbers WHERE number=?', (number,))
-        return self.session.fetchone()
-
-    def save_status(self, number, existing):
-        self.session.execute('INSERT INTO numbers VALUES (?, ?)', (number, existing))
-        self.session.connection.commit()
-
-    def generate_report(self):
-        self.session.execute('SELECT COUNT(*) FROM numbers')
-        count = self.session.fetchone()
-        self.session.execute('SELECT COUNT(*) FROM numbers WHERE existing=1')
-        count_existing = self.session.fetchone()
-        return count_existing[0]/count[0]
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CacheService</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, session): <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session <span style="color:#f92672">=</span> session <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_status</span>(self, number):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;SELECT existing FROM numbers WHERE number=?&#39;</span>, (number,))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_status</span>(self, number, existing):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;INSERT INTO numbers VALUES (?, ?)&#39;</span>, (number, existing))
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>connection<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_report</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;SELECT COUNT(*) FROM numbers&#39;</span>)
+</span></span><span style="display:flex;"><span>        count <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;SELECT COUNT(*) FROM numbers WHERE existing=1&#39;</span>)
+</span></span><span style="display:flex;"><span>        count_existing <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> count_existing[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">/</span>count[<span style="color:#ae81ff">0</span>]
+</span></span></code></pre></div><ol>
 <li>Class constructor accepts a argument - <code>session</code>. Its instance should be created outside and have a certain mathods that are used in this class. Due to duck typing it doesn&rsquo;t matter if it&rsquo;s fake object or a real session</li>
 <li>Store session in class attributes</li>
 </ol>
-
 <p>But since our Caching service accepts a session in its constructor - we can inject a mock object and validate how our code calls the database. And we can rewrite one of the first test cases for a get method like so</p>
-
-<pre><code class="language-python">from unittest.mock import MagicMock
-
-def test_get_mock():
-    session = MagicMock() # 1
-    executor = MagicMock()
-    session.execute = executor
-    cache = CacheService(session) # 2
-    cache.get_status('+3155512345')
-    executor.assert_called_once_with('SELECT existing FROM numbers WHERE number=?', ('+3155512345',)) # 3
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> unittest.mock <span style="color:#f92672">import</span> MagicMock
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_get_mock</span>():
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> MagicMock() <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>    executor <span style="color:#f92672">=</span> MagicMock()
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>execute <span style="color:#f92672">=</span> executor
+</span></span><span style="display:flex;"><span>    cache <span style="color:#f92672">=</span> CacheService(session) <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>    cache<span style="color:#f92672">.</span>get_status(<span style="color:#e6db74">&#39;+3155512345&#39;</span>)
+</span></span><span style="display:flex;"><span>    executor<span style="color:#f92672">.</span>assert_called_once_with(<span style="color:#e6db74">&#39;SELECT existing FROM numbers WHERE number=?&#39;</span>, (<span style="color:#e6db74">&#39;+3155512345&#39;</span>,)) <span style="color:#75715e"># 3</span>
+</span></span></code></pre></div><ol>
 <li>Mock object - it can have any methods</li>
 <li>That mock we will pass to Cache</li>
 <li>To check what is actually called we use different types of asserts</li>
 </ol>
-
-<p>There are some important differences when using mocks.
-1. They are in memory abstract objects
-2. We need to manually define methods, like here for a session mock we define a method execute
-3. They have special types of assertions - here we don&rsquo;t check the data like in previous examples, but the behavior.</p>
-
+<p>There are some important differences when using mocks.</p>
+<ol>
+<li>They are in memory abstract objects</li>
+<li>We need to manually define methods, like here for a session mock we define a method execute</li>
+<li>They have special types of assertions - here we don&rsquo;t check the data like in previous examples, but the behavior.</li>
+</ol>
 <p>There is a number of different assert methods available for mock. In this example, I&rsquo;m checking that our caching component constructed the query properly and uses bind variables to avoid SQL injection.</p>
-
-<p>Unittest.mock is a powerful library - it&rsquo;s docs are available at <a href="https://docs.python.org/3/library/unittest.mock.html" target="_blank">https://docs.python.org/3/library/unittest.mock.html</a>. And there is a pytest specific wrapper that  can be found here <a href="https://pypi.org/project/pytest-mock/" target="_blank">https://pypi.org/project/pytest-mock/</a></p>
-
+<p>Unittest.mock is a powerful library - it&rsquo;s docs are available at <a href="https://docs.python.org/3/library/unittest.mock.html">https://docs.python.org/3/library/unittest.mock.html</a>. And there is a pytest specific wrapper that  can be found here <a href="https://pypi.org/project/pytest-mock/">https://pypi.org/project/pytest-mock/</a></p>
 <p>In this unit you&rsquo;ve learned a bit more about mocking. In the next one you&rsquo;ll get familiar with more advanced usages of pytest fixtures.</p>
 
 

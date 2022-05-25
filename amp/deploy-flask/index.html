@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-04-12 17:03:00 \x2b0000 UTC",
-        "dateModified" : "2020-04-12 17:03:00 \x2b0000 UTC",
+        "datePublished": "2020-04-12 17:03:00 \u002b0000 UTC",
+        "dateModified" : "2020-04-12 17:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/deploy-flask\/",
         "wordCount" : "952",
         "keywords" : [ "Flask","AWS","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -151,141 +156,101 @@
     <h1 class="title">5 ways to deploy Flask</h1>
     
     <div class="content">
-      
-
-<p>In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application.
+      <p>In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application.
 In all examples I&rsquo;m going to use a simple app from Flask docs:</p>
-
 <p>app.py</p>
-
-<pre><code class="language-python">from flask import Flask
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-if __name__ == '__main__':
-    app.run()
-</code></pre>
-
-<h2 id="local-machine">Local machine</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello_world</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;Hello, World!&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run()
+</span></span></code></pre></div><h2 id="local-machine">Local machine</h2>
 <p>This option is used when you need to test your application on a local machine.
 By simply running <code>app.py</code> you spin up a server and can call the endpoints locally, but
 this particular scenario help when you need to integrate your app with external service.
 Think of a service that sends notifications on the progress of sending an email - you send an email and your email provider calls your API asynchronously to notify you when the email was delivered and opened.</p>
-
-<p>For that use ngrok - the install is pretty easy - <a href="https://ngrok.com/download" target="_blank">https://ngrok.com/download</a>.
+<p>For that use ngrok - the install is pretty easy - <a href="https://ngrok.com/download">https://ngrok.com/download</a>.
 Now you can run Flask:</p>
-
-<pre><code class="language-bash">➜  python3 app.py
- * Serving Flask app &quot;app&quot; (lazy loading)
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-</code></pre>
-
-<p>In a separate terminal session run:</p>
-
-<pre><code class="language-bash">➜  ./ngrok http 5000
-ngrok by @inconshreveable                                                                                                                                            (Ctrl+C to quit)
-
-Session Status                online
-Account                       Alex Smirnov (Plan: Free)
-Version                       2.3.35
-Region                        United States (us)
-Web Interface                 http://127.0.0.1:4040
-Forwarding                    http://473b0854.ngrok.io -&gt; http://localhost:5000
-Forwarding                    https://473b0854.ngrok.io -&gt; http://localhost:5000
-
-Connections                   ttl     opn     rt1     rt5     p50     p90
-                              0       0       0.00    0.00    0.00    0.00
-</code></pre>
-
-<p>In the last to lines - <code>Forwarding</code> - there are 2 URLs (secured and plain) that are accessible form the internet.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜  python3 app.py
+</span></span><span style="display:flex;"><span> * Serving Flask app <span style="color:#e6db74">&#34;app&#34;</span> <span style="color:#f92672">(</span>lazy loading<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> * Environment: production
+</span></span><span style="display:flex;"><span>   WARNING: This is a development server. Do not use it in a production deployment.
+</span></span><span style="display:flex;"><span>   Use a production WSGI server instead.
+</span></span><span style="display:flex;"><span> * Debug mode: off
+</span></span><span style="display:flex;"><span> * Running on http://127.0.0.1:5000/ <span style="color:#f92672">(</span>Press CTRL+C to quit<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>In a separate terminal session run:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜  ./ngrok http <span style="color:#ae81ff">5000</span>
+</span></span><span style="display:flex;"><span>ngrok by @inconshreveable                                                                                                                                            <span style="color:#f92672">(</span>Ctrl+C to quit<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Session Status                online
+</span></span><span style="display:flex;"><span>Account                       Alex Smirnov <span style="color:#f92672">(</span>Plan: Free<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Version                       2.3.35
+</span></span><span style="display:flex;"><span>Region                        United States <span style="color:#f92672">(</span>us<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Web Interface                 http://127.0.0.1:4040
+</span></span><span style="display:flex;"><span>Forwarding                    http://473b0854.ngrok.io -&gt; http://localhost:5000
+</span></span><span style="display:flex;"><span>Forwarding                    https://473b0854.ngrok.io -&gt; http://localhost:5000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Connections                   ttl     opn     rt1     rt5     p50     p90
+</span></span><span style="display:flex;"><span>                              <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       0.00    0.00    0.00    0.00
+</span></span></code></pre></div><p>In the last to lines - <code>Forwarding</code> - there are 2 URLs (secured and plain) that are accessible form the internet.</p>
 <h2 id="bare-metal-linux">Bare metal Linux</h2>
-
 <p>In that example you will need:</p>
-
 <ul>
 <li>nginx - it will proxy incoming requests to uwsgi gateway</li>
 <li>uwsgi - runs Python interpreter in some workers executing app code</li>
 <li>systemd - Linux system that allows to (auto-)start, stop and monitor background processes</li>
 </ul>
-
 <h3 id="dependencies">Dependencies</h3>
-
 <p>On a Debian based system with python3 run these commands</p>
-
-<pre><code class="language-bash">➜ sudo apt-get update
-➜ sudo apt-get install python3-pip python3-dev nginx
-➜ pip install flask uwsgi
-</code></pre>
-
-<h3 id="virtual-environment">Virtual environment</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ sudo apt-get update
+</span></span><span style="display:flex;"><span>➜ sudo apt-get install python3-pip python3-dev nginx
+</span></span><span style="display:flex;"><span>➜ pip install flask uwsgi
+</span></span></code></pre></div><h3 id="virtual-environment">Virtual environment</h3>
 <p>Create a virtual environment with</p>
-
-<pre><code class="language-bash">➜ mkdir ~/flask_app
-➜ cd ~/flask_app
-➜ virtualenv env
-➜ source env/bin/activate
-</code></pre>
-
-<h3 id="uwsgi">uwsgi</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ mkdir ~/flask_app
+</span></span><span style="display:flex;"><span>➜ cd ~/flask_app
+</span></span><span style="display:flex;"><span>➜ virtualenv env
+</span></span><span style="display:flex;"><span>➜ source env/bin/activate
+</span></span></code></pre></div><h3 id="uwsgi">uwsgi</h3>
 <p>Create a <code>uwgi.ini</code> file in the same directory with the following content:</p>
-
-<pre><code class="language-bash">[uwsgi]
-module = app:app
-
-master = true
-processes = 5
-
-socket = flask.sock
-chmod-socket = 660
-vacuum = true
-
-die-on-term = true
-</code></pre>
-
-<p>In the module configuration you need to specify a module (a single <code>app.py</code> file in this case) and
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>uwsgi<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>module <span style="color:#f92672">=</span> app:app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>master <span style="color:#f92672">=</span> true
+</span></span><span style="display:flex;"><span>processes <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>socket <span style="color:#f92672">=</span> flask.sock
+</span></span><span style="display:flex;"><span>chmod-socket <span style="color:#f92672">=</span> <span style="color:#ae81ff">660</span>
+</span></span><span style="display:flex;"><span>vacuum <span style="color:#f92672">=</span> true
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>die-on-term <span style="color:#f92672">=</span> true
+</span></span></code></pre></div><p>In the module configuration you need to specify a module (a single <code>app.py</code> file in this case) and
 Flask application variable name with a semicolon in between.</p>
-
 <p>Next, <code>processes = 5</code> will run 5 simultaneous instances of uwsgi workers, thus allowing 5 simultaneous requests to the app. You will need to experiment with that number to find a balance between
 memory consumption and a load you expect on your app.</p>
-
 <p>Then, there is a socket creation section - <code>socket = flask.sock</code>. It will create a socket file.
 This is a mechanism for nginx to communicate with uwsgi. There is an option to communicate over HTTP.
 With the socket option, the file will be created in the same directory.</p>
-
 <h3 id="nginx">nginx</h3>
-
 <p>Create a file in this path <code>/etc/nginx/sites-available/flask</code> with the following content
 It will instruct nginx to proxy requests to a socket file created by uwsgi</p>
-
-<pre><code class="language-nginx">server {
-    listen 80;
-    server_name server_domain_or_IP;
-
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:/home/as/flask_all/flask.sock;
-    }
-}
-</code></pre>
-
-<p>You can restart nginx by <code>sudo systemctl restart nginx</code> to apply this config.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">80</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server_name</span> <span style="color:#e6db74">server_domain_or_IP</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">include</span> <span style="color:#e6db74">uwsgi_params</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uwsgi_pass</span> <span style="color:#e6db74">unix:/home/as/flask_all/flask.sock</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can restart nginx by <code>sudo systemctl restart nginx</code> to apply this config.</p>
 <h3 id="background-service">Background service</h3>
-
 <p>Create this file in this path <code>/etc/systemd/system/flask.service</code></p>
-
-<pre><code>[Unit]
+<pre tabindex="0"><code>[Unit]
 Description=uWSGI instance to serve flask
 After=network.target
 
@@ -293,89 +258,57 @@ After=network.target
 User=as
 Group=www-data
 WorkingDirectory=/home/as/flask_app
-Environment=&quot;PATH=/home/as/flask_app/env/bin&quot;
+Environment=&#34;PATH=/home/as/flask_app/env/bin&#34;
 ExecStart=/home/as/flask_app/venv/bin/uwsgi --ini uwsgi.ini
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>Check the path - in this example, it points to an absolute path on my machine. So change is appropriately.
+</code></pre><p>Check the path - in this example, it points to an absolute path on my machine. So change is appropriately.
 Now we can start a service and enable it to start at boot:</p>
-
-<pre><code class="language-bash">➜ sudo systemctl start flask
-➜ sudo systemctl enable flask
-</code></pre>
-
-<p>Flask app is accesible now in a browser on HTTP port 80</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ sudo systemctl start flask
+</span></span><span style="display:flex;"><span>➜ sudo systemctl enable flask
+</span></span></code></pre></div><p>Flask app is accesible now in a browser on HTTP port 80</p>
 <h2 id="docker">Docker</h2>
-
 <p>For that, you&rsquo;ll need 3 things</p>
-
 <ul>
 <li>docker image with Flask app</li>
 <li>container image repository</li>
 <li>container orchestration (K8s, AWS ECS)</li>
 </ul>
-
 <p>I&rsquo;ve covered that scenario in these posts</p>
-
 <ul>
-<li><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/" target="_blank">https://smirnov-am.github.io/running-flask-in-production-with-docker/</a></li>
-<li><a href="https://smirnov-am.github.io/run-flask-on-aws-ecs/" target="_blank">https://smirnov-am.github.io/run-flask-on-aws-ecs/</a></li>
+<li><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/">https://smirnov-am.github.io/running-flask-in-production-with-docker/</a></li>
+<li><a href="https://smirnov-am.github.io/run-flask-on-aws-ecs/">https://smirnov-am.github.io/run-flask-on-aws-ecs/</a></li>
 </ul>
-
 <h2 id="paas">PaaS</h2>
-
 <p>There are several PaaS platforms that you can run Flask on. They include AWS Elastic Beanstalk,
 GCP App Engine. The nice thing about them is that you don&rsquo;t need to worry about OS, loadbalancing and autoscaling - platforms will to it for you.</p>
-
 <p>I&rsquo;m going to cover AWS Elastic Beanstalk here. First, get an AWS account and an install <code>eb</code> CLI tool
-locally - see the docs <a href="https://github.com/aws/aws-elastic-beanstalk-cli-setup" target="_blank">here</a></p>
-
+locally - see the docs <a href="https://github.com/aws/aws-elastic-beanstalk-cli-setup">here</a></p>
 <p>AWS EB needs a <code>requirements.txt</code> file listing all the required dependencies. Generate it from
 local virtual environment with:</p>
-
-<pre><code class="language-bash">➜ pip freeze &gt; requirements.txt
-</code></pre>
-
-<p>Now in the folder with <code>app.py</code> and <code>requirements.txt</code> (we don&rsquo;t need any files from the examples
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ pip freeze &gt; requirements.txt
+</span></span></code></pre></div><p>Now in the folder with <code>app.py</code> and <code>requirements.txt</code> (we don&rsquo;t need any files from the examples
 above), create EB repository with:</p>
-
-<pre><code class="language-bash">➜ eb init -p python-3.6 flask-app-helloworld-as --region eu-west-1
-Application flask-app-helloworld-as has been created.
-</code></pre>
-
-<p>and later deploy it with:</p>
-
-<pre><code class="language-bash">➜ eb create flask-app-helloworld-as
-</code></pre>
-
-<p>It will take some time (~10 minutes) and will create a bunch of resources - don&rsquo;t forget to
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ eb init -p python-3.6 flask-app-helloworld-as --region eu-west-1
+</span></span><span style="display:flex;"><span>Application flask-app-helloworld-as has been created.
+</span></span></code></pre></div><p>and later deploy it with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ eb create flask-app-helloworld-as
+</span></span></code></pre></div><p>It will take some time (~10 minutes) and will create a bunch of resources - don&rsquo;t forget to
 clean up if you don&rsquo;t need it later with <code>eb terminate flask-app-helloworld-as</code> command.</p>
-
 <p>You can reach your deployed app from CLI by <code>eb open flask-app-helloworld-as</code>.</p>
-
 <h2 id="serverless">Serverless</h2>
-
 <p>Serverless is the most modern way to deploy web apps. I&rsquo;m using this one for all my pet projects
 as AWS gives 1M free requests per month allowing me to run my apps at no cost.</p>
-
-<p>In order to deploy Flask as an AWS Lambda I&rsquo;m using a <a href="https://github.com/Miserlou/Zappa" target="_blank">Zappa</a> project.
+<p>In order to deploy Flask as an AWS Lambda I&rsquo;m using a <a href="https://github.com/Miserlou/Zappa">Zappa</a> project.
 All you need is 3 commands:</p>
-
-<pre><code class="language-bash">➜ pip install zappa
-➜ zappa init
-➜ zappa deploy
-</code></pre>
-
-<p>The second command asks a bunch of question interactively about the environments and some
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>➜ pip install zappa
+</span></span><span style="display:flex;"><span>➜ zappa init
+</span></span><span style="display:flex;"><span>➜ zappa deploy
+</span></span></code></pre></div><p>The second command asks a bunch of question interactively about the environments and some
 configuration. The last command shows an URL where the app is available now:</p>
-
-<pre><code class="language-bash">Your updated Zappa deployment is live!: https://l17c5t2uhe.execute-api.us-east-1.amazonaws.com/dev
-</code></pre>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Your updated Zappa deployment is live!: https://l17c5t2uhe.execute-api.us-east-1.amazonaws.com/dev
+</span></span></code></pre></div>
 
       <section class="section">
   <p>Support the author - <a href="https://www.buymeacoffee.com/smirnovam">Buy me a coffee!</a></p>

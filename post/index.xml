@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2021</copyright>
-    <lastBuildDate>Tue, 12 Jan 2021 23:03:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 12 Jan 2021 23:03:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Rotoscoping with OpenCV/C&#43;&#43;</title>
       <link>https://smirnov-am.github.io/matting/</link>
@@ -89,7 +85,8 @@ Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
 In this course, we will be working on a mobile phone number validation application.
-The application: - Accepts a number as input - For every number in the list - Normalize the number - Check cache if this number was validated before - If it’s not in cache call external service REST API to validate the number - print the normalized number and the result of validation</description>
+The application:
+ Accepts a number as input For every number in the list  Normalize the number Check cache if this number was validated before If it’s not in cache call external service REST API to validate the number print the normalized number and the result of validation    Let’s start with the Normalize step.</description>
     </item>
     
     <item>
@@ -186,7 +183,8 @@ Testing HTTP client with pytest
 Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
-Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs: - It’s a REST API - We need to use HTTP GET - We provide a number in query parameters - The result is a json {‘existing’: True | False}</description>
+Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs:
+ It’s a REST API We need to use HTTP GET We provide a number in query parameters The result is a json {‘existing’: True | False}  I’m going to create this 3rd party API myself and run it from my local environment so we can see the access logs.</description>
     </item>
     
     <item>
@@ -235,8 +233,8 @@ Flexible If you don’t have tests for your code - every change to the code is a
       <pubDate>Sun, 23 Aug 2020 22:41:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/producer-consumer/</guid>
-      <description>Let&amp;rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
-Very simple implementation of this pipeline can be like this one:</description>
+      <description>Let&amp;rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
+ VALUE column holding original number ROOT column for the result of calculation  Very simple implementation of this pipeline can be like this one:</description>
     </item>
     
     <item>
@@ -258,8 +256,8 @@ In this tutorial, you’ll learn how to:
       <guid>https://smirnov-am.github.io/flask-stripe/</guid>
       <description>Introduction In this article you&amp;rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. THe example will be a webshop, that has a single page for selling 5$ T-shirts.
 Main page Create a Flask route that serves the webshop page.
-The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
-@app.route(&#39;/&#39;) def webshop(): return &amp;quot;&amp;quot;&amp;quot;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; id=&amp;quot;checkout&amp;quot;&amp;gt;Buy T-shirt for 5$&amp;lt;/a&amp;gt; &amp;lt;script src=&amp;quot;https://code.</description>
+The page loads some JavaScript as well:
+ a Stripe JS jQuery for AJAX call some custom JavaScript  @app.route(&amp;#39;/&amp;#39;) def webshop():  return &amp;#34;&amp;#34;&amp;#34;&amp;lt;html&amp;gt; &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;a href=&amp;#34;#&amp;#34; id=&amp;#34;checkout&amp;#34;&amp;gt;Buy T-shirt for 5$&amp;lt;/a&amp;gt; &amp;lt;script src=&amp;#34;https://code.</description>
     </item>
     
     <item>
@@ -280,7 +278,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
       <guid>https://smirnov-am.github.io/deploy-flask/</guid>
       <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
 app.py
-from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
+from flask import Flask app = Flask(__name__)  @app.route(&amp;#39;/&amp;#39;) def hello_world():  return &amp;#39;Hello, World!&amp;#39;  if __name__ == &amp;#39;__main__&amp;#39;:  app.run() Local machine This option is used when you need to test your application on a local machine. By simply running app.</description>
     </item>
     
     <item>
@@ -323,7 +321,7 @@ To achieve continues delivery connect the GitHub repo storing the source to Code
       <guid>https://smirnov-am.github.io/representing-money-in-python/</guid>
       <description>Python&amp;rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
-$$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.</description>
+is close to the number as possible. So, values such as 0.</description>
     </item>
     
     <item>
@@ -388,7 +386,7 @@ First - bootstrap4_base.html - loads css and js files from CDN and defines major
       
       <guid>https://smirnov-am.github.io/running-flask-in-production-with-docker/</guid>
       <description>Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:
- * Serving Flask app &amp;quot;app&amp;quot; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit)  I&amp;rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.</description>
+ * Serving Flask app &amp;#34;app&amp;#34; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit) I&amp;rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.</description>
     </item>
     
     <item>
@@ -400,7 +398,7 @@ First - bootstrap4_base.html - loads css and js files from CDN and defines major
       <description>In this post I&amp;rsquo;d like to investigate security mechanisms available in Flask. I&amp;rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.
-&amp;lt;form method=&amp;quot;post&amp;quot; action=&amp;quot;/&amp;quot;&amp;gt; &amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;tweet&amp;quot;&amp;gt;&amp;lt;br&amp;gt; &amp;lt;input type=&amp;quot;submit&amp;quot;&amp;gt; &amp;lt;/form&amp;gt;  And a template to show tweets by other users where user input from above form passed unprocessed:</description>
+&amp;lt;form method=&amp;#34;post&amp;#34; action=&amp;#34;/&amp;#34;&amp;gt;  &amp;lt;input type=&amp;#34;text&amp;#34; name=&amp;#34;tweet&amp;#34;&amp;gt;&amp;lt;br&amp;gt;  &amp;lt;input type=&amp;#34;submit&amp;#34;&amp;gt; &amp;lt;/form&amp;gt; And a template to show tweets by other users where user input from above form passed unprocessed:</description>
     </item>
     
     <item>
@@ -411,8 +409,8 @@ Exploit Consider a form asking for a user input.
       <guid>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</guid>
       <description>This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.
 1 Create virtual environment In order to separate system-wide dependencies from this app, create a separate virtual environment with:
-~ mkvirtualenv nltk_env  2 Install nltk In the virtual environment use pip to install nltk package:
-(nltk_env) ~ pip install nltk  3 Download nltk data Pip doesn&amp;rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</description>
+~ mkvirtualenv nltk_env 2 Install nltk In the virtual environment use pip to install nltk package:
+(nltk_env) ~ pip install nltk 3 Download nltk data Pip doesn&amp;rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</description>
     </item>
     
     <item>

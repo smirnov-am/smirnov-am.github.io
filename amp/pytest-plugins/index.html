@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-09-06 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-09-06 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-09-06 18:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-09-06 18:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/pytest-plugins\/",
-        "wordCount" : "514",
+        "wordCount" : "510",
         "keywords" : [ "Python","pytest","Blog" ]
     }
     </script>
@@ -143,6 +143,11 @@ pytest-cov This plugin calculates test coverage - how much of our code is covere
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -162,116 +167,75 @@ pytest-cov This plugin calculates test coverage - how much of our code is covere
     <h1 class="title">Pytest plugins</h1>
     
     <div class="content">
-      
-
-<p>Other pytest articles:</p>
-
+      <p>Other pytest articles:</p>
 <p><a href="https://smirnov-am.github.io/pytest-why-testing">Why testing is important</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-test-types">Types of tests</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-tdd">Test driven Development</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-hello-world">Hello, World!</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-selecting_tests">Selecting tests with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_http_client">Testing HTTP client with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-testing_database">Testing database with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-advanced-fixtures">Advanced fixtures with pytest</a></p>
-
 <p><a href="https://smirnov-am.github.io/pytest-plugins">Pytest plugins</a></p>
-
-<p>There are lot of plugins in pytest ecosystem. Some of the widely used are listed <a href="https://docs.pytest.org/en/5.4.3/plugins.html?highlight=plugins#installing-and-using-plugins" target="_blank">here</a>
+<p>There are lot of plugins in pytest ecosystem. Some of the widely used are listed <a href="https://docs.pytest.org/en/5.4.3/plugins.html?highlight=plugins#installing-and-using-plugins">here</a>
 All the plugins can be installed with pip and invoked by providing an argument to pytest executable.</p>
-
 <h2 id="pytest-cov">pytest-cov</h2>
-
-<p>This plugin calculates test coverage - how much of our code is covered by test. Since every project is unique it&rsquo;s difficult to tell an universally acceptable coverage (<a href="https://www.artima.com/forums/flat.jsp?forum=106&amp;thread=204677" target="_blank">https://www.artima.com/forums/flat.jsp?forum=106&amp;thread=204677</a>)</p>
-
+<p>This plugin calculates test coverage - how much of our code is covered by test. Since every project is unique it&rsquo;s difficult to tell an universally acceptable coverage (<a href="https://www.artima.com/forums/flat.jsp?forum=106&amp;thread=204677">https://www.artima.com/forums/flat.jsp?forum=106&amp;thread=204677</a>)</p>
 <p>If we have all out source files in  <code>source/</code> folder and test in <code>test/</code> then we can run pytest with this plugin by</p>
-
-<pre><code class="language-bash">pytest --cov=&quot;source&quot; --cov-report=term-missing test/
-</code></pre>
-
-<p>cov-report argument will determine what report to generate.  <code>term-missing</code> report will tell exactly which lines are not covered by tests.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pytest --cov<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;source&#34;</span> --cov-report<span style="color:#f92672">=</span>term-missing test/
+</span></span></code></pre></div><p>cov-report argument will determine what report to generate.  <code>term-missing</code> report will tell exactly which lines are not covered by tests.</p>
 <p>The output report looks like this</p>
-
-<pre><code class="language-bash">--- coverage: python 3.6.2-final-0 ---
-Name                       Stmts   Miss  Cover   Missing
-------------------------------------------------
-source/__init__.py             0      0   100%
-source/api.py                 12      4    67%   10-11, 15-16
-source/database.py            15      0   100%
-source/exceptions.py           2      0   100%
-source/nnormalize.py          14      4    71%   6-9
-source/number_checker.py       8      0   100%
-------------------------------------------------
-TOTAL                         51      8    84%
-</code></pre>
-
-<h2 id="pytest-xdist">pytest-xdist</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>--- coverage: python 3.6.2-final-0 ---
+</span></span><span style="display:flex;"><span>Name                       Stmts   Miss  Cover   Missing
+</span></span><span style="display:flex;"><span>------------------------------------------------
+</span></span><span style="display:flex;"><span>source/__init__.py             <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span>   100%
+</span></span><span style="display:flex;"><span>source/api.py                 <span style="color:#ae81ff">12</span>      <span style="color:#ae81ff">4</span>    67%   10-11, 15-16
+</span></span><span style="display:flex;"><span>source/database.py            <span style="color:#ae81ff">15</span>      <span style="color:#ae81ff">0</span>   100%
+</span></span><span style="display:flex;"><span>source/exceptions.py           <span style="color:#ae81ff">2</span>      <span style="color:#ae81ff">0</span>   100%
+</span></span><span style="display:flex;"><span>source/nnormalize.py          <span style="color:#ae81ff">14</span>      <span style="color:#ae81ff">4</span>    71%   6-9
+</span></span><span style="display:flex;"><span>source/number_checker.py       <span style="color:#ae81ff">8</span>      <span style="color:#ae81ff">0</span>   100%
+</span></span><span style="display:flex;"><span>------------------------------------------------
+</span></span><span style="display:flex;"><span>TOTAL                         <span style="color:#ae81ff">51</span>      <span style="color:#ae81ff">8</span>    84%
+</span></span></code></pre></div><h2 id="pytest-xdist">pytest-xdist</h2>
 <p>This plugin will parallelize test execution. It will speed up executing of large test sets.</p>
-
-<pre><code class="language-bash">pytest -n 5 test/
-</code></pre>
-
-<p>Where 5 is a number of workers. It can also accept <code>auto</code> as a parameter. The pytest output is not changed when using this plugin (except some hint that it&rsquo;s running multiple processes)</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pytest -n <span style="color:#ae81ff">5</span> test/
+</span></span></code></pre></div><p>Where 5 is a number of workers. It can also accept <code>auto</code> as a parameter. The pytest output is not changed when using this plugin (except some hint that it&rsquo;s running multiple processes)</p>
 <h2 id="pytest-bdd">pytest-bdd</h2>
-
 <p>This is a less technical plugin of the three I wanted to cover. This one allows to convert feature files written in Gherkin format to pytest cases.</p>
-
-<p>We start working with pytest-bdd by creating a feature file in a <a href="https://cucumber.io/docs/gherkin/" target="_blank">Gherkin</a> format. This is a highly readable form to describe a feature or a user story and to fix business-side requirements.</p>
-
-<pre><code class="language-gherkin">Feature: Phone number validation application
-
-    Scenario: validate a number
-        Given I have a number +311234555
-        When I run number validation application
-        Then Number is normalized 
-        And Cache is checked for presence of this number
-        And External API is called if cache doesn't contains the number 
-</code></pre>
-
-<p>With this file we can generate our test case:</p>
-
-<pre><code class="language-bash">pytest-bdd generate validation.feature &gt;&gt; test_number_validation.py
-</code></pre>
-
-<p>Test file appears to be pretty long, but here is some main points:
-- there is a functions decorated with <code>given</code>, <code>when</code>, <code>then</code> decorators from pytest-bdd like</p>
-
-<pre><code class="language-python">@given('I have a number +311234555')
-def i_have_a_number_311234555():
-    &quot;&quot;&quot;I have a number +311234555.&quot;&quot;&quot;
-    raise NotImplementedError
-</code></pre>
-
+<p>We start working with pytest-bdd by creating a feature file in a <a href="https://cucumber.io/docs/gherkin/">Gherkin</a> format. This is a highly readable form to describe a feature or a user story and to fix business-side requirements.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gherkin" data-lang="gherkin"><span style="display:flex;"><span><span style="color:#66d9ef">Feature:</span><span style="color:#a6e22e"> Phone number validation application
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">    </span><span style="color:#66d9ef">Scenario:</span><span style="color:#a6e22e"> validate a number
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e"></span><span style="color:#66d9ef">        Given </span><span style="color:#a6e22e">I have a number +</span><span style="color:#e6db74">311234555</span><span style="color:#a6e22e">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">        </span><span style="color:#66d9ef">When </span><span style="color:#a6e22e">I run number validation application
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">        </span><span style="color:#66d9ef">Then </span><span style="color:#a6e22e">Number is normalized 
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">        </span><span style="color:#66d9ef">And </span><span style="color:#a6e22e">Cache is checked for presence of this number
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">        </span><span style="color:#66d9ef">And </span><span style="color:#a6e22e">External API is called if cache doesn&#39;t contains the number 
+</span></span></span></code></pre></div><p>With this file we can generate our test case:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pytest-bdd generate validation.feature &gt;&gt; test_number_validation.py
+</span></span></code></pre></div><p>Test file appears to be pretty long, but here is some main points:</p>
 <ul>
-<li>the decorator input string is what we have written in a feature file</li>
-
-<li><p>functions decorated with @given are recognized as fixtures, so they can be passed to a last function, decorated with <code>@then</code></p>
-
-<pre><code class="language-python">@given('I have a number +311234555')
-def i_have_a_number_311234555():
-&quot;&quot;&quot;I have a number +311234555.&quot;&quot;&quot;
-return '+311234555'
-
-@when('I run number validation application')
-def i_run_number_validation_application(i_have_a_number_311234555):
-# do stuff and use 
-# i_have_a_number_311234555 holding out test number
-raise NotImplementedError
-</code></pre></li>
+<li>there is a functions decorated with <code>given</code>, <code>when</code>, <code>then</code> decorators from pytest-bdd like</li>
 </ul>
-
-<p>This might look like an unnecessary extra step, but some organizations find it useful to fix business requirements.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@given</span>(<span style="color:#e6db74">&#39;I have a number +311234555&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">i_have_a_number_311234555</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;I have a number +311234555.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">NotImplementedError</span>
+</span></span></code></pre></div><ul>
+<li>the decorator input string is what we have written in a feature file</li>
+<li>functions decorated with @given are recognized as fixtures, so they can be passed to a last function, decorated with <code>@then</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@given</span>(<span style="color:#e6db74">&#39;I have a number +311234555&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">i_have_a_number_311234555</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;I have a number +311234555.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;+311234555&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@when</span>(<span style="color:#e6db74">&#39;I run number validation application&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">i_run_number_validation_application</span>(i_have_a_number_311234555):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># do stuff and use </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># i_have_a_number_311234555 holding out test number</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">NotImplementedError</span>
+</span></span></code></pre></div><p>This might look like an unnecessary extra step, but some organizations find it useful to fix business requirements.</p>
 <p>This is the last unit in this course. Thanks for staying with me and I hope that you find this content valuable.</p>
 
 

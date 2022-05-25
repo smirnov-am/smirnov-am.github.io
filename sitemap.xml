@@ -1,235 +1,143 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://smirnov-am.github.io/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/c&#43;&#43;/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/opencv/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/post/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/matting/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/vfx/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/how-to-become-python-developer/</loc>
     <lastmod>2020-12-21T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/python/</loc>
     <lastmod>2020-12-21T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/chromakeying/</loc>
     <lastmod>2020-10-14T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/flask/</loc>
     <lastmod>2020-09-14T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/flask-s3/</loc>
     <lastmod>2020-09-14T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-advanced-fixtures/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-hello-world/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/pytest/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-plugins/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-selecting_tests/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-tdd/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-testing_database/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-testing_http_client/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-test-types/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/pytest-why-testing/</loc>
     <lastmod>2020-09-06T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/producer-consumer/</loc>
     <lastmod>2020-08-23T22:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/cython/</loc>
     <lastmod>2020-08-13T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/flask-stripe/</loc>
     <lastmod>2020-07-09T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/flask-perf/</loc>
     <lastmod>2020-05-07T23:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/deploy-flask/</loc>
     <lastmod>2020-04-12T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/aws/</loc>
     <lastmod>2020-04-12T17:03:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/python-linters-for-better-code-quality/</loc>
     <lastmod>2019-11-04T20:23:49+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/run-flask-on-aws-ecs/</loc>
     <lastmod>2019-10-23T14:26:16+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/static-website-on-aws-s3-with-ssl-and-continuous-delivery/</loc>
     <lastmod>2019-10-01T12:41:21+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/representing-money-in-python/</loc>
     <lastmod>2019-09-15T14:30:10+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/ci-cd-pipeline-for-aws-lambda-python-runtime/</loc>
     <lastmod>2019-08-18T12:05:36+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/streaming-timeseries-with-flask-and-plotly/</loc>
     <lastmod>2018-12-12T18:43:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/background-jobs-with-flask/</loc>
     <lastmod>2018-11-27T18:41:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/multitenancy-with-flask/</loc>
     <lastmod>2018-10-26T15:59:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/flask-pagination-macro/</loc>
     <lastmod>2018-09-27T15:35:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/running-flask-in-production-with-docker/</loc>
     <lastmod>2018-08-13T15:31:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/securing-flask-web-applications/</loc>
     <lastmod>2018-07-11T15:26:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/security/</loc>
     <lastmod>2018-07-11T15:26:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/nlp/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/serverless/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/keyphrases/</loc>
     <lastmod>2018-04-16T15:17:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/tags/machine-learning/</loc>
     <lastmod>2018-04-16T15:17:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://smirnov-am.github.io/basket-analysis/</loc>
     <lastmod>2018-04-08T12:18:00+00:00</lastmod>
   </url>
-  
 </urlset>

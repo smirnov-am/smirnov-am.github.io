@@ -13,8 +13,8 @@
              "@id": "https:\/\/smirnov-am.github.io"
         },
         "articleSection" : "post",
-        "name" : "Chroma Keying with OpenCV\/C\x2b\x2b",
-        "headline" : "Chroma Keying with OpenCV\/C\x2b\x2b",
+        "name" : "Chroma Keying with OpenCV\/C\u002b\u002b",
+        "headline" : "Chroma Keying with OpenCV\/C\u002b\u002b",
         "description" : "Chroma keying - or blue\/green screen matting - is a process of removing a specific color from the video to be replaced with another picture or video. Historically green or blue colors were used as a background because they are not dominant in human skin or clothes. However, when a weather forecaster puts on a green skirt it can lead to funny situations:\nChroma keying became very popular technique not only on TV but in the movies.",
         "inLanguage" : "en-US",
         "author" : "",
@@ -23,11 +23,11 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-10-14 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2020-10-14 23:03:00 \x2b0000 UTC",
+        "datePublished": "2020-10-14 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2020-10-14 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/chromakeying\/",
-        "wordCount" : "1478",
-        "keywords" : [ "VFX","OpenCV","C\x2b\x2b","Blog" ]
+        "wordCount" : "1471",
+        "keywords" : [ "VFX","OpenCV","C\u002b\u002b","Blog" ]
     }
     </script>
 
@@ -133,6 +133,11 @@ Chroma keying became very popular technique not only on TV but in the movies.'>
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -154,190 +159,126 @@ Chroma keying became very popular technique not only on TV but in the movies.'>
     <h1 class="title">Chroma Keying with OpenCV/C&#43;&#43;</h1>
     
     <div class="content">
-      
-
-<p>Chroma keying - or blue/green screen matting - is a process of removing a specific color from the video to be replaced with another picture or video. Historically green or blue colors were used as a background because they are not dominant in human skin or clothes. However, when a weather forecaster puts on a green skirt it can lead to funny situations:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/chroma/weather_fail.jpeg" alt="scheme" /></p>
-
+      <p>Chroma keying - or blue/green screen matting - is a process of removing a specific color from the video to be replaced with another picture or video. Historically green or blue colors were used as a background because they are not dominant in human skin or clothes. However, when a weather forecaster puts on a green skirt it can lead to funny situations:</p>
+<p><img src="https://smirnov-am.github.io/content/images/chroma/weather_fail.jpeg" alt="scheme"></p>
 <p>Chroma keying became very popular technique not only on TV but in the movies. It&rsquo;s just much cheaper to film in a studio and add desired background later in post-production while keeping the resulting picture very plausible:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/chroma/martian.jpg" alt="martian" />
-&gt;&gt; The Martian by Ridley Scott</p>
-
+<p><img src="https://smirnov-am.github.io/content/images/chroma/martian.jpg" alt="martian"></p>
+<blockquote>
+<blockquote>
+<p>The Martian by Ridley Scott</p>
+</blockquote>
+</blockquote>
 <h2 id="matting-problem">Matting problem</h2>
-
 <p>The naive approach to green screen matting - I&rsquo;ll go on with green instead of blue from now on - is to just go through the video frame, check if a pixel a pure green  - <code>[0, 0, 255]</code> in RGB notation - and replace it with a pixel from the desired background.</p>
-
 <p>It works most of the time but fails in a region near the object&rsquo;s edge. And I refer to the object as something we film which is in the foreground of the video frame. Pixels near this edge cannot be classified as either foreground - that belongs to the object, or a green background. It&rsquo;s caused by a number of factors.</p>
-
 <p>First of which is a motion blur. Camera sensors have a finite shutter speed, so a given pixel is a sum of actual image over time. Next factor is a camera resolution. There might be objects in the picture such as hair or fur that are much smaller than camera can capture. Next factor is transparency.</p>
-
 <p>So for that pixels we can say that they are partially foreground and partially background. And it can be expressed mathematically as <code>I = alpha*F + (1-alpha)*B</code>. Where <code>I</code>, <code>B</code> and <code>F</code> are vectors in RGB space that depend on a position in the image - <code>I(x, y) = [I_RED(x, y), I_GREEN(x, y), I_BLUE(x, y)</code>. And alpha is a scalar and also dependents on the position - <code>alpha(x, y)</code>.</p>
-
 <p><code>B</code> and <code>F</code> in this formula are background and foreground images. In pixels where <code>alpha = 0</code> we see background, and when <code>alpha=1</code> it&rsquo;s a foreground.</p>
-
 <p>For each pixel there are 3 linear equations - one for each color channel - and 7 unknowns - alpha, B_RED, B_GREEN, B_BLUE and F_RED, F_GREEN and F_BLUE. It means that we cannot analytically find the solution for it.</p>
-
 <p>But luckily for producing a final picture we don&rsquo;t need to know the exact solution, but the one that just looks nice.</p>
-
 <h2 id="vlahos-algorithm">Vlahos algorithm</h2>
-
 <p>Petro Vlahos was an engineer and inventor, who defined the problem and found a solution for it. His original film solution is called the color-difference
 technique. He was honored in 1995 with an Academy Award for lifetime achievement, shared with his son Paul.</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/chroma/vlahos.jpg" alt="vlahos" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/chroma/vlahos.jpg" alt="vlahos"></p>
 <p>Vlahos made one observation essential to his work: green screen matting is performed on foreground subjects for which the green is related to the blue by <code>G ≤ a2*B</code>. The usual range allowed by his technique is <code>.5 ≤ a2 ≤ 1.5</code>.</p>
-
 <p>The Vlahos formula <code>alpha</code> can be represented as
 <code>alpha = 1 – a1*(I_GREEN – a2*I_BLUE)</code> where <code>a1</code> and <code>a2</code> are tunable parameters. There are a number of refinements to this formula that yield better results, but let&rsquo;s see how it can be implemented in the simplest form with OpenCV.</p>
-
 <h2 id="opencv-implementation">OpenCV implementation</h2>
-
 <p>I&rsquo;m going to use some free videos with green background and apply Vlahos algorithms to add a custom background from an image.</p>
-
 <p>So first of all a bunch of includes from OpenCV (I&rsquo;m using version 4.4.0 here):</p>
-
-<pre><code class="language-cpp">#include &lt;iostream&gt; // for standard I/O
-#include &lt;string&gt;   // for strings
-#include &lt;opencv2/core.hpp&gt;     // Basic OpenCV structures (cv::Mat)
-#include &lt;opencv2/videoio.hpp&gt;  // Video write
-#include &lt;opencv2/imgcodecs.hpp&gt;
-#include &lt;opencv2/imgproc.hpp&gt;
-using namespace std;
-using namespace cv;
-</code></pre>
-
-<p>Then in the main I expect to receive some command line arguments - path to video file, path to background image and a1, a2 parameters:</p>
-
-<pre><code class="language-cpp">if (argc != 5)
-   {
-       cout &lt;&lt; &quot;Not enough parameters&quot; &lt;&lt; endl;
-       return -1;
-   }
- 
-const string source = argv[1];         
-const string background = argv[2];
-const float a1 = atof(argv[3]);
-const float a2 = atof(argv[4]);
-</code></pre>
-
-<p>Opening a video in OpenCV is achieved with <code>VideoCapture</code>. After constructing of an object I can check if video was actually opened with method <code>isOpened()</code>. If it failed - the program just exits.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt; // for standard I/O</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string&gt;   // for strings</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;opencv2/core.hpp&gt;     // Basic OpenCV structures (cv::Mat)</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;opencv2/videoio.hpp&gt;  // Video write</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;opencv2/imgcodecs.hpp&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;opencv2/imgproc.hpp&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> cv;
+</span></span></code></pre></div><p>Then in the main I expect to receive some command line arguments - path to video file, path to background image and a1, a2 parameters:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (argc <span style="color:#f92672">!=</span> <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>   {
+</span></span><span style="display:flex;"><span>       cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Not enough parameters&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>   }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> string source <span style="color:#f92672">=</span> argv[<span style="color:#ae81ff">1</span>];         
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> string background <span style="color:#f92672">=</span> argv[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">float</span> a1 <span style="color:#f92672">=</span> atof(argv[<span style="color:#ae81ff">3</span>]);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">float</span> a2 <span style="color:#f92672">=</span> atof(argv[<span style="color:#ae81ff">4</span>]);
+</span></span></code></pre></div><p>Opening a video in OpenCV is achieved with <code>VideoCapture</code>. After constructing of an object I can check if video was actually opened with method <code>isOpened()</code>. If it failed - the program just exits.</p>
 <p>After the input video file is opened, I get the size of the picture and a video codec code. The former will be used for the output video file:</p>
-
-<pre><code class="language-cpp">VideoCapture inputVideo(source);             
-if (!inputVideo.isOpened())
-{
-   cout  &lt;&lt; &quot;Could not open the input video: &quot; &lt;&lt; source &lt;&lt; endl;
-   return -1;
-}
- 
-Size S = Size((int) inputVideo.get(CAP_PROP_FRAME_WIDTH),  
-               (int) inputVideo.get(CAP_PROP_FRAME_HEIGHT));
-int ex = static_cast&lt;int&gt;(inputVideo.get(CAP_PROP_FOURCC));
-</code></pre>
-
-<p>Then I need to open output video with <code>VideoWriter</code>. But the first thing is to construct a filename for it. And after opening a file I also check is if was successful with <code>isOpened()</code> and exit if it wasn&rsquo;t.</p>
-
-<pre><code class="language-cpp">string::size_type pAt = source.find_last_of('.');               
-const string outputFileName = source.substr(0, pAt) + &quot;_with_bg.avi&quot;;
-VideoWriter outputVideo;                                      
-outputVideo.open(outputFileName, ex, inputVideo.get(CAP_PROP_FPS), S, true);
-if (!outputVideo.isOpened())
-{
-   cout  &lt;&lt; &quot;Could not open the output video for write: &quot; &lt;&lt; outputFileName &lt;&lt; endl;
-   return -1;
-}
-</code></pre>
-
-<p>Next comes opening the background image with <code>imread</code>. It gives a OpenCV matrix - <code>Mat</code> class. After opening the image and usual check, I&rsquo;m going to convert and scale it.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>VideoCapture <span style="color:#a6e22e">inputVideo</span>(source);             
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>inputVideo.isOpened())
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   cout  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Could not open the input video: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> source <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>Size S <span style="color:#f92672">=</span> Size((<span style="color:#66d9ef">int</span>) inputVideo.get(CAP_PROP_FRAME_WIDTH),  
+</span></span><span style="display:flex;"><span>               (<span style="color:#66d9ef">int</span>) inputVideo.get(CAP_PROP_FRAME_HEIGHT));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> ex <span style="color:#f92672">=</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(inputVideo.get(CAP_PROP_FOURCC));
+</span></span></code></pre></div><p>Then I need to open output video with <code>VideoWriter</code>. But the first thing is to construct a filename for it. And after opening a file I also check is if was successful with <code>isOpened()</code> and exit if it wasn&rsquo;t.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>string<span style="color:#f92672">::</span>size_type pAt <span style="color:#f92672">=</span> source.find_last_of(<span style="color:#e6db74">&#39;.&#39;</span>);               
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> string outputFileName <span style="color:#f92672">=</span> source.substr(<span style="color:#ae81ff">0</span>, pAt) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_with_bg.avi&#34;</span>;
+</span></span><span style="display:flex;"><span>VideoWriter outputVideo;                                      
+</span></span><span style="display:flex;"><span>outputVideo.open(outputFileName, ex, inputVideo.get(CAP_PROP_FPS), S, true);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>outputVideo.isOpened())
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   cout  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Could not open the output video for write: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> outputFileName <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Next comes opening the background image with <code>imread</code>. It gives a OpenCV matrix - <code>Mat</code> class. After opening the image and usual check, I&rsquo;m going to convert and scale it.</p>
 <p>Images in video frames in this code are matrices. Each element of a matrix has a type like <code>CV_8UC3</code>. All the types in OpenCV are prefixed with <code>CV_</code>. Then comes a numerical type - source image pixels are 8-bit unsigned integers (8U code) and range from 0 to 255.  And each pixel has 3 channels (red, green, blue), hence <code>C3</code> in the end.</p>
-
 <p>I&rsquo;ll convert integers to 32-bit floats and scale them so they are in range from 0 to 1, dividing them by 255. I&rsquo;ll do that with channels of the video as well so it&rsquo;s easier to work with <code>alpha</code>.</p>
-
-<pre><code class="language-cpp">Mat img = imread(background, IMREAD_COLOR);
-if(img.empty())
-{
-   std::cout &lt;&lt; &quot;Could not read the image: &quot; &lt;&lt; background &lt;&lt; endl;
-   return 1;
-}
-img.convertTo(img, CV_32FC3, 1.0/255);
-</code></pre>
-
-<p>Now let&rsquo;s instantiate some variables:</p>
-
-<pre><code class="language-cpp">Mat src, res_front, res_back, res;
-  
-vector&lt;Mat&gt; channels, img_channels;
-  
-Mat alpha = Mat::zeros(S, CV_32F);
-</code></pre>
-
-<p><code>src</code> will hold a frame from input video. <code>res_front</code> will hold frames with <code>alpha</code> applied and <code>res_back</code> for <code>1-alpha</code> applied to background image.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Mat img <span style="color:#f92672">=</span> imread(background, IMREAD_COLOR);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(img.empty())
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Could not read the image: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> background <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>img.convertTo(img, CV_32FC3, <span style="color:#ae81ff">1.0</span><span style="color:#f92672">/</span><span style="color:#ae81ff">255</span>);
+</span></span></code></pre></div><p>Now let&rsquo;s instantiate some variables:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Mat src, res_front, res_back, res;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span>Mat<span style="color:#f92672">&gt;</span> channels, img_channels;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>Mat alpha <span style="color:#f92672">=</span> Mat<span style="color:#f92672">::</span>zeros(S, CV_32F);
+</span></span></code></pre></div><p><code>src</code> will hold a frame from input video. <code>res_front</code> will hold frames with <code>alpha</code> applied and <code>res_back</code> for <code>1-alpha</code> applied to background image.
 <code>channel</code> and <code>img_channels</code> vectors to hold an image - frame of the input video and background image respectively - decomposed into 3 channels. So the vector size will always be 3 with 0 element for blue, 1 for green and 2 for red channel.</p>
-
 <p><code>alpha</code> is the map to calculate. It&rsquo;s the same size as the video (and I picked background with matched size), and single channel with 32-bit float type.</p>
-
 <p>Then comes the main loop:</p>
-
-<pre><code class="language-cpp">for(;;) {
-   inputVideo &gt;&gt; src;   
-   if (src.empty()) break;
-   src.convertTo(src, CV_32F, 1.0/255);
-</code></pre>
-
-<p>First I get a frame from input video. If it&rsquo;s empty it means that the end of the video is reached. Next comes the same conversion as with background image - cast to float and scale to [0, 1].</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">for</span>(;;) {
+</span></span><span style="display:flex;"><span>   inputVideo <span style="color:#f92672">&gt;&gt;</span> src;   
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">if</span> (src.empty()) <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>   src.convertTo(src, CV_32F, <span style="color:#ae81ff">1.0</span><span style="color:#f92672">/</span><span style="color:#ae81ff">255</span>);
+</span></span></code></pre></div><p>First I get a frame from input video. If it&rsquo;s empty it means that the end of the video is reached. Next comes the same conversion as with background image - cast to float and scale to [0, 1].</p>
 <p>OpenCV has a helper method to split 3 channel matrices to a vector of 3 single channels:</p>
-
-<pre><code class="language-cpp">split(src, channels);
-split(img, img_channels);
-</code></pre>
-
-<p>It may be suboptimal to split static image in this loop - definitely an area to think about later.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>split(src, channels);
+</span></span><span style="display:flex;"><span>split(img, img_channels);
+</span></span></code></pre></div><p>It may be suboptimal to split static image in this loop - definitely an area to think about later.</p>
 <p>Now let&rsquo;s calculate <code>alpha</code> using Vlahos form:</p>
-
-<pre><code class="language-cpp">       alpha = Scalar::all(1.0) - a1*(channels[1] - a2*channels[0]);
- 
-       // keep alpha in [0, 1] range
-       threshold(alpha, alpha, 1, 1, THRESH_TRUNC);
-       threshold(-1*alpha, alpha, 0, 0, THRESH_TRUNC);
-       alpha = -1 * alpha;
-</code></pre>
-
-<p>I use different channels of the input video in the form, and that&rsquo;s why the <code>split</code> above. I&rsquo;m using <code>threshold</code> helper method to clamp alpha value to be in [0, 1] range.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>       alpha <span style="color:#f92672">=</span> Scalar<span style="color:#f92672">::</span>all(<span style="color:#ae81ff">1.0</span>) <span style="color:#f92672">-</span> a1<span style="color:#f92672">*</span>(channels[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> a2<span style="color:#f92672">*</span>channels[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>       <span style="color:#75715e">// keep alpha in [0, 1] range
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>       threshold(alpha, alpha, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, THRESH_TRUNC);
+</span></span><span style="display:flex;"><span>       threshold(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">*</span>alpha, alpha, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, THRESH_TRUNC);
+</span></span><span style="display:flex;"><span>       alpha <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> alpha;
+</span></span></code></pre></div><p>I use different channels of the input video in the form, and that&rsquo;s why the <code>split</code> above. I&rsquo;m using <code>threshold</code> helper method to clamp alpha value to be in [0, 1] range.</p>
 <p>Now when I have <code>alpha</code> for a frame I can apply it to every channel:</p>
-
-<pre><code class="language-cpp">for (int i=0; i &lt; 3; ++i) {
-   multiply(alpha, channels[i], channels[i]);
-   multiply(Scalar::all(1.0) - alpha, img_channels[i], img_channels[i]);  
-}
-</code></pre>
-
-<p>Here element-wise multiplication is used when multiplying <code>alpha</code> by input image channel and <code>1-alpha</code> for background image channel.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">3</span>; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>   multiply(alpha, channels[i], channels[i]);
+</span></span><span style="display:flex;"><span>   multiply(Scalar<span style="color:#f92672">::</span>all(<span style="color:#ae81ff">1.0</span>) <span style="color:#f92672">-</span> alpha, img_channels[i], img_channels[i]);  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here element-wise multiplication is used when multiplying <code>alpha</code> by input image channel and <code>1-alpha</code> for background image channel.</p>
 <p>After I have all the channels I&rsquo;m going to merge them into 3-channel result matrices for front and back separately:</p>
-
-<pre><code class="language-cpp">   merge(channels, res_front);
-   merge(img_channels, res_back);
-</code></pre>
-
-<p>The last piece is to produce the final frame by summing front and back, converting to 8-bit int and scaling back:</p>
-
-<pre><code class="language-cpp">   res = res_front + res_back;
-   res.convertTo(res, CV_8UC3, 255);
-   outputVideo &lt;&lt; res;
-</code></pre>
-
-<p>The last line here writes the frame to output video file.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>   merge(channels, res_front);
+</span></span><span style="display:flex;"><span>   merge(img_channels, res_back);
+</span></span></code></pre></div><p>The last piece is to produce the final frame by summing front and back, converting to 8-bit int and scaling back:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>   res <span style="color:#f92672">=</span> res_front <span style="color:#f92672">+</span> res_back;
+</span></span><span style="display:flex;"><span>   res.convertTo(res, CV_8UC3, <span style="color:#ae81ff">255</span>);
+</span></span><span style="display:flex;"><span>   outputVideo <span style="color:#f92672">&lt;&lt;</span> res;
+</span></span></code></pre></div><p>The last line here writes the frame to output video file.</p>
 <p>I got a couple of static footage of cities with sky replaced with green. And I also found some more complex cases with dancing people with all the motion blur, hair fuzziness and transparency. I&rsquo;ve tried to vary a1 and a2 input parameters until I got bored, leaving some green glow here and there:</p>
-
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe src="https://www.youtube.com/embed/Q7X4agNKU3k" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>

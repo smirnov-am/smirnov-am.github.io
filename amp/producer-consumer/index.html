@@ -15,7 +15,7 @@
         "articleSection" : "post",
         "name" : "Producer consumer pattern for fast data pipelines",
         "headline" : "Producer consumer pattern for fast data pipelines",
-        "description" : "Let\x26rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation\nVery simple implementation of this pipeline can be like this one:",
+        "description" : "Let\u0026rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns\n VALUE column holding original number ROOT column for the result of calculation  Very simple implementation of this pipeline can be like this one:",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-08-23 22:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-08-23 22:41:00 \x2b0000 UTC",
+        "datePublished": "2020-08-23 22:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-08-23 22:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/producer-consumer\/",
-        "wordCount" : "1175",
+        "wordCount" : "1170",
         "keywords" : [ "Python","Blog" ]
     }
     </script>
@@ -34,8 +34,8 @@
 <title>Producer consumer pattern for fast data pipelines | Alexey Smirnov</title>
 
 <meta property='og:title' content='Producer consumer pattern for fast data pipelines - Alexey Smirnov'>
-<meta property='og:description' content='Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
-Very simple implementation of this pipeline can be like this one:'>
+<meta property='og:description' content='Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
+ VALUE column holding original number ROOT column for the result of calculation  Very simple implementation of this pipeline can be like this one:'>
 <meta property='og:url' content='https://smirnov-am.github.io/amp/producer-consumer/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/f3f61e69a3bdf7419f19cb1be356c0b1?s=256'><meta property='article:section' content='Post'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2020-08-23T22:41:00Z'/><meta property='article:modified_time' content='2020-08-23T22:41:00Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
@@ -133,6 +133,11 @@ Very simple implementation of this pipeline can be like this one:'>
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -148,37 +153,33 @@ Very simple implementation of this pipeline can be like this one:'>
     <h1 class="title">Producer consumer pattern for fast data pipelines</h1>
     
     <div class="content">
-      
-
-<p>Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000.
-The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
-- VALUE column holding original number
-- ROOT column for the result of calculation</p>
-
+      <p>Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000.
+The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns</p>
+<ul>
+<li>VALUE column holding original number</li>
+<li>ROOT column for the result of calculation</li>
+</ul>
 <p>Very simple implementation of this pipeline can be like this one:</p>
-
-<pre><code class="language-python">from math import sqrt
-import mysql.connector # 1
-
-
-def main_simple():
-    connection = mysql.connector.connect(
-        host=&quot;localhost&quot;, 
-        user=&quot;yourusername&quot;,
-        password=&quot;yourpassword&quot;
-    ) # 2 
-    cursor_read = connection.cursor()
-    cursor_read.execute(&quot;SELECT VALUE FROM SOURCE&quot;) #3
-    
-    cursor_write = connection.cursor()
-    for row in cursor_read: # 4
-        value = int(row[0])
-        root = sqrt(value) # 5
-        cursor_write.execute(f&quot;INSERT INTO DESTINATION (VALUE, ROOT) VALUES ({value}, {root})&quot;) # 6
-    connection.commit() # 7
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> math <span style="color:#f92672">import</span> sqrt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> mysql.connector <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main_simple</span>():
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(
+</span></span><span style="display:flex;"><span>        host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localhost&#34;</span>, 
+</span></span><span style="display:flex;"><span>        user<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;yourusername&#34;</span>,
+</span></span><span style="display:flex;"><span>        password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;yourpassword&#34;</span>
+</span></span><span style="display:flex;"><span>    ) <span style="color:#75715e"># 2 </span>
+</span></span><span style="display:flex;"><span>    cursor_read <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    cursor_read<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;SELECT VALUE FROM SOURCE&#34;</span>) <span style="color:#75715e">#3</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    cursor_write <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> cursor_read: <span style="color:#75715e"># 4</span>
+</span></span><span style="display:flex;"><span>        value <span style="color:#f92672">=</span> int(row[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>        root <span style="color:#f92672">=</span> sqrt(value) <span style="color:#75715e"># 5</span>
+</span></span><span style="display:flex;"><span>        cursor_write<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;INSERT INTO DESTINATION (VALUE, ROOT) VALUES (</span><span style="color:#e6db74">{</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>root<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>) <span style="color:#75715e"># 6</span>
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>commit() <span style="color:#75715e"># 7</span>
+</span></span></code></pre></div><ol>
 <li>Import Mysql Connector. It can be installed with <code>pip install mysql-connector-python</code></li>
 <li>Connect to the database by providing host name (local machine in this case), username and password</li>
 <li>Read the data from SOURCE table. This command won&rsquo;t retrieve the data yet</li>
@@ -187,193 +188,143 @@ def main_simple():
 <li>Insert the result into DESTINATION table</li>
 <li>Don&rsquo;t forget to commit in the end to persist the changes to DESTINATION table</li>
 </ol>
-
 <p>We don&rsquo;t usually write application by cramping everything into one function. Let&rsquo;s decompose it into two functions with separate responsibilities.</p>
-
 <p>First function will read the data:</p>
-
-<pre><code class="language-python">def producer(connection):
-    cursor_read = connection.cursor()
-    cursor_read.execute(&quot;SELECT VALUE FROM SOURCE&quot;)
-    for row in cursor_read:
-        yield row[0]
-</code></pre>
-
-<p>The second one will do the calculation for one item - number - and save the result:</p>
-
-<pre><code class="language-python">def consumer(connection, item):
-    value = int(item)
-    root = sqrt(value)
-    cursor_write = connection.cursor()
-    cursor_write.execute(f&quot;INSERT INTO DESTINATION (VALUE, ROOT) VALUES ({value}, {root})&quot;)
-</code></pre>
-
-<p>Let&rsquo;s bring it all together</p>
-
-<pre><code class="language-python">def main_decompose():
-    connection = mysql.connector.connect(
-        host=&quot;localhost&quot;, 
-        user=&quot;yourusername&quot;,
-        password=&quot;yourpassword&quot;
-    )
-    for value in producer(connection):
-        comsumer(connection, value)
-    connection.commit()
-</code></pre>
-
-<p>Timing the execution of this function with <code>timeit</code> magic in Jupyter gives</p>
-
-<pre><code>CPU times: user 46.9 ms, sys: 93.8 ms, total: 141 ms
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">producer</span>(connection):
+</span></span><span style="display:flex;"><span>    cursor_read <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    cursor_read<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;SELECT VALUE FROM SOURCE&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> cursor_read:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> row[<span style="color:#ae81ff">0</span>]
+</span></span></code></pre></div><p>The second one will do the calculation for one item - number - and save the result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">consumer</span>(connection, item):
+</span></span><span style="display:flex;"><span>    value <span style="color:#f92672">=</span> int(item)
+</span></span><span style="display:flex;"><span>    root <span style="color:#f92672">=</span> sqrt(value)
+</span></span><span style="display:flex;"><span>    cursor_write <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    cursor_write<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;INSERT INTO DESTINATION (VALUE, ROOT) VALUES (</span><span style="color:#e6db74">{</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>root<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span></code></pre></div><p>Let&rsquo;s bring it all together</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main_decompose</span>():
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(
+</span></span><span style="display:flex;"><span>        host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localhost&#34;</span>, 
+</span></span><span style="display:flex;"><span>        user<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;yourusername&#34;</span>,
+</span></span><span style="display:flex;"><span>        password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;yourpassword&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> value <span style="color:#f92672">in</span> producer(connection):
+</span></span><span style="display:flex;"><span>        comsumer(connection, value)
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>commit()
+</span></span></code></pre></div><p>Timing the execution of this function with <code>timeit</code> magic in Jupyter gives</p>
+<pre tabindex="0"><code>CPU times: user 46.9 ms, sys: 93.8 ms, total: 141 ms
 Wall time: 1.41 s
-</code></pre>
-
-<p>Total CPU time is 141ms, but the whole execution of the program is 1.41s. It means that it spends most time communicating with database and very little doing actual calculation. Concurrency can speed things up here.
+</code></pre><p>Total CPU time is 141ms, but the whole execution of the program is 1.41s. It means that it spends most time communicating with database and very little doing actual calculation. Concurrency can speed things up here.
 And since this is a IO heavy task it&rsquo;s a good candidate to use threads as a concurrency mechanism.</p>
-
 <h2 id="producer-consumer-pattern">Producer consumer pattern</h2>
-
 <p>Producer consumer pattern is widely used for such applications. The idea is that producer and consumer runs in separate threads in parallel. Producer reads the data and put them into a queue and consumer reads data from the queue, processes it and saves. The number of producer and consumer threads can be more than one.</p>
-
-<p>Python standard library has a <a href="https://docs.python.org/3/library/queue.html" target="_blank">queue</a> module that can be used in concurrent applications and that free us from implementing all the locking/mutexes.</p>
-
+<p>Python standard library has a <a href="https://docs.python.org/3/library/queue.html">queue</a> module that can be used in concurrent applications and that free us from implementing all the locking/mutexes.</p>
 <blockquote>
 <p>The queue module implements multi-producer, multi-consumer queues. It is especially useful in threaded programming when information must be exchanged safely between multiple threads. The Queue class in this module implements all the required locking semantics.</p>
 </blockquote>
-
 <p>Python has two modules for concurrency with threads. Low level <code>threading</code> and high level abstraction with <code>concurrent.futures</code>.</p>
-
-<p>Let&rsquo;s convert our <code>producer</code> and <code>consumer</code> to
-- accept queue an the only argument
-- create DB connection internally as it&rsquo;s not thread-safe to pass it from <code>main</code> to these functions</p>
-
+<p>Let&rsquo;s convert our <code>producer</code> and <code>consumer</code> to</p>
+<ul>
+<li>accept queue an the only argument</li>
+<li>create DB connection internally as it&rsquo;s not thread-safe to pass it from <code>main</code> to these functions</li>
+</ul>
 <p><code>producer</code> will accepts a queue and instead of returning data elements it will put them in the queue. <code>consumer</code> will start a loop that exits when queue is empty. In the loop it will get element from the queue, process it and after all the processing is over commit the changes to database</p>
-
-<pre><code class="language-python">from concurrent.futures import ThreadPoolExecutor
-from queue import Queue
-
-def producer_threaded(queue):
-    connection = mysql.connector.connect(...)
-    cursor = connection.cursor()
-    cursor.execute(&quot;SELECT VALUE FROM SOURCE&quot;)
-    for row in cursor:
-        queue.put(row) # 1
-
-def consumer_threaded(queue):
-    connection = mysql.connector.connect(...)
-    cursor = connection.cursor()
-
-    while not queue.empty(): # 2
-        item = queue.get() # 3
-        value = int(item)
-        root = sqrt(value)
-        cursor_write.execute(f&quot;INSERT INTO DESTINATION (VALUE, ROOT) VALUES ({value}, {root})&quot;)
-
-        queue.task_done() # 4
-    connection.commit()
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> concurrent.futures <span style="color:#f92672">import</span> ThreadPoolExecutor
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> queue <span style="color:#f92672">import</span> Queue
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">producer_threaded</span>(queue):
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>    cursor <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    cursor<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;SELECT VALUE FROM SOURCE&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> cursor:
+</span></span><span style="display:flex;"><span>        queue<span style="color:#f92672">.</span>put(row) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">consumer_threaded</span>(queue):
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>    cursor <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> queue<span style="color:#f92672">.</span>empty(): <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>        item <span style="color:#f92672">=</span> queue<span style="color:#f92672">.</span>get() <span style="color:#75715e"># 3</span>
+</span></span><span style="display:flex;"><span>        value <span style="color:#f92672">=</span> int(item)
+</span></span><span style="display:flex;"><span>        root <span style="color:#f92672">=</span> sqrt(value)
+</span></span><span style="display:flex;"><span>        cursor_write<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;INSERT INTO DESTINATION (VALUE, ROOT) VALUES (</span><span style="color:#e6db74">{</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>root<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        queue<span style="color:#f92672">.</span>task_done() <span style="color:#75715e"># 4</span>
+</span></span><span style="display:flex;"><span>    connection<span style="color:#f92672">.</span>commit()
+</span></span></code></pre></div><ol>
 <li><code>producer</code> puts items in the queue instead of returning</li>
 <li><code>consumer</code> loop check that queue has some elements with a special method instead of <code>len</code></li>
 <li>Item is extracted from the queue</li>
 <li>When item processing is over this method of the queue should be called, otherwise the queue won&rsquo;t become <code>empty</code> as in # 2</li>
 </ol>
-
 <p>The <code>main</code> that will bring it all together will utilize <code>ThreadPoolExecutor</code> that will manage threads for us:</p>
-
-<pre><code class="language-python">def main_threaded():
-    q = Queue() # 1
-    with ThreadPoolExecutor(max_workers=4) as executor: # 2
-        executor.submit(producer_threaded, q) # 3
-        for _ in range(3):
-            executor.submit(consumer_threaded, q)
-    # 4
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main_threaded</span>():
+</span></span><span style="display:flex;"><span>    q <span style="color:#f92672">=</span> Queue() <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> ThreadPoolExecutor(max_workers<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">as</span> executor: <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>        executor<span style="color:#f92672">.</span>submit(producer_threaded, q) <span style="color:#75715e"># 3</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">3</span>):
+</span></span><span style="display:flex;"><span>            executor<span style="color:#f92672">.</span>submit(consumer_threaded, q)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 4</span>
+</span></span></code></pre></div><ol>
 <li>queue is instantiated, but it&rsquo;s wise to limit the size of it as if the consumers are much slower than producers it will grow indefinitely and consume a lot of memory</li>
 <li>Number of workers is also an important parameter - I&rsquo;m putting 4 here so the pool have enough threads for one producer and 3 consumers</li>
 <li>This is how you start a thread - provide an function as a fist positional argument and then all arguments for the function itself</li>
 <li>Upon exiting for this context manager executor will wait for all threads to finish</li>
 </ol>
-
 <p>Let&rsquo;s time this:</p>
-
-<pre><code>CPU times: user 109 ms, sys: 141 ms, total: 250 ms
+<pre tabindex="0"><code>CPU times: user 109 ms, sys: 141 ms, total: 250 ms
 Wall time: 481 s
-</code></pre>
-
-<p>it runs 3 times faster than non-concurrent implementation.</p>
-
+</code></pre><p>it runs 3 times faster than non-concurrent implementation.</p>
 <h2 id="futures">Futures</h2>
-
 <p>Let&rsquo;s introduce a bug in our producer:</p>
-
-<pre><code class="language-python">def producer_threaded(queue):
-    connection = mysql.connector.connect(&quot;some wrong password&quot;)
-</code></pre>
-
-<p>When running the above code you&rsquo;ll see no traceback as it runs in a separate thread. To get the exceptions and result for threads in the pool you can utilize a special <code>Future</code> object returned by <code>submit</code> method:</p>
-
-<pre><code class="language-python">from concurrent.futures import as_completed
-
-def main_threaded_future():
-    q = Queue() 
-    futures = []
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        producer_future = executor.submit(producer_threaded, q)
-        futures.append(producer_future) # 1
-        for _ in range(3):
-            consumer_future = executor.submit(consumer_threaded, q)
-            futures.append(consumer_future)
-
-        for future in as_completed(futures): # 2
-            future.result() # 3
-</code></pre>
-
-<ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">producer_threaded</span>(queue):
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(<span style="color:#e6db74">&#34;some wrong password&#34;</span>)
+</span></span></code></pre></div><p>When running the above code you&rsquo;ll see no traceback as it runs in a separate thread. To get the exceptions and result for threads in the pool you can utilize a special <code>Future</code> object returned by <code>submit</code> method:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> concurrent.futures <span style="color:#f92672">import</span> as_completed
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main_threaded_future</span>():
+</span></span><span style="display:flex;"><span>    q <span style="color:#f92672">=</span> Queue() 
+</span></span><span style="display:flex;"><span>    futures <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> ThreadPoolExecutor(max_workers<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">as</span> executor:
+</span></span><span style="display:flex;"><span>        producer_future <span style="color:#f92672">=</span> executor<span style="color:#f92672">.</span>submit(producer_threaded, q)
+</span></span><span style="display:flex;"><span>        futures<span style="color:#f92672">.</span>append(producer_future) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">3</span>):
+</span></span><span style="display:flex;"><span>            consumer_future <span style="color:#f92672">=</span> executor<span style="color:#f92672">.</span>submit(consumer_threaded, q)
+</span></span><span style="display:flex;"><span>            futures<span style="color:#f92672">.</span>append(consumer_future)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> future <span style="color:#f92672">in</span> as_completed(futures): <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>            future<span style="color:#f92672">.</span>result() <span style="color:#75715e"># 3</span>
+</span></span></code></pre></div><ol>
 <li>Store the returned future in a list</li>
 <li>iterate over futures that finished execution</li>
 <li>It will not only reraise exceptions but also return the results from threads (ours return <code>None</code>)</li>
 </ol>
-
 <h2 id="paging">Paging</h2>
-
 <p>We can do better in terms of performance we we spin multiple producer. Each producer will read only a part of SOURCE table. For that we will execute paging query:</p>
-
-<pre><code class="language-python">def producer_paged(queue, page, page_size=500):
-    connection = mysql.connector.connect(...)
-    cursor = connection.cursor()
-    cursor.execute(f&quot;SELECT VALUE FROM SOURCE LIMIT {page_size} OFFSET {page_size * page}&quot;)
-    for row in cursor:
-        queue.put(row) # 1
-</code></pre>
-
-<p>Now let&rsquo;s create 2 producers, each reading 500 rows from SOURCE table:</p>
-
-<pre><code class="language-python">def main_threaded_future():
-    q = Queue() 
-    futures = []
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        for page in range(2):
-            producer_future = executor.submit(producer_threaded, q, page)
-            futures.append(producer_future) # 1
-        for _ in range(2):
-            consumer_future = executor.submit(consumer_threaded, q)
-            futures.append(consumer_future)
-
-        for future in as_completed(futures): # 2
-            future.result() # 3
-</code></pre>
-
-<p>The execution time for paged producer is 2 times faster than previous implementation:</p>
-
-<pre><code>CPU times: user 0 ns, sys: 62.5 ms, total: 62.5 ms
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">producer_paged</span>(queue, page, page_size<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>):
+</span></span><span style="display:flex;"><span>    connection <span style="color:#f92672">=</span> mysql<span style="color:#f92672">.</span>connector<span style="color:#f92672">.</span>connect(<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>    cursor <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    cursor<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;SELECT VALUE FROM SOURCE LIMIT </span><span style="color:#e6db74">{</span>page_size<span style="color:#e6db74">}</span><span style="color:#e6db74"> OFFSET </span><span style="color:#e6db74">{</span>page_size <span style="color:#f92672">*</span> page<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> cursor:
+</span></span><span style="display:flex;"><span>        queue<span style="color:#f92672">.</span>put(row) <span style="color:#75715e"># 1</span>
+</span></span></code></pre></div><p>Now let&rsquo;s create 2 producers, each reading 500 rows from SOURCE table:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main_threaded_future</span>():
+</span></span><span style="display:flex;"><span>    q <span style="color:#f92672">=</span> Queue() 
+</span></span><span style="display:flex;"><span>    futures <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> ThreadPoolExecutor(max_workers<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">as</span> executor:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> page <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>):
+</span></span><span style="display:flex;"><span>            producer_future <span style="color:#f92672">=</span> executor<span style="color:#f92672">.</span>submit(producer_threaded, q, page)
+</span></span><span style="display:flex;"><span>            futures<span style="color:#f92672">.</span>append(producer_future) <span style="color:#75715e"># 1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>):
+</span></span><span style="display:flex;"><span>            consumer_future <span style="color:#f92672">=</span> executor<span style="color:#f92672">.</span>submit(consumer_threaded, q)
+</span></span><span style="display:flex;"><span>            futures<span style="color:#f92672">.</span>append(consumer_future)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> future <span style="color:#f92672">in</span> as_completed(futures): <span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>            future<span style="color:#f92672">.</span>result() <span style="color:#75715e"># 3</span>
+</span></span></code></pre></div><p>The execution time for paged producer is 2 times faster than previous implementation:</p>
+<pre tabindex="0"><code>CPU times: user 0 ns, sys: 62.5 ms, total: 62.5 ms
 Wall time: 221 ms
-</code></pre>
-
-<h2 id="conclusion">Conclusion</h2>
-
+</code></pre><h2 id="conclusion">Conclusion</h2>
 <p>Producer-consumer is a powerful design pattern for data pipelines. In Python it can be implemented using standard library through <code>queue</code> and <code>concurrent.futures</code> modules.</p>
 
 

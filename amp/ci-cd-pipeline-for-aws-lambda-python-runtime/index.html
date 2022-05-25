@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2019",
-        "datePublished": "2019-08-18 12:05:36 \x2b0000 UTC",
-        "dateModified" : "2019-08-18 12:05:36 \x2b0000 UTC",
+        "datePublished": "2019-08-18 12:05:36 \u002b0000 UTC",
+        "dateModified" : "2019-08-18 12:05:36 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/ci-cd-pipeline-for-aws-lambda-python-runtime\/",
         "wordCount" : "986",
         "keywords" : [ "AWS","Python","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -152,16 +157,13 @@
     
     <div class="content">
       <p>Continuous integration and continuous delivery are powerful practices that allow release software faster and of a higher quality. This post walks through steps to implement CI/CD pipeline for a small lambda function that calculates square roots by:</p>
-
 <ul>
 <li>getting message from SQS that contains the number to calculate <code>sqrt</code> for</li>
 <li>checks if the calculation was done before by querying DynamoDB</li>
 <li>if there is not cached answer in DynamoDB - calculate <code>sqrt</code> and saves the result</li>
 <li>print the result so it&rsquo;s visible in CloudWatch logs</li>
 </ul>
-
 <p>Things I&rsquo;d like the pipeline to do:</p>
-
 <ul>
 <li>create all the resources - SQS and Dynamo</li>
 <li>subscribe to any changes that are committed to master branch of GitHub repo</li>
@@ -169,96 +171,63 @@
 <li>build the package for lambda with all python dependencies</li>
 <li>deploy the package</li>
 </ul>
-
 <p>Pipeline architecture:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/cicd_lambda.png" alt="arch" /></p>
-
-<p>The initial CloudFormation template along with all the code can be found in <a href="https://github.com/smirnov-am/cicd_lambda" target="_blank">this GitHub repo</a></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/cicd_lambda.png" alt="arch"></p>
+<p>The initial CloudFormation template along with all the code can be found in <a href="https://github.com/smirnov-am/cicd_lambda">this GitHub repo</a></p>
 <p>The <code>pipeline.yaml</code> (see <code>aws</code> folder in the repo) contain the CloudFormation template that will create SQS, Dynamo, CodePipeline with all its steps:</p>
-
 <ul>
 <li>source step to get the source code form GitHub</li>
 <li>CodeTest (CodeBuild type) to run a container to run tests</li>
 <li>CodeBuild - a container that will prepare the build - a zip file on S3 Lambda can digest</li>
 <li>CodeDeploy - the step to deploy newly build Lambda.</li>
 </ul>
-
-<p>The first thing to do is to create GitHub OAuth token - just follow steps 1-6 from <a href="https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html" target="_blank">this AWS doc</a>.</p>
-
+<p>The first thing to do is to create GitHub OAuth token - just follow steps 1-6 from <a href="https://docs.aws.amazon.com/en_us/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html">this AWS doc</a>.</p>
 <p>Next, you need to create a stack from AWS console - Go to CloudFormation and click Create Stack. It will ask to fill in the stack parameters:</p>
-
 <ul>
 <li>name - a reference to the resources of the stack</li>
 <li>GitHub token, repo owner and repo name</li>
 </ul>
-
 <p>Newly created pipeline appears in CodePipeline console right after that. If you open it there will be Source, CodeTest, CodeBuild and CodeDeploy stages present.</p>
-
 <p>Also, all additional resources will be created:</p>
-
 <ul>
 <li>SQS queue that will feed the Lambda</li>
 <li>DynamoDB table with Pay-Per-Request billing</li>
 <li>S3 bucket for pipeline artifacts - it&rsquo;s the mechanism to pass result of CodePipeline stages between each other</li>
 <li>S3 bucket that will hold zip file with packaged Lambda code</li>
 </ul>
-
 <p>Source step of the pipeline is pretty autonomous. AWS will monitor the changes and start the execution of the pipeline once there was a push to the master branch. There is a limit on how many repositories it can monitor so the alternative is to implement a GitHub webhook that will trigger a special separate Lambda that in turn will start pipeline execution.</p>
-
 <p>CodeTest is a step of CodeBuild type. It runs unit tests. Usually, the unit tests are run by developers individually by implementing pre-commit hooks on the local machine. But this step ensures that they were executed before push. Also, it can run the test for a higher level of the testing pyramid.</p>
-
-<p>CodeBuild uses <a href="https://chalice.readthedocs.io/en/latest/" target="_blank">chalice</a> package to do a couple of things</p>
-
+<p>CodeBuild uses <a href="https://chalice.readthedocs.io/en/latest/">chalice</a> package to do a couple of things</p>
 <ul>
 <li>create CloudFormation template to deploy lambda</li>
 <li>package Lambda code</li>
 <li>create Lambda policies</li>
 </ul>
-
 <p>The important part of this stage is the image the container will use. Since some python packages are wrappers around C libraries, which are compiled when we run <code>pip install</code>, so the OS where we run <code>pip install</code> should be similar to the OS which will run the code and use these packages. I found this images <code>amazonlinux:latest</code> on DockerHub, which resembles Lambda runtime. Dependencies are installed into virtual environment. All the site-packages go to <code>vendor</code> folder.</p>
-
-<pre><code>- python3 -m venv v-env &amp;&amp; . v-env/bin/activate &amp;&amp; pip install --upgrade pip &amp;&amp; pip install -r requirements/requirements.txt &amp;&amp; deactivate
+<pre tabindex="0"><code>- python3 -m venv v-env &amp;&amp; . v-env/bin/activate &amp;&amp; pip install --upgrade pip &amp;&amp; pip install -r requirements/requirements.txt &amp;&amp; deactivate
 - mkdir vendor
 - cp -R v-env/lib/python3.7/site-packages/. vendor
 - cp -R v-env/lib64/python3.7/site-packages/. vendor
-</code></pre>
-
-<p>Next thing is the code - it should be placed in a <code>vendor</code> folder as per chalice docs. I don&rsquo;t like to have it in my projects structures so I&rsquo;m creating it in <code>codebuild.yaml</code> (which is referred in CodeTest as a <code>buildspec</code> - a script to run) and copying everything in it.</p>
-
-<pre><code>- cp -R my_package vendor
-</code></pre>
-
-<p>There is another difficulty - a Lambda IAM policy. Ideally, it should be as restrictive as possible, but grant access to the SQS and Dynamo we already created. In this stage I&rsquo;m passing a number of different environment variables to the container:</p>
-
+</code></pre><p>Next thing is the code - it should be placed in a <code>vendor</code> folder as per chalice docs. I don&rsquo;t like to have it in my projects structures so I&rsquo;m creating it in <code>codebuild.yaml</code> (which is referred in CodeTest as a <code>buildspec</code> - a script to run) and copying everything in it.</p>
+<pre tabindex="0"><code>- cp -R my_package vendor
+</code></pre><p>There is another difficulty - a Lambda IAM policy. Ideally, it should be as restrictive as possible, but grant access to the SQS and Dynamo we already created. In this stage I&rsquo;m passing a number of different environment variables to the container:</p>
 <ul>
 <li>the ones that start with <code>LAMBDA_ENV</code> go into Lambda config to be available at its runtime</li>
 <li>the ones starting with <code>POLICY_ENV</code> are used to generate policy document (chalice policy generator is not yet good enough for that)</li>
 </ul>
-
 <p>There is a <code>config_generator.py</code> script that read these variables and put them in proper places. <code>LAMBDA_ENV</code> will be put into a file <code>.chalice/config.json</code> and <code>POLICY_ENV</code> will go to <code>.chalice/police.json</code> - both will be used later by chalice to generate CloudFormation template.</p>
-
 <p>Finally, the size of the build should be less than 265Mb. So delete extra files (<code>boto3</code> is needed for build, but it&rsquo;s available in Lambda runtime so no need to take it with us).</p>
-
-<pre><code>- echo 'Size of build' $(du -sm --exclude=./v-env .) 'MB'
-- find . -name &quot;*.pyc&quot; -exec rm -f {} \;
-- find ./vendor  -name 'boto3' -prune -type d -exec rm -rf {} \;
-- find ./vendor  -name 'botocore' -prune -type d -exec rm -rf {} \;
-- echo 'Size of build after cleaning' $(du -sm --exclude=./v-env .) 'MB'
-</code></pre>
-
-<p>The <code>chalice package</code> command, in the end, creates a zip file along with <code>sam.json</code> file. AWS CLI command will prepare the final template for CloudFormation - <code>transformed.yaml</code> - that will drive the deploy stage</p>
-
-<pre><code>- . v-env/bin/activate &amp;&amp; python config_generator.py &amp;&amp; chalice package /tmp/packaged &amp;&amp; deactivate
+<pre tabindex="0"><code>- echo &#39;Size of build&#39; $(du -sm --exclude=./v-env .) &#39;MB&#39;
+- find . -name &#34;*.pyc&#34; -exec rm -f {} \;
+- find ./vendor  -name &#39;boto3&#39; -prune -type d -exec rm -rf {} \;
+- find ./vendor  -name &#39;botocore&#39; -prune -type d -exec rm -rf {} \;
+- echo &#39;Size of build after cleaning&#39; $(du -sm --exclude=./v-env .) &#39;MB&#39;
+</code></pre><p>The <code>chalice package</code> command, in the end, creates a zip file along with <code>sam.json</code> file. AWS CLI command will prepare the final template for CloudFormation - <code>transformed.yaml</code> - that will drive the deploy stage</p>
+<pre tabindex="0"><code>- . v-env/bin/activate &amp;&amp; python config_generator.py &amp;&amp; chalice package /tmp/packaged &amp;&amp; deactivate
 - aws cloudformation package --template-file /tmp/packaged/sam.json --s3-bucket ${APP_S3_BUCKET} --output-template-file transformed.yaml
-</code></pre>
-
-<p>After all that all the changes to the master branch of your repo should be automatically tested, (ideally) integrated and deployed.</p>
-
-<p>If you use Python in a serverless environment on AWS or use CI/CD for such applications, connect with me on <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">LinkedIn</a></p>
-
-<p>Code for this post is available <a href="https://github.com/smirnov-am/cicd_lambda" target="_blank">here</a></p>
+</code></pre><p>After all that all the changes to the master branch of your repo should be automatically tested, (ideally) integrated and deployed.</p>
+<p>If you use Python in a serverless environment on AWS or use CI/CD for such applications, connect with me on <a href="https://www.linkedin.com/in/smirnovam/">LinkedIn</a></p>
+<p>Code for this post is available <a href="https://github.com/smirnov-am/cicd_lambda">here</a></p>
 
 
       <section class="section">

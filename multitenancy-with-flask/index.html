@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2018",
-        "datePublished": "2018-10-26 15:59:00 \x2b0000 UTC",
-        "dateModified" : "2018-10-26 15:59:00 \x2b0000 UTC",
+        "datePublished": "2018-10-26 15:59:00 \u002b0000 UTC",
+        "dateModified" : "2018-10-26 15:59:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/multitenancy-with-flask\/",
         "wordCount" : "461",
         "keywords" : [ "Flask","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -147,133 +152,95 @@
     <h1 class="title">Multitenancy with Flask</h1>
     
     <div class="content">
-      
-
-<h3 id="what-is-multi-tenancy">What is multi-tenancy</h3>
-
+      <h3 id="what-is-multi-tenancy">What is multi-tenancy</h3>
 <p>Consider a SaaS platform that provide access to multiple client organizations. These organizations - tenants - may have each its own database for safety and data protection reasons. It can be a database on a single RDBMS server or physically different servers. Usually additional central database (i.e., General) stores metadata and list of available tenants.</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/multitenant-flask/description.png" alt="desc" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/multitenant-flask/description.png" alt="desc"></p>
 <h3 id="flask-sqlalchemy">Flask-SQLAlchemy</h3>
-
-<p>Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines <code>SQLALCHEMY_DATABASE_URI</code> for connection information for it. It possible to extend it to multiple tenant databases using <a href="http://flask-sqlalchemy.pocoo.org/2.3/binds/" target="_blank">binds</a></p>
-
+<p>Flask-SQLAlchemy provides interface only to one database. Flask app configuration defines <code>SQLALCHEMY_DATABASE_URI</code> for connection information for it. It possible to extend it to multiple tenant databases using <a href="http://flask-sqlalchemy.pocoo.org/2.3/binds/">binds</a></p>
 <h3 id="tenant-dependent-endpoint">Tenant dependent endpoint</h3>
-
 <p>Consider this endpoint that displays tenant users and gets tenant name as its parameter</p>
-
-<pre><code class="language-python">@app.route(&quot;/&lt;tenant_name&gt;/users&quot;)
-def index(tenant_name):
-    tenant_session = get_tenant_session(tenant_name)
-    if not tenant_session:
-        abort(404)
-    users = tenant_session.query(User).all()
-    return jsonify({tenant_name: [i.username for i in users]})
-
-</code></pre>
-
-<p>Models used are very basic:</p>
-
-<pre><code class="language-python">class User(db.Model):
-    __tablename__ = 'users'
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)
-
-
-class Tenant(db.Model):
-    __tablename__ = 'tenants'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-
-</code></pre>
-
-<p>Users have two fields - just id and username. These tables are in tenant database. And tenant model is in general database. I keep track of available tenants here so if query refers to unknown tenant it will give 404 error.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#34;/&lt;tenant_name&gt;/users&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">index</span>(tenant_name):
+</span></span><span style="display:flex;"><span>    tenant_session <span style="color:#f92672">=</span> get_tenant_session(tenant_name)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> tenant_session:
+</span></span><span style="display:flex;"><span>        abort(<span style="color:#ae81ff">404</span>)
+</span></span><span style="display:flex;"><span>    users <span style="color:#f92672">=</span> tenant_session<span style="color:#f92672">.</span>query(User)<span style="color:#f92672">.</span>all()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jsonify({tenant_name: [i<span style="color:#f92672">.</span>username <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> users]})
+</span></span></code></pre></div><p>Models used are very basic:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(db<span style="color:#f92672">.</span>Model):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;users&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>Integer, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    username <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>String(<span style="color:#ae81ff">100</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Tenant</span>(db<span style="color:#f92672">.</span>Model):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;tenants&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>Integer, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    name <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>Column(db<span style="color:#f92672">.</span>String(<span style="color:#ae81ff">100</span>), nullable<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span></code></pre></div><p>Users have two fields - just id and username. These tables are in tenant database. And tenant model is in general database. I keep track of available tenants here so if query refers to unknown tenant it will give 404 error.</p>
 <h3 id="building-tenant-session">Building tenant session</h3>
-
 <p>To get tenant session</p>
-
 <ul>
 <li>check if tenant name is in <code>tenants</code> table from General database</li>
 <li>create a URI in <code>SQLALCHEMY_BINDS</code> dictionary that is in Flask app configuration - <code>current_app.config</code></li>
 <li>get SQLAlchemy engine that accepts that bind</li>
-
-<li><p>form session from a session factory - <code>sessionmaker</code> - that uses the engine</p>
-
-<pre><code class="language-python">MYSQL_URI = 'mysql+pymysql://user:pwd@localhost/{}?charset=utf8'
-
-@simple_cache
-def get_known_tenants():
-    tenants = Tenant.query.all()
-    return [i.name for i in tenants]
-
-
-def prepare_bind(tenant_name):
-    if tenant_name not in current_app.config['SQLALCHEMY_BINDS']:
-        current_app.config['SQLALCHEMY_BINDS'][tenant_name] = MYSQL_URI.format(tenant_name)
-    return current_app.config['SQLALCHEMY_BINDS'][tenant_name]
-
-
-def get_tenant_session(tenant_name):
-    if tenant_name not in get_known_tenants():
-        return None
-    prepare_bind(tenant_name)
-    engine = db.get_engine(current_app, bind=tenant_name)
-    session_maker = db.sessionmaker()
-    session_maker.configure(bind=engine)
-    session = session_maker()
-    return session
-</code></pre></li>
+<li>form session from a session factory - <code>sessionmaker</code> - that uses the engine</li>
 </ul>
-
-<p>I check tenant availability at every request. This information doesn&rsquo;t change often so it&rsquo;s cached.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>MYSQL_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mysql+pymysql://user:pwd@localhost/</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">?charset=utf8&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@simple_cache</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_known_tenants</span>():
+</span></span><span style="display:flex;"><span>        tenants <span style="color:#f92672">=</span> Tenant<span style="color:#f92672">.</span>query<span style="color:#f92672">.</span>all()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> [i<span style="color:#f92672">.</span>name <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> tenants]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">prepare_bind</span>(tenant_name):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tenant_name <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> current_app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SQLALCHEMY_BINDS&#39;</span>]:
+</span></span><span style="display:flex;"><span>            current_app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SQLALCHEMY_BINDS&#39;</span>][tenant_name] <span style="color:#f92672">=</span> MYSQL_URI<span style="color:#f92672">.</span>format(tenant_name)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> current_app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SQLALCHEMY_BINDS&#39;</span>][tenant_name]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_tenant_session</span>(tenant_name):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> tenant_name <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> get_known_tenants():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>        prepare_bind(tenant_name)
+</span></span><span style="display:flex;"><span>        engine <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>get_engine(current_app, bind<span style="color:#f92672">=</span>tenant_name)
+</span></span><span style="display:flex;"><span>        session_maker <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>sessionmaker()
+</span></span><span style="display:flex;"><span>        session_maker<span style="color:#f92672">.</span>configure(bind<span style="color:#f92672">=</span>engine)
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> session_maker()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> session
+</span></span></code></pre></div><p>I check tenant availability at every request. This information doesn&rsquo;t change often so it&rsquo;s cached.</p>
 <h3 id="cache-slow-changing-data">Cache slow changing data</h3>
-
-<p>I&rsquo;ll be using simple <a href="http://werkzeug.pocoo.org/docs/0.14/contrib/cache/" target="_blank">werkzeug cache</a>. Every process and uwsgi worker will get its own instance. To share the data between processes this cache can be easily extended to use external store like Redis/Memcached.</p>
-
+<p>I&rsquo;ll be using simple <a href="http://werkzeug.pocoo.org/docs/0.14/contrib/cache/">werkzeug cache</a>. Every process and uwsgi worker will get its own instance. To share the data between processes this cache can be easily extended to use external store like Redis/Memcached.</p>
 <p><code>Simple_cache</code> is a decorator using function name as a key like so:</p>
-
-<pre><code class="language-python">cache = SimpleCache()
-
-
-def simple_cache(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        function_name = f.__name__
-        if cache.has(function_name):
-            result = cache.get(function_name)
-        else:
-            result = f(*args, **kwargs)
-            cache.set(function_name, result)
-        return result
-    return wrapper
-
-</code></pre>
-
-<h3 id="database-initialization">Database initialization</h3>
-
-<p>I&rsquo;ve prepared a SQL dump to generate mock data <a href="https://github.com/smirnov-am/flask-multitenancy/blob/master/all_databases.sql" target="_blank">here</a>. It creates all databases and tables with two tenants: TenantA and TenantB. Each has 2 users:</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cache <span style="color:#f92672">=</span> SimpleCache()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">simple_cache</span>(f):
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@wraps</span>(f)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+</span></span><span style="display:flex;"><span>        function_name <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>__name__
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> cache<span style="color:#f92672">.</span>has(function_name):
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span>get(function_name)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> f(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+</span></span><span style="display:flex;"><span>            cache<span style="color:#f92672">.</span>set(function_name, result)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> wrapper
+</span></span></code></pre></div><h3 id="database-initialization">Database initialization</h3>
+<p>I&rsquo;ve prepared a SQL dump to generate mock data <a href="https://github.com/smirnov-am/flask-multitenancy/blob/master/all_databases.sql">here</a>. It creates all databases and tables with two tenants: TenantA and TenantB. Each has 2 users:</p>
 <ul>
 <li>userA and userB for TenantA;</li>
 <li>userA and userC for TenantB;</li>
 </ul>
-
 <p>It can be imported with mysql client</p>
-
 <p><code>mysql --host=&quot;&lt;host&gt;&quot; --user=&quot;&lt;user&gt;&quot; --password=&quot;&lt;password&gt;&quot; &lt; all_databases.sql</code></p>
-
 <h3 id="results">Results</h3>
-
-<p><img src="https://smirnov-am.github.io/content/images/multitenant-flask/demo.gif" alt="demo" /></p>
-
-<p>The whole code is available at <a href="https://github.com/smirnov-am/flask-multitenancy" target="_blank">GitHub</a></p>
-
-<p>Do you use multitenant database? Drop me a message on <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">LinkedIn</a></p>
+<p><img src="https://smirnov-am.github.io/content/images/multitenant-flask/demo.gif" alt="demo"></p>
+<p>The whole code is available at <a href="https://github.com/smirnov-am/flask-multitenancy">GitHub</a></p>
+<p>Do you use multitenant database? Drop me a message on <a href="https://www.linkedin.com/in/smirnovam/">LinkedIn</a></p>
 
 
       <section class="section">

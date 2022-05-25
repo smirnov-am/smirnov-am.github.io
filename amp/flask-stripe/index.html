@@ -23,10 +23,10 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-07-09 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2020-07-09 23:03:00 \x2b0000 UTC",
+        "datePublished": "2020-07-09 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2020-07-09 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/flask-stripe\/",
-        "wordCount" : "765",
+        "wordCount" : "756",
         "keywords" : [ "Flask","Blog" ]
     }
     </script>
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -147,176 +152,136 @@
     <h1 class="title">Accepting payments in Flask with Stripe</h1>
     
     <div class="content">
-      
-
-<h1 id="introduction">Introduction</h1>
-
+      <h1 id="introduction">Introduction</h1>
 <p>In this article you&rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application.
 THe example will be a webshop, that has a single page for selling 5$ T-shirts.</p>
-
 <h1 id="main-page">Main page</h1>
-
 <p>Create a Flask route that serves the webshop page.</p>
-
-<p>The page loads some JavaScript as well:
-- a Stripe JS
-- jQuery for AJAX call
-- some custom JavaScript</p>
-
-<pre><code class="language-python">@app.route('/')
-def webshop():
-    return &quot;&quot;&quot;&lt;html&gt;
-                &lt;head&gt;&lt;/head&gt;
-                &lt;body&gt;
-                    &lt;a href=&quot;#&quot; id=&quot;checkout&quot;&gt;Buy T-shirt for 5$&lt;/a&gt;
-
-                    &lt;script src=&quot;https://code.jquery.com/jquery-3.2.1.min.js&quot;&gt;&lt;/script&gt;
-                    &lt;script src=&quot;https://js.stripe.com/v3/&quot;&gt;&lt;/script&gt;
-                    &lt;script src=&quot;static/checkout.js&quot;&gt;&lt;/script&gt;
-
-                &lt;/body&gt;
-            &lt;/html&gt;&quot;&quot;&quot;
-</code></pre>
-
-<h1 id="starting-a-payment-session">Starting a payment session</h1>
-
+<p>The page loads some JavaScript as well:</p>
+<ul>
+<li>a Stripe JS</li>
+<li>jQuery for AJAX call</li>
+<li>some custom JavaScript</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">webshop</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;&#34;&lt;html&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;head&gt;&lt;/head&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;a href=&#34;#&#34; id=&#34;checkout&#34;&gt;Buy T-shirt for 5$&lt;/a&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;script src=&#34;https://code.jquery.com/jquery-3.2.1.min.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;script src=&#34;https://js.stripe.com/v3/&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &lt;script src=&#34;static/checkout.js&#34;&gt;&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &lt;/body&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;/html&gt;&#34;&#34;&#34;</span>
+</span></span></code></pre></div><h1 id="starting-a-payment-session">Starting a payment session</h1>
 <p>Now in the <code>checkout.js</code> you need to do a couple of things:</p>
-
 <ul>
 <li>bind an onclick event to the button</li>
 <li>instantiate stripe by providing your public Stripe key</li>
 <li>retrieve a payment session id by calling <code>/start_payment_session</code> in your backend Flask</li>
-
-<li><p>redirect to Stripe checkout providing a session_id created in the backend</p>
-
-<pre><code class="language-javascript">$('#checkout').click(function() {
-var stripe = Stripe('pk_test_XXX');
-$.ajax({
-    url: '/start_payment_session',
-    success: function(data) {
-        payment_session_id = data['session_id'];
-        stripe.redirectToCheckout({
-            sessionId: payment_session_id
-        }).then(function (result) {
-            console.log(result.error.message);
-        });
-    }
-});
-});         
-</code></pre></li>
+<li>redirect to Stripe checkout providing a session_id created in the backend</li>
 </ul>
-
-<p>Put that file to <code>static</code> folder in your Flask project. But eventually you might want to serve static files with nginx directly without any Flask involvement.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#checkout&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">stripe</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Stripe</span>(<span style="color:#e6db74">&#39;pk_test_XXX&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/start_payment_session&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">success</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">payment_session_id</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>[<span style="color:#e6db74">&#39;session_id&#39;</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">stripe</span>.<span style="color:#a6e22e">redirectToCheckout</span>({
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">sessionId</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">payment_session_id</span>
+</span></span><span style="display:flex;"><span>            }).<span style="color:#a6e22e">then</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">result</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">error</span>.<span style="color:#a6e22e">message</span>);
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>});         
+</span></span></code></pre></div><p>Put that file to <code>static</code> folder in your Flask project. But eventually you might want to serve static files with nginx directly without any Flask involvement.</p>
 <h1 id="creating-a-session-and-redirecting-to-stripe">Creating a session and redirecting to Stripe</h1>
-
 <p>Your frontend now calls a <code>/start_payment_session</code> when you a user hits a link on the page. This route should call stripe to request a session payment id. Then it return this to frontend.</p>
-
 <p>First, install a stripe Python SDK with</p>
-
-<pre><code class="language-bash">pip install stripe
-</code></pre>
-
-<p>Then, create a new route in Flask:</p>
-
-<pre><code class="language-python">import stripe
-from flask import jsonify
-
-
-@app.route('/start_payment_session')
-def start_payment_session():
-    stripe.api_key = 'sk_test_XXX' # put your Stripe secret key here
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=[{
-            'name': 'T-shirt',
-            'description': 'Some cool T',
-            'amount': 500,
-            'currency': 'usd',
-            'quantity': 1,
-        }],
-        success_url='https://123.ngrok.io/success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url='https://123.ngrok.io',
-    )
-    return jsonify({'session_id': session[&quot;id&quot;]})
-</code></pre>
-
-<p>Couple of gotchas:
-- amount should be integer
-- amount is in cents ($5 is 500)
-- amount can&rsquo;t be less than 50ct
-- don&rsquo;t hardcode stripe secret key - get it from environment variables or from a secrets store like HashiCorp Vault</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install stripe
+</span></span></code></pre></div><p>Then, create a new route in Flask:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> stripe
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> jsonify
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/start_payment_session&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">start_payment_session</span>():
+</span></span><span style="display:flex;"><span>    stripe<span style="color:#f92672">.</span>api_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sk_test_XXX&#39;</span> <span style="color:#75715e"># put your Stripe secret key here</span>
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> stripe<span style="color:#f92672">.</span>checkout<span style="color:#f92672">.</span>Session<span style="color:#f92672">.</span>create(
+</span></span><span style="display:flex;"><span>        payment_method_types<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;card&#39;</span>],
+</span></span><span style="display:flex;"><span>        line_items<span style="color:#f92672">=</span>[{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;name&#39;</span>: <span style="color:#e6db74">&#39;T-shirt&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;description&#39;</span>: <span style="color:#e6db74">&#39;Some cool T&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;amount&#39;</span>: <span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;currency&#39;</span>: <span style="color:#e6db74">&#39;usd&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;quantity&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        }],
+</span></span><span style="display:flex;"><span>        success_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;https://123.ngrok.io/success?session_id=</span><span style="color:#e6db74">{CHECKOUT_SESSION_ID}</span><span style="color:#e6db74">&#39;</span>,
+</span></span><span style="display:flex;"><span>        cancel_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;https://123.ngrok.io&#39;</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jsonify({<span style="color:#e6db74">&#39;session_id&#39;</span>: session[<span style="color:#e6db74">&#34;id&#34;</span>]})
+</span></span></code></pre></div><p>Couple of gotchas:</p>
+<ul>
+<li>amount should be integer</li>
+<li>amount is in cents ($5 is 500)</li>
+<li>amount can&rsquo;t be less than 50ct</li>
+<li>don&rsquo;t hardcode stripe secret key - get it from environment variables or from a secrets store like HashiCorp Vault</li>
+</ul>
 <p>When you create a payment session with Stripe you need to provide a <code>success_url</code> - this is where your users will be redirected once payments succeeds.
 You need to create a Flask route for that as well. Also, if the payment fails users will be redirected to <code>cancel_url</code></p>
-
-<p>I&rsquo;m using ngrok to serve my Flask - as you can see from the urls - other methods to deploy Flask <a href="https://smirnov-am.github.io/deploy-flask/" target="_blank">here</a>.</p>
-
+<p>I&rsquo;m using ngrok to serve my Flask - as you can see from the urls - other methods to deploy Flask <a href="https://smirnov-am.github.io/deploy-flask/">here</a>.</p>
 <h1 id="getting-callback-from-stripe">Getting callback from Stripe</h1>
-
 <p>Now, when the payment succeeds your user is redirected to a <code>success_url</code>. But nothing prevents them to just go to this url directly and acquire the purchase.
 One way to solve that is to configure stripe servers to call a specific url in your backend notifying you that payment was successful.</p>
-
 <p>First, you need to create a webhook in Stripe dashboard:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/stripe/callback.png" alt="callback" />.</p>
-
+<p><img src="https://smirnov-am.github.io/content/images/stripe/callback.png" alt="callback">.</p>
 <p>You provide a URL and en event type here. <code>checkout.session.completed</code> should be enough.</p>
-
 <p>In this page you will find a Signing Secret - you need to use that in callback route code.</p>
-
 <p>Then, you create a new route in Flask:</p>
-
-<pre><code class="language-python">@app.route('/callback', methods=['POST'])
-def callback():
-    payload = request.get_data()
-    sig_header = request.headers.get('Stripe-Signature')
-    event = None
-    endpoint_secret = 'whsec_XXX' # put Signing Secret here
-    try:
-        event = stripe.Webhook.construct_event(
-        payload, sig_header, endpoint_secret
-        )
-    except (stripe.error.SignatureVerificationError,ValueError) as e:
-        print(e)
-        abort(400)
-
-    # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        print(session)
-        # save somewhere in database
-        # that this session is completed
-    return 'ok'
-</code></pre>
-
-<p>In this route you can save the details of the payment, so you can check them later once the use reached <code>success_url</code> to verify that payment is in a good order.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/callback&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">callback</span>():
+</span></span><span style="display:flex;"><span>    payload <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>get_data()
+</span></span><span style="display:flex;"><span>    sig_header <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;Stripe-Signature&#39;</span>)
+</span></span><span style="display:flex;"><span>    event <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    endpoint_secret <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;whsec_XXX&#39;</span> <span style="color:#75715e"># put Signing Secret here</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        event <span style="color:#f92672">=</span> stripe<span style="color:#f92672">.</span>Webhook<span style="color:#f92672">.</span>construct_event(
+</span></span><span style="display:flex;"><span>        payload, sig_header, endpoint_secret
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> (stripe<span style="color:#f92672">.</span>error<span style="color:#f92672">.</span>SignatureVerificationError,<span style="color:#a6e22e">ValueError</span>) <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(e)
+</span></span><span style="display:flex;"><span>        abort(<span style="color:#ae81ff">400</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Handle the checkout.session.completed event</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> event[<span style="color:#e6db74">&#39;type&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;checkout.session.completed&#39;</span>:
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> event[<span style="color:#e6db74">&#39;data&#39;</span>][<span style="color:#e6db74">&#39;object&#39;</span>]
+</span></span><span style="display:flex;"><span>        print(session)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># save somewhere in database</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># that this session is completed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;ok&#39;</span>
+</span></span></code></pre></div><p>In this route you can save the details of the payment, so you can check them later once the use reached <code>success_url</code> to verify that payment is in a good order.</p>
 <h1 id="finalizing-purchase">Finalizing purchase</h1>
-
 <p>The last step is when your user is redirected to <code>success_url</code>. Use this route to notify a user that payment was successful, send confirmation email and start shipments and so on.</p>
-
-<pre><code class="language-python">@app.route('/success', methods=['get'])
-def success():
-    payment_session_id = request.args.get('session_id')
-    # check in your DB that this particular 
-    # session is completed
-    return 'payment ok, shipping your T'
-</code></pre>
-
-<h1 id="demo">Demo</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/success&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;get&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">success</span>():
+</span></span><span style="display:flex;"><span>    payment_session_id <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>args<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;session_id&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># check in your DB that this particular </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># session is completed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;payment ok, shipping your T&#39;</span>
+</span></span></code></pre></div><h1 id="demo">Demo</h1>
 <p>Here is a little demo on how it looks from a user perspective. In the bottom you also
 see Flask access logs:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/stripe/output.gif" alt="gif" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/stripe/output.gif" alt="gif"></p>
 <h1 id="further-thoughts">Further thoughts</h1>
-
-<p>This example showed how to do one time payments in Flask with Stripe. But it misses a couple of things:
-- no recurrent payments
-- if somethings goes wrong and user cannot reach <code>success_url</code>, there is no way for him to know whether the payment was ok</p>
-
+<p>This example showed how to do one time payments in Flask with Stripe. But it misses a couple of things:</p>
+<ul>
+<li>no recurrent payments</li>
+<li>if somethings goes wrong and user cannot reach <code>success_url</code>, there is no way for him to know whether the payment was ok</li>
+</ul>
 <p>Accepting recurrent payment is almost identical, but require some extra step to set up.
 As for the second edge case - you may collect user email beforehand and notify her via it.</p>
 

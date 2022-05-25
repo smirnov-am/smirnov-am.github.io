@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2021</copyright>
-    <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://smirnov-am.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 12 Apr 2020 17:03:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>5 ways to deploy Flask</title>
       <link>https://smirnov-am.github.io/deploy-flask/</link>
@@ -20,7 +16,7 @@
       <guid>https://smirnov-am.github.io/deploy-flask/</guid>
       <description>In this post, I&amp;rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&amp;rsquo;m going to use a simple app from Flask docs:
 app.py
-from flask import Flask app = Flask(__name__) @app.route(&#39;/&#39;) def hello_world(): return &#39;Hello, World!&#39; if __name__ == &#39;__main__&#39;: app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.</description>
+from flask import Flask app = Flask(__name__)  @app.route(&amp;#39;/&amp;#39;) def hello_world():  return &amp;#39;Hello, World!&amp;#39;  if __name__ == &amp;#39;__main__&amp;#39;:  app.run() Local machine This option is used when you need to test your application on a local machine. By simply running app.</description>
     </item>
     
     <item>
@@ -62,8 +58,8 @@ To achieve continues delivery connect the GitHub repo storing the source to Code
       <guid>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</guid>
       <description>This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.
 1 Create virtual environment In order to separate system-wide dependencies from this app, create a separate virtual environment with:
-~ mkvirtualenv nltk_env  2 Install nltk In the virtual environment use pip to install nltk package:
-(nltk_env) ~ pip install nltk  3 Download nltk data Pip doesn&amp;rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</description>
+~ mkvirtualenv nltk_env 2 Install nltk In the virtual environment use pip to install nltk package:
+(nltk_env) ~ pip install nltk 3 Download nltk data Pip doesn&amp;rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:</description>
     </item>
     
   </channel>

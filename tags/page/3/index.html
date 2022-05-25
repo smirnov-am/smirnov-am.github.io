@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2021",
-        "datePublished": "2021-01-12 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2021-01-12 23:03:00 \x2b0000 UTC",
+        "datePublished": "2021-01-12 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2021-01-12 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/tags\/",
         "wordCount" : "0",
         "keywords" : [ "Blog" ]
@@ -33,7 +33,7 @@
 
 <title>Tags | Alexey Smirnov</title>
 
-<meta property='og:title' content='Tags - Alexey Smirnov'>
+<meta property='og:title' content='Tag: Tags - Alexey Smirnov'>
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
@@ -175,7 +175,7 @@ To achieve continues delivery connect the GitHub repo storing the source to Code
       <div class="content">
         Python&rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
-$$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.
+is close to the number as possible. So, values such as 0.
         
         <a class="button is-link" href="https://smirnov-am.github.io/representing-money-in-python/" style="height:28px">
           Read more
@@ -322,7 +322,7 @@ First - bootstrap4_base.html - loads css and js files from CDN and defines major
       <h1 class="title"><a href="https://smirnov-am.github.io/running-flask-in-production-with-docker/">Running Flask in production with Docker</a></h1>
       <div class="content">
         Google top for running Flask with Docker is full of posts where Flask runs in debug mode. That what logs look like when Flask is in development mode:
- * Serving Flask app &quot;app&quot; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit)  I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.
+ * Serving Flask app &#34;app&#34; (lazy loading) * Environment: production WARNING: Do not use the development server in a production environment. Use a production WSGI server instead. * Debug mode: on * Running on http://0.0.0.0:5555/ (Press CTRL+C to quit) I&rsquo;d like to make a tutorial on how to run it with uwsgi in Docker using common Docker images.
         
         <a class="button is-link" href="https://smirnov-am.github.io/running-flask-in-production-with-docker/" style="height:28px">
           Read more
@@ -351,7 +351,7 @@ First - bootstrap4_base.html - loads css and js files from CDN and defines major
         In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.
 XSS Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. source
 Exploit Consider a form asking for a user input.
-&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt; &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt; &lt;input type=&quot;submit&quot;&gt; &lt;/form&gt;  And a template to show tweets by other users where user input from above form passed unprocessed:
+&lt;form method=&#34;post&#34; action=&#34;/&#34;&gt;  &lt;input type=&#34;text&#34; name=&#34;tweet&#34;&gt;&lt;br&gt;  &lt;input type=&#34;submit&#34;&gt; &lt;/form&gt; And a template to show tweets by other users where user input from above form passed unprocessed:
         
         <a class="button is-link" href="https://smirnov-am.github.io/securing-flask-web-applications/" style="height:28px">
           Read more
@@ -381,8 +381,8 @@ Exploit Consider a form asking for a user input.
       <div class="content">
         This is a walk through of the process of creating a simple serverless app for finding part-of-speech tag of an input text.
 1 Create virtual environment In order to separate system-wide dependencies from this app, create a separate virtual environment with:
-~ mkvirtualenv nltk_env  2 Install nltk In the virtual environment use pip to install nltk package:
-(nltk_env) ~ pip install nltk  3 Download nltk data Pip doesn&rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:
+~ mkvirtualenv nltk_env 2 Install nltk In the virtual environment use pip to install nltk package:
+(nltk_env) ~ pip install nltk 3 Download nltk data Pip doesn&rsquo;t install additional files that are needed to the app, but nltk has a helper functions to download them:
         
         <a class="button is-link" href="https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/" style="height:28px">
           Read more

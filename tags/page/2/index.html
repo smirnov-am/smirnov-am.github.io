@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2021",
-        "datePublished": "2021-01-12 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2021-01-12 23:03:00 \x2b0000 UTC",
+        "datePublished": "2021-01-12 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2021-01-12 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/tags\/",
         "wordCount" : "0",
         "keywords" : [ "Blog" ]
@@ -33,7 +33,7 @@
 
 <title>Tags | Alexey Smirnov</title>
 
-<meta property='og:title' content='Tags - Alexey Smirnov'>
+<meta property='og:title' content='Tag: Tags - Alexey Smirnov'>
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
@@ -163,7 +163,8 @@ Testing HTTP client with pytest
 Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
-Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs: - It’s a REST API - We need to use HTTP GET - We provide a number in query parameters - The result is a json {‘existing’: True | False}
+Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs:
+ It’s a REST API We need to use HTTP GET We provide a number in query parameters The result is a json {‘existing’: True | False}  I’m going to create this 3rd party API myself and run it from my local environment so we can see the access logs.
         
         <a class="button is-link" href="https://smirnov-am.github.io/pytest-testing_http_client/" style="height:28px">
           Read more
@@ -259,8 +260,8 @@ Flexible If you don’t have tests for your code - every change to the code is a
       <h2 class="subtitle is-6 date">August 23, 2020</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/producer-consumer/">Producer consumer pattern for fast data pipelines</a></h1>
       <div class="content">
-        Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
-Very simple implementation of this pipeline can be like this one:
+        Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
+ VALUE column holding original number ROOT column for the result of calculation  Very simple implementation of this pipeline can be like this one:
         
         <a class="button is-link" href="https://smirnov-am.github.io/producer-consumer/" style="height:28px">
           Read more
@@ -308,8 +309,8 @@ In this tutorial, you’ll learn how to:
       <div class="content">
         Introduction In this article you&rsquo;ll learn how to use Stripe Checkout to accept one time payments in Flask application. THe example will be a webshop, that has a single page for selling 5$ T-shirts.
 Main page Create a Flask route that serves the webshop page.
-The page loads some JavaScript as well: - a Stripe JS - jQuery for AJAX call - some custom JavaScript
-@app.route('/') def webshop(): return &quot;&quot;&quot;&lt;html&gt; &lt;head&gt;&lt;/head&gt; &lt;body&gt; &lt;a href=&quot;#&quot; id=&quot;checkout&quot;&gt;Buy T-shirt for 5$&lt;/a&gt; &lt;script src=&quot;https://code.
+The page loads some JavaScript as well:
+ a Stripe JS jQuery for AJAX call some custom JavaScript  @app.route(&#39;/&#39;) def webshop():  return &#34;&#34;&#34;&lt;html&gt; &lt;head&gt;&lt;/head&gt; &lt;body&gt; &lt;a href=&#34;#&#34; id=&#34;checkout&#34;&gt;Buy T-shirt for 5$&lt;/a&gt; &lt;script src=&#34;https://code.
         
         <a class="button is-link" href="https://smirnov-am.github.io/flask-stripe/" style="height:28px">
           Read more
@@ -360,7 +361,7 @@ And here I assume that the underlying platform that runs Flask has enough resour
       <div class="content">
         In this post, I&rsquo;m going to explore 5 ways to deploy a Flask application. In all examples I&rsquo;m going to use a simple app from Flask docs:
 app.py
-from flask import Flask app = Flask(__name__) @app.route('/') def hello_world(): return 'Hello, World!' if __name__ == '__main__': app.run()  Local machine This option is used when you need to test your application on a local machine. By simply running app.py you spin up a server and can call the endpoints locally, but this particular scenario help when you need to integrate your app with external service.
+from flask import Flask app = Flask(__name__)  @app.route(&#39;/&#39;) def hello_world():  return &#39;Hello, World!&#39;  if __name__ == &#39;__main__&#39;:  app.run() Local machine This option is used when you need to test your application on a local machine. By simply running app.
         
         <a class="button is-link" href="https://smirnov-am.github.io/deploy-flask/" style="height:28px">
           Read more

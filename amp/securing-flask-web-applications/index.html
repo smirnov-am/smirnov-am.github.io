@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2018",
-        "datePublished": "2018-07-11 15:26:00 \x2b0000 UTC",
-        "dateModified" : "2018-07-11 15:26:00 \x2b0000 UTC",
+        "datePublished": "2018-07-11 15:26:00 \u002b0000 UTC",
+        "dateModified" : "2018-07-11 15:26:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/securing-flask-web-applications\/",
         "wordCount" : "1796",
         "keywords" : [ "Flask","Security","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -151,307 +156,211 @@
     <h1 class="title">Securing Flask web applications</h1>
     
     <div class="content">
-      
-
-<p>In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.</p>
-
+      <p>In this post I&rsquo;d like to investigate security mechanisms available in Flask. I&rsquo;ll go through different types of possible vulnerabilities and the way they can be mitigated.</p>
 <h2 id="xss">XSS</h2>
-
-<p>Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. <a href="https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29" target="_blank">source</a></p>
-
+<p>Cross-Site Scripting (XSS) attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites. <a href="https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29">source</a></p>
 <h3 id="exploit">Exploit</h3>
-
 <p>Consider a form asking for a user input.</p>
-
-<pre><code class="language-html">&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt;
-  &lt;input type=&quot;text&quot; name=&quot;tweet&quot;&gt;&lt;br&gt;
-  &lt;input type=&quot;submit&quot;&gt;
-&lt;/form&gt;
-
-</code></pre>
-
-<p>And a template to show tweets by other users where user input from above form passed unprocessed:</p>
-
-<pre><code class="language-html">&lt;title&gt;Hello from flask twitter&lt;/title&gt;
-{% for tweet in tweets %}
-  &lt;h1 class={{tweet}}&gt;{{ tweet }}!&lt;/h1&gt;
-  &lt;a href=&quot;{{tweet}}&quot;&gt;Like&lt;/a&gt;
-{% endfor %}
-
-</code></pre>
-
-<p>With the Flask app looking like this:</p>
-
-<pre><code class="language-python">from flask import Flask, request, render_template, make_response
-app = Flask(__name__)
-
-tweets = []
-
-
-@app.route('/', methods=['GET', 'POST'])
-def tweet_feed():
-    if request.method == 'POST':
-        tweet = request.form['tweet']
-        tweets.append(tweet)
-    return render_template('tweet_feed.html', tweets=tweets)
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5005, debug=True)
-
-</code></pre>
-
-<p>The tweet posted by user will be used as <code>h1</code> class attribute and inside the tag and also as <code>a</code> href attribute.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tweet&#34;</span>&gt;&lt;<span style="color:#f92672">br</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span></code></pre></div><p>And a template to show tweets by other users where user input from above form passed unprocessed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">title</span>&gt;Hello from flask twitter&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>{% for tweet in tweets %}
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">{{tweet}}</span>&gt;{{ tweet }}!&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{tweet}}&#34;</span>&gt;Like&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>{% endfor %}
+</span></span></code></pre></div><p>With the Flask app looking like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, request, render_template, make_response
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tweets <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">tweet_feed</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;POST&#39;</span>:
+</span></span><span style="display:flex;"><span>        tweet <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;tweet&#39;</span>]
+</span></span><span style="display:flex;"><span>        tweets<span style="color:#f92672">.</span>append(tweet)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#39;tweet_feed.html&#39;</span>, tweets<span style="color:#f92672">=</span>tweets)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5005</span>, debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><p>The tweet posted by user will be used as <code>h1</code> class attribute and inside the tag and also as <code>a</code> href attribute.</p>
 <p>A hacker may post malicious code and when another users will open the page with tweets that code may be executed by their browsers:</p>
-
 <ol>
 <li><code>&quot; onload=alert(1)</code> - if this appears in class attribute it will close the double quote and add a callback to onload event for this DOM.</li>
 <li><code>javascript:alert(1);</code> - if this javascript URI appears in href attribute, browser will execute a code when user clicks.</li>
 <li><code>&lt;script&gt;alert(1)&lt;/script&gt;</code> - if this appears anywhere on the page the script will be executed.</li>
 </ol>
-
 <p>The script may not just show an alert message, but for example do an AJAX call to another endpoint on this site (i.e. password change).  This allows the attacker to perform any action as the user on this website.</p>
-
 <h3 id="mitigation">Mitigation</h3>
-
 <p>When rendering templates Flask configures Jinja2 to automatically escape all values unless explicitly told otherwise. Auto-escaping is not enabled for all templates. The following extensions for templates trigger auto-escaping: <code>.html</code>, <code>.htm</code>, <code>.xml</code>, <code>.xhtml</code>. Templates loaded from a string will have auto-escaping disabled.</p>
-
 <p>So because of the above exploit using code #3 will be escaped and never executed.</p>
-
-<p>Code #1 gives me <code>ERR_BLOCKED_BY_XSS_AUDITOR</code> error in Chrome Version 65.0.3325.181. This browser behavior can be manipulated by the server with <code>X-XSS-Protection</code> header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection" target="_blank">source</a></p>
-
+<p>Code #1 gives me <code>ERR_BLOCKED_BY_XSS_AUDITOR</code> error in Chrome Version 65.0.3325.181. This browser behavior can be manipulated by the server with <code>X-XSS-Protection</code> header <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">source</a></p>
 <p>The only vulnerable part is href attribute in <code>a</code> tag. There are following options to mitigate</p>
-
 <ul>
 <li>do not use user input with <code>href</code></li>
 <li>use <code>{{ url_for('endpoint')}}</code> when rendering template. This has additional benefit of automatically building proper URLs if endpoint path changes.</li>
-
-<li><p>use <code>Content-Security-Policy</code> header in response:</p>
-
-<pre><code class="language-python">@app.route('/', methods=['GET', 'POST'])
-def tweet_feed():
-if request.method == 'POST':
-    tweet = request.form['tweet']
-    tweets.append(tweet)
-response = make_response(render_template('tweet_feed.html', tweets=tweets))
-response.headers['Content-Security-Policy'] = &quot;default-src 'self'&quot;
-return response
-
-</code></pre></li>
+<li>use <code>Content-Security-Policy</code> header in response:</li>
 </ul>
-
-<p>Content Security Policy (CSP) is security mechanism aimed at protecting from XSS and Clickjacking attacks. CSP allows you to specify trusted origins of loading resources such as Javascript, fonts, CSS and others. And also ban the execution of the built-in Javascript code. <a href="https://web-security.guru/en/web-security/content-security-policy" target="_blank">source</a></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">tweet_feed</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;POST&#39;</span>:
+</span></span><span style="display:flex;"><span>        tweet <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;tweet&#39;</span>]
+</span></span><span style="display:flex;"><span>        tweets<span style="color:#f92672">.</span>append(tweet)
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> make_response(render_template(<span style="color:#e6db74">&#39;tweet_feed.html&#39;</span>, tweets<span style="color:#f92672">=</span>tweets))
+</span></span><span style="display:flex;"><span>    response<span style="color:#f92672">.</span>headers[<span style="color:#e6db74">&#39;Content-Security-Policy&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;default-src &#39;self&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span></code></pre></div><p>Content Security Policy (CSP) is security mechanism aimed at protecting from XSS and Clickjacking attacks. CSP allows you to specify trusted origins of loading resources such as Javascript, fonts, CSS and others. And also ban the execution of the built-in Javascript code. <a href="https://web-security.guru/en/web-security/content-security-policy">source</a></p>
 <p><code>default-src 'self'</code> in <code>Content-Security-Policy</code> header in server response instructs browser to load and execute scripts from the same source - your server, which is identified by protocol (http/https), hostname and port triplet. It also disables inline scripts like the one from malicious code #3.</p>
-
 <p>Another types of XSS are the ones where malicious code is embedded in uploaded file (text, images). I&rsquo;ll address them in File upload section later</p>
-
 <h2 id="csrf">CSRF</h2>
-
 <p>Cross-Site Request Forgery is an attack that allows an attacker to make requests to various sites under victim user. If the victim comes to a site containing a malicious code, a request is sent from her username to another service (social network) performing a destructive action. Unlike XSS the malicious code is stored on hacker controlled server where user is tricked to visit.</p>
-
 <h2 id="exploit-1">Exploit</h2>
-
 <p>Consider a online bank transfer page. You may access it by logging beforehand with the authentication information stored in cookie files.</p>
-
-<pre><code class="language-html">&lt;!doctype html&gt;
-&lt;title&gt;Hello from Flask&lt;/title&gt;
-&lt;h1&gt;Account balance {% raw %}${{ balance }}{% endraw %}&lt;/h1&gt;
-
-&lt;h2&gt;New transfer&lt;/h2&gt;
-&lt;form method=&quot;post&quot; action=&quot;/&quot;&gt;
-  &lt;input type=&quot;text&quot; name=&quot;destination_account&quot; placeholder=&quot;Destination account&quot;&gt;&lt;br&gt;
-  &lt;input type=&quot;number&quot; name=&quot;amount&quot;&gt;&lt;br&gt;
-  &lt;input type=&quot;submit&quot; value=&quot;Transfer&quot;&gt;
-&lt;/form&gt;
-
-</code></pre>
-
-<p>With Flaks app looking like this:</p>
-
-<pre><code class="language-python">from flask import Flask, request, render_template
-app = Flask(__name__)
-
-account_balance = 1000
-
-
-@app.route('/', methods=['GET', 'POST'])
-def transfer():
-    global account_balance
-    if request.method == 'POST':
-        transferred_amount = request.form['amount']
-        if transferred_amount.isdigit():
-            account_balance -= int(transferred_amount)
-    response = make_response(render_template('transfer.html', balance=account_balance))
-    return response
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5005, debug=True)
-
-</code></pre>
-
-<p>Now an attacker may trick you to follow a link to his website (I&rsquo;m getting a lot of &lsquo;Your transaction is approved, Follow this link for details&rsquo; spam messages recently). When you follow the link a page with the following script loads:</p>
-
-<pre><code class="language-html">&lt;form method=&quot;POST&quot; action=&quot;http://0.0.0.0:5005/&quot; id=&quot;hacker_form&quot;&gt;
-   &lt;input type=&quot;text&quot; name=&quot;destination_account&quot; value=&quot;123123123&quot;/&gt;
-   &lt;input type=&quot;number&quot; name=&quot;amount&quot; value=&quot;1000&quot;/&gt;
-   &lt;input type=&quot;submit&quot; value=&quot;Transfer&quot;&gt;
-&lt;/form&gt;
-&lt;script&gt;document.getElementById(&quot;hacker_form&quot;).submit()&lt;/script&gt;
-
-</code></pre>
-
-<p>So when sending this form to bank app at <a href="http://0.0.0.0:5005/" target="_blank">http://0.0.0.0:5005/</a> authorization cookie will be also sent along. Thus user authorized bank to transfer $10000 to Account #123123123</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!doctype html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">title</span>&gt;Hello from Flask&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">h1</span>&gt;Account balance {% raw %}${{ balance }}{% endraw %}&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">h2</span>&gt;New transfer&lt;/<span style="color:#f92672">h2</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;destination_account&#34;</span> <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Destination account&#34;</span>&gt;&lt;<span style="color:#f92672">br</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;number&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;amount&#34;</span>&gt;&lt;<span style="color:#f92672">br</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Transfer&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span></code></pre></div><p>With Flaks app looking like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, request, render_template
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>account_balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">transfer</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">global</span> account_balance
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;POST&#39;</span>:
+</span></span><span style="display:flex;"><span>        transferred_amount <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;amount&#39;</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> transferred_amount<span style="color:#f92672">.</span>isdigit():
+</span></span><span style="display:flex;"><span>            account_balance <span style="color:#f92672">-=</span> int(transferred_amount)
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> make_response(render_template(<span style="color:#e6db74">&#39;transfer.html&#39;</span>, balance<span style="color:#f92672">=</span>account_balance))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">5005</span>, debug<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><p>Now an attacker may trick you to follow a link to his website (I&rsquo;m getting a lot of &lsquo;Your transaction is approved, Follow this link for details&rsquo; spam messages recently). When you follow the link a page with the following script loads:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;POST&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://0.0.0.0:5005/&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hacker_form&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;destination_account&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;123123123&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;number&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;amount&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1000&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Transfer&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;hacker_form&#34;</span>).<span style="color:#a6e22e">submit</span>()&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><p>So when sending this form to bank app at <a href="http://0.0.0.0:5005/">http://0.0.0.0:5005/</a> authorization cookie will be also sent along. Thus user authorized bank to transfer $10000 to Account #123123123</p>
 <h3 id="mitigation-1">Mitigation</h3>
-
 <p>I&rsquo;ve used endpoint that changes the state of account only on POST request. That complicated hacker&rsquo;s task a little bit as he needs user to visit his server with malicious code. If it was just GET user only needs to click the link without loading the script from hacker&rsquo;s server.</p>
-
-<p>Another security measure is to use tokens with each account state change endpoint. With every form user gets a random token (as a form&rsquo;s hidden field) and when form is POSTed, the token is checked for validity and expiration. In Flask this is implemented in <a href="http://flask-wtf.readthedocs.io/en/stable/" target="_blank">Flask-WTF plugin</a></p>
-
+<p>Another security measure is to use tokens with each account state change endpoint. With every form user gets a random token (as a form&rsquo;s hidden field) and when form is POSTed, the token is checked for validity and expiration. In Flask this is implemented in <a href="http://flask-wtf.readthedocs.io/en/stable/">Flask-WTF plugin</a></p>
 <p>Outline</p>
-
 <ol>
 <li>GET requests should not change the state of the system</li>
 <li>Check <code>Origin</code> and/or <code>Referer</code> request header in server code to match real server name</li>
 <li>Use CSRF-tokens</li>
 </ol>
-
 <h2 id="sql-injection">SQL Injection</h2>
-
 <p>SQL Injection occurs when attacker-controlled input is inserted into a SQL query without proper validation or sanitization. This often occurs when using string formatting or concatenation to build queries. An attacker may be able to read data for which they are not authorized, tamper with or destroy data, or possibly even write files or execute code on the database server. The impact is dependent on the exact scenario, but is generally quite severe.</p>
-
 <h3 id="exploit-2">Exploit</h3>
-
 <p>Consider bank transfer form the above example with the following Flask app (I&rsquo;m using SQLAlchemy here and trying to put things simple, but usually it&rsquo;s not how you manage database session in Flask app)</p>
-
-<pre><code class="language-python">from flask import Flask, request, render_template, make_response, redirect, url_for
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-
-app = Flask(__name__)
-Base = declarative_base()
-engine = create_engine('sqlite:///123.db', echo=True)
-
-@app.route('/', methods=['GET', 'POST'])
-def transfer():
-    session = sessionmaker(bind=engine)()
-    account_balance_query = session.execute('SELECT balance from accounts WHERE number=1111')
-    account_balance = int(account_balance_query.fetchone()[0])
-    if request.method == 'POST':
-        transferred_amount = request.form['amount']
-        destination_account = request.form['destination_account']
-        session.execute('UPDATE accounts SET balance = balance - ' + transferred_amount + ' WHERE number=1111')
-        session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)
-        session.commit()
-        session.close()
-        return redirect(url_for('transfer'))
-    response = make_response(render_template('transfer.html', balance=account_balance))
-    session.close()
-    return response
-
-
-</code></pre>
-
-<p>I&rsquo;ve tried to break all the rules here: building raw queries and concatenating query string with user input directly (I might have used <code>.format</code> as well). So when entering <code>2222;DROP DATABASE;</code> in destination account input field I expected this particular line <code>session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)</code> execute an update and then drop database. But it gave me that error <code>sqlite3.Warning: You can only execute one statement at a time.</code> and no changes were made to database. Not all drivers have that protection, while <a href="http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html" target="_blank">some</a> allow multiple statement to be executed like so.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, request, render_template, make_response, redirect, url_for
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> Column, Integer, String
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.ext.declarative <span style="color:#f92672">import</span> declarative_base
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> sessionmaker
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>Base <span style="color:#f92672">=</span> declarative_base()
+</span></span><span style="display:flex;"><span>engine <span style="color:#f92672">=</span> create_engine(<span style="color:#e6db74">&#39;sqlite:///123.db&#39;</span>, echo<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">transfer</span>():
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> sessionmaker(bind<span style="color:#f92672">=</span>engine)()
+</span></span><span style="display:flex;"><span>    account_balance_query <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;SELECT balance from accounts WHERE number=1111&#39;</span>)
+</span></span><span style="display:flex;"><span>    account_balance <span style="color:#f92672">=</span> int(account_balance_query<span style="color:#f92672">.</span>fetchone()[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;POST&#39;</span>:
+</span></span><span style="display:flex;"><span>        transferred_amount <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;amount&#39;</span>]
+</span></span><span style="display:flex;"><span>        destination_account <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;destination_account&#39;</span>]
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;UPDATE accounts SET balance = balance - &#39;</span> <span style="color:#f92672">+</span> transferred_amount <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; WHERE number=1111&#39;</span>)
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#39;UPDATE accounts SET balance = balance + &#39;</span> <span style="color:#f92672">+</span> transferred_amount <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39; WHERE number=&#39;</span> <span style="color:#f92672">+</span> destination_account)
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redirect(url_for(<span style="color:#e6db74">&#39;transfer&#39;</span>))
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> make_response(render_template(<span style="color:#e6db74">&#39;transfer.html&#39;</span>, balance<span style="color:#f92672">=</span>account_balance))
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span></code></pre></div><p>I&rsquo;ve tried to break all the rules here: building raw queries and concatenating query string with user input directly (I might have used <code>.format</code> as well). So when entering <code>2222;DROP DATABASE;</code> in destination account input field I expected this particular line <code>session.execute('UPDATE accounts SET balance = balance + ' + transferred_amount + ' WHERE number=' + destination_account)</code> execute an update and then drop database. But it gave me that error <code>sqlite3.Warning: You can only execute one statement at a time.</code> and no changes were made to database. Not all drivers have that protection, while <a href="http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html">some</a> allow multiple statement to be executed like so.</p>
 <h3 id="mitigation-2">Mitigation</h3>
-
 <p>The proper way to avoid that is to use ORMs. In that case the Flask app will be like this:</p>
-
-<pre><code class="language-python">from flask import Flask, request, render_template, make_response, redirect, url_for
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-
-app = Flask(__name__)
-Base = declarative_base()
-engine = create_engine('sqlite:///123.db', echo=True)
-
-
-class Account(Base):
-    __tablename__ = 'accounts'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    number = Column(String(64))
-    balance = Column(Integer)
-
-
-@app.route('/', methods=['GET', 'POST'])
-def transfer():
-    session = sessionmaker(bind=engine)()
-    account = session.query(Account).filter_by(number='1111').one()
-    if request.method == 'POST':
-        transferred_amount = int(request.form['amount'])
-        account.balance -= transferred_amount
-        destination_account_number = request.form['destination_account']
-        destination_account = session.query(Account).filter_by(number=destination_account_number).one()
-        destination_account.balance += transferred_amount
-        session.commit()
-        session.close()
-        return redirect(url_for('transfer'))
-    session.close()
-    response = make_response(render_template('transfer.html', balance=account.balance))
-    return response
-
-</code></pre>
-
-<h2 id="directory-traversal">Directory traversal</h2>
-
-<p>Directory traversal may happen when for example an attacker uploads a file with a filename like <code>../../../etc/passwd</code>. If he guessed the number of <code>..</code> right he might overwrite the file (given that uwsgi or Flask is running as root, but it may be any other file like <code>~/bash.rc</code>). The mitigation is explained in official Flask docs <a href="http://flask.pocoo.org/docs/1.0/patterns/fileuploads/" target="_blank">here</a></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask, request, render_template, make_response, redirect, url_for
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> Column, Integer, String
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.ext.declarative <span style="color:#f92672">import</span> declarative_base
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> sessionmaker
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy <span style="color:#f92672">import</span> create_engine
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>Base <span style="color:#f92672">=</span> declarative_base()
+</span></span><span style="display:flex;"><span>engine <span style="color:#f92672">=</span> create_engine(<span style="color:#e6db74">&#39;sqlite:///123.db&#39;</span>, echo<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Account</span>(Base):
+</span></span><span style="display:flex;"><span>    __tablename__ <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;accounts&#39;</span>
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> Column(Integer, primary_key<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, autoincrement<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    number <span style="color:#f92672">=</span> Column(String(<span style="color:#ae81ff">64</span>))
+</span></span><span style="display:flex;"><span>    balance <span style="color:#f92672">=</span> Column(Integer)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>route(<span style="color:#e6db74">&#39;/&#39;</span>, methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">transfer</span>():
+</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> sessionmaker(bind<span style="color:#f92672">=</span>engine)()
+</span></span><span style="display:flex;"><span>    account <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(Account)<span style="color:#f92672">.</span>filter_by(number<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1111&#39;</span>)<span style="color:#f92672">.</span>one()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;POST&#39;</span>:
+</span></span><span style="display:flex;"><span>        transferred_amount <span style="color:#f92672">=</span> int(request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;amount&#39;</span>])
+</span></span><span style="display:flex;"><span>        account<span style="color:#f92672">.</span>balance <span style="color:#f92672">-=</span> transferred_amount
+</span></span><span style="display:flex;"><span>        destination_account_number <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;destination_account&#39;</span>]
+</span></span><span style="display:flex;"><span>        destination_account <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(Account)<span style="color:#f92672">.</span>filter_by(number<span style="color:#f92672">=</span>destination_account_number)<span style="color:#f92672">.</span>one()
+</span></span><span style="display:flex;"><span>        destination_account<span style="color:#f92672">.</span>balance <span style="color:#f92672">+=</span> transferred_amount
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>commit()
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redirect(url_for(<span style="color:#e6db74">&#39;transfer&#39;</span>))
+</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> make_response(render_template(<span style="color:#e6db74">&#39;transfer.html&#39;</span>, balance<span style="color:#f92672">=</span>account<span style="color:#f92672">.</span>balance))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span></code></pre></div><h2 id="directory-traversal">Directory traversal</h2>
+<p>Directory traversal may happen when for example an attacker uploads a file with a filename like <code>../../../etc/passwd</code>. If he guessed the number of <code>..</code> right he might overwrite the file (given that uwsgi or Flask is running as root, but it may be any other file like <code>~/bash.rc</code>). The mitigation is explained in official Flask docs <a href="http://flask.pocoo.org/docs/1.0/patterns/fileuploads/">here</a></p>
 <p>Essentially you need to sanitize filenames from file upload form. Another advice is avoid using user provided filenames at all and generate your own (hash of the datetime/username/etc) and store them on a separate subdomain (more on it later)</p>
-
 <h2 id="xss-in-uploaded-files">XSS in uploaded files</h2>
-
-<p>This is not particularly related to Flask, but malicious javascript might appear not only in reflected output or stored in database (see general XSS attack), but it can also be embedded in images.For example, <a href="https://marcoramilli.blogspot.com/2014/01/hacking-through-image-gif-turn.html" target="_blank">this blog post</a> uses that <a href="https://pastebin.com/6yUbfGX5" target="_blank">code</a> to embed javascript in GIF image file. CSP won&rsquo;t help here - so the only way is to serve the images from separate subdomain (that&rsquo;s what actually Facebook does)</p>
-
+<p>This is not particularly related to Flask, but malicious javascript might appear not only in reflected output or stored in database (see general XSS attack), but it can also be embedded in images.For example, <a href="https://marcoramilli.blogspot.com/2014/01/hacking-through-image-gif-turn.html">this blog post</a> uses that <a href="https://pastebin.com/6yUbfGX5">code</a> to embed javascript in GIF image file. CSP won&rsquo;t help here - so the only way is to serve the images from separate subdomain (that&rsquo;s what actually Facebook does)</p>
 <p>Another thing related to files is how to you actually serve them. A pdf document uploaded by an attacker may have malicious code so if that file is server to another users it&rsquo;s better to add <code>Content-Disposition: attachment</code> header to server response so browser will download it instead of showing right away.</p>
-
 <h2 id="cookie-protection">Cookie protection</h2>
-
 <p>Cookie files are used for a lot of things along with storing session or authentication data.There are some methods to protect them from exposing to an attacker</p>
-
 <h3 id="secure">Secure</h3>
-
 <p>Cookies are sent with every request in clear text:</p>
-
-<pre><code>GET /index.html HTTP/1.1
+<pre tabindex="0"><code>GET /index.html HTTP/1.1
 Host: www.example.org
 Cookie: session=XXXXXXX
-
-</code></pre>
-
-<p>It means that if an attacker that controls network equipment between you and server (or your ISP) can easily read it. Setting cookie <code>secure</code> flag will instruct browser to send a cookie only over protected HTTPS connection.</p>
-
+</code></pre><p>It means that if an attacker that controls network equipment between you and server (or your ISP) can easily read it. Setting cookie <code>secure</code> flag will instruct browser to send a cookie only over protected HTTPS connection.</p>
 <h3 id="http-only">HTTP Only</h3>
-
 <p><code>HttpOnly</code> flag will instruct browser to hide cookie content from javascript code. In case of XSS attack it will prevent an attacker from accessing sensitive data stored in it.</p>
-
 <h3 id="samesite">SameSite</h3>
-
-<p>In the CSRF example the critical part of the attack was that user&rsquo;s cookie was send from attacker controlled site. It can be mitigated by setting <code>SameSite=strict</code>. Another option for that flag is &lsquo;lax&rsquo; which won&rsquo;t allow sending cookies from another sites when doing requests other than <code>GET</code>.</p>
-
+<p>In the CSRF example the critical part of the attack was that user&rsquo;s cookie was send from attacker controlled site. It can be mitigated by setting <code>SameSite=strict</code>. Another option for that flag is &rsquo;lax&rsquo; which won&rsquo;t allow sending cookies from another sites when doing requests other than <code>GET</code>.</p>
 <p>Flask by default uses <code>session</code> cookie and its flags are set by configuring <code>app</code>:</p>
-
-<pre><code class="language-python">app.config.update(
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
-)
-
-</code></pre>
-
-<p>User defined cookies are set with response:</p>
-
-<pre><code class="language-python">response.set_cookie('key', 'value', secure=True, httponly=True, samesite='Lax')
-
-</code></pre>
-
-<p>Have your Flask apps ever been hacked? Drop me a message on LinkedIn <a href="https://www.linkedin.com/in/smirnovam/" target="_blank">https://www.linkedin.com/in/smirnovam/</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>app<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>update(
+</span></span><span style="display:flex;"><span>    SESSION_COOKIE_SECURE<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    SESSION_COOKIE_HTTPONLY<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    SESSION_COOKIE_SAMESITE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Lax&#39;</span>,
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>User defined cookies are set with response:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>response<span style="color:#f92672">.</span>set_cookie(<span style="color:#e6db74">&#39;key&#39;</span>, <span style="color:#e6db74">&#39;value&#39;</span>, secure<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, httponly<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, samesite<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Lax&#39;</span>)
+</span></span></code></pre></div><p>Have your Flask apps ever been hacked? Drop me a message on LinkedIn <a href="https://www.linkedin.com/in/smirnovam/">https://www.linkedin.com/in/smirnovam/</a></p>
 
 
       <section class="section">

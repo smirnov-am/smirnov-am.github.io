@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-12-21 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-12-21 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-12-21 18:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-12-21 18:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/tags\/python\/",
         "wordCount" : "0",
         "keywords" : [ "Blog" ]
@@ -33,7 +33,7 @@
 
 <title>Python | Alexey Smirnov</title>
 
-<meta property='og:title' content='Tag: Python - Alexey Smirnov'>
+<meta property='og:title' content='Python - Alexey Smirnov'>
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://smirnov-am.github.io/tags/python/'>
 <meta property='og:site_name' content='Alexey Smirnov'>
@@ -222,7 +222,8 @@ Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
 In this course, we will be working on a mobile phone number validation application.
-The application: - Accepts a number as input - For every number in the list - Normalize the number - Check cache if this number was validated before - If it’s not in cache call external service REST API to validate the number - print the normalized number and the result of validation
+The application:
+ Accepts a number as input For every number in the list  Normalize the number Check cache if this number was validated before If it’s not in cache call external service REST API to validate the number print the normalized number and the result of validation    Let’s start with the Normalize step.
         
         <a class="button is-link" href="https://smirnov-am.github.io/pytest-hello-world/" style="height:28px">
           Read more
@@ -404,7 +405,8 @@ Testing HTTP client with pytest
 Testing database with pytest
 Advanced fixtures with pytest
 Pytest plugins
-Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs: - It’s a REST API - We need to use HTTP GET - We provide a number in query parameters - The result is a json {‘existing’: True | False}
+Now let’s move to checking if the number exists or not. For that, we are going to employ a 3rd party API. According to API docs:
+ It’s a REST API We need to use HTTP GET We provide a number in query parameters The result is a json {‘existing’: True | False}  I’m going to create this 3rd party API myself and run it from my local environment so we can see the access logs.
         
         <a class="button is-link" href="https://smirnov-am.github.io/pytest-testing_http_client/" style="height:28px">
           Read more
@@ -500,8 +502,8 @@ Flexible If you don’t have tests for your code - every change to the code is a
       <h2 class="subtitle is-6 date">August 23, 2020</h2>
       <h1 class="title"><a href="https://smirnov-am.github.io/producer-consumer/">Producer consumer pattern for fast data pipelines</a></h1>
       <div class="content">
-        Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns - VALUE column holding original number - ROOT column for the result of calculation
-Very simple implementation of this pipeline can be like this one:
+        Let&rsquo;s build a simple data pipeline. It will read a SOURCE table in MySQL database. This table has only one column VALUES and contains 1000 rows - numbers from 1 to 1000. The application will calculate square root of the number and put the result in DESTINATION table. This table will have 2 columns
+ VALUE column holding original number ROOT column for the result of calculation  Very simple implementation of this pipeline can be like this one:
         
         <a class="button is-link" href="https://smirnov-am.github.io/producer-consumer/" style="height:28px">
           Read more
@@ -573,7 +575,7 @@ In this tutorial, you’ll learn how to:
       <div class="content">
         Python&rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
-$$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.
+is close to the number as possible. So, values such as 0.
         
         <a class="button is-link" href="https://smirnov-am.github.io/representing-money-in-python/" style="height:28px">
           Read more

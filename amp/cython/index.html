@@ -23,8 +23,8 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2020",
-        "datePublished": "2020-08-13 18:41:00 \x2b0000 UTC",
-        "dateModified" : "2020-08-13 18:41:00 \x2b0000 UTC",
+        "datePublished": "2020-08-13 18:41:00 \u002b0000 UTC",
+        "dateModified" : "2020-08-13 18:41:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/amp\/cython\/",
         "wordCount" : "2469",
         "keywords" : [ "Python","Blog" ]
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -147,92 +152,48 @@
     <h1 class="title">Speeding up Python code with Cython</h1>
     
     <div class="content">
-      
-
-<p>Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.</p>
-
+      <p>Cython is an extension of Python, that adds static typing to variables, functions and classes. It combines simplicity of Python and efficiency of C. You can rewrite your code in Cython and compile them to C to achieve higher execution speed.</p>
 <p><strong>In this tutorial, you’ll learn how to:</strong></p>
-
 <ul>
 <li>Install Cython and Compile Cython code</li>
 <li>something about speed</li>
 <li>Write Cython application with statically typed variables and C functions</li>
 </ul>
-
-<h2 id="what-cython-is-and-what-it-s-used-for">What Cython is and what it&rsquo;s used for</h2>
-
+<h2 id="what-cython-is-and-what-its-used-for">What Cython is and what it&rsquo;s used for</h2>
 <p>The Cython project consists of two parts - a programming language and a compiler. Cython language is a superset of Python that adds support for C types and functions. Cython compiler can understand both languages, but most importantly it can generate very efficient C code from Cython.</p>
-
-<p>Cython was created in 2007 by developers of the Sage computer algebra package, and now it&rsquo;s popular among scientific users of Python. Its current version is now 0.29 with new version 3 in pre-release. The new version uses Python 3 by default and brings some <a href="https://cython.readthedocs.io/en/latest/src/userguide/migrating_to_cy30.html" target="_blank">backward incompatible changes</a>, just like Python 3 brought. In this article you’ll use current stable release 0.29 with Python 3, which it also supports.</p>
-
+<p>Cython was created in 2007 by developers of the Sage computer algebra package, and now it&rsquo;s popular among scientific users of Python. Its current version is now 0.29 with new version 3 in pre-release. The new version uses Python 3 by default and brings some <a href="https://cython.readthedocs.io/en/latest/src/userguide/migrating_to_cy30.html">backward incompatible changes</a>, just like Python 3 brought. In this article you’ll use current stable release 0.29 with Python 3, which it also supports.</p>
 <p>One of the main usages of Cython is increasing speed of Python code execution. You rewrite slow parts of your Python code in Cython, compile to fast C code and use it back in Python as an external module.</p>
-
 <h2 id="installation">Installation</h2>
-
 <p>Cython needs C completer to be present in the system. It’s installation differs between different operating systems:</p>
-
 <p><strong>Linux</strong></p>
-
 <p>GNU C compiler (gcc) is usually directly available in some distributions or can be easily obtained through a packet manager. On Debian-like systems, like Ubuntu, you can install it with <code>sudo apt-get install build-essential</code>.</p>
-
 <p>Check the installation with <code>gcc -v</code> command.</p>
-
 <p><strong>macOS</strong></p>
-
-<p>C compiler is available as a part of Xcode Command Line Tools. The easiest way to install them is entering <code>xcode-select --install</code> in the Terminal. They are also available to download from <a href="https://developer.apple.com/" target="_blank">https://developer.apple.com/</a></p>
-
+<p>C compiler is available as a part of Xcode Command Line Tools. The easiest way to install them is entering <code>xcode-select --install</code> in the Terminal. They are also available to download from <a href="https://developer.apple.com/">https://developer.apple.com/</a></p>
 <p>You can also check the the installation with <code>clang -v</code> command in the Terminal.</p>
-
 <p><strong>Windows</strong></p>
-
 <p>First thing you need to do is to update setuptools - its version must be at least 34.4.0:</p>
-
-<pre><code class="language-bash">pip install --upgrade setuptools
-</code></pre>
-
-<p>C compilers on Windows are a part of Video Studio framework. You don&rsquo;t need the whole thing - just install <a href="https://visualstudio.microsoft.com/ru/downloads/" target="_blank">Microsoft Build Tools for Visual Studio 2019</a>.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install --upgrade setuptools
+</span></span></code></pre></div><p>C compilers on Windows are a part of Video Studio framework. You don&rsquo;t need the whole thing - just install <a href="https://visualstudio.microsoft.com/ru/downloads/">Microsoft Build Tools for Visual Studio 2019</a>.</p>
 <p>In the installer select <em>C++ build tools</em> and ensure the latest versions of <em>MSVCv142 - VS 2019 C++ x64/x86 build tools</em> and <em>Windows 10 SDK</em> are checked, like on the screen shot below.</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/cython/ms-build-tools.jpeg" alt="Microsoft Build Tools for Visual Studio 2019 installation" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/cython/ms-build-tools.jpeg" alt="Microsoft Build Tools for Visual Studio 2019 installation"></p>
 <p>After installation, hit Start and search for <em>Developer Command Prompt</em>. Once it&rsquo;s open, you can enter <code>cl /?</code> to check whether the installation was successful.</p>
-
 <p><strong>Final step</strong></p>
-
 <p>The simplest way of installing Cython is by using pip:</p>
-
-<pre><code class="language-bash">pip install Cython
-</code></pre>
-
-<p>If you install in for on continuos integration server, for testing or on platforms for this wheel packages are not provided you may consider an uncompiled version:</p>
-
-<pre><code class="language-bash">pip install Cython --install-option=&quot;--no-cython-compile&quot;
-</code></pre>
-
-<p>Alternatively, you can install Anaconda Python distribution that comes with all the batteries - compiler and Cython installed.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install Cython
+</span></span></code></pre></div><p>If you install in for on continuos integration server, for testing or on platforms for this wheel packages are not provided you may consider an uncompiled version:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install Cython --install-option<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;--no-cython-compile&#34;</span>
+</span></span></code></pre></div><p>Alternatively, you can install Anaconda Python distribution that comes with all the batteries - compiler and Cython installed.</p>
 <h2 id="compilation">Compilation</h2>
-
 <p>Following the tradition, your first application will be a program that prints “Hello, World!”. Cython source files have extension .pyx. Create a new file hello.pyx containing the following code:</p>
-
-<pre><code class="language-python">def hello():
-    print(&quot;Hello, World!&quot;)
-</code></pre>
-
-<p>The next step is to convert it to C. <code>cython</code> command will read <code>hello.pyx</code> and produce <code>hello.c</code> file:</p>
-
-<pre><code class="language-bash">$ cython -3 hello.pyx
-</code></pre>
-
-<p><code>-3</code> option tells <code>cython</code> to Python 3.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello</span>():
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Hello, World!&#34;</span>)
+</span></span></code></pre></div><p>The next step is to convert it to C. <code>cython</code> command will read <code>hello.pyx</code> and produce <code>hello.c</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cython -3 hello.pyx
+</span></span></code></pre></div><p><code>-3</code> option tells <code>cython</code> to Python 3.</p>
 <p>To compile hello.c you’ll need C compiler that is already installed. You need to provide a number of Python- and OS-specific compilation options. On latest Ubuntu 20.04 the command looks like this:</p>
-
-<pre><code class="language-bash">gcc -shared -pthread  -fPIC -fwrapv -Wall -O2 -I/usr/include/python3.8/ -o hello.so hello.c
-</code></pre>
-
-<ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -shared -pthread  -fPIC -fwrapv -Wall -O2 -I/usr/include/python3.8/ -o hello.so hello.c
+</span></span></code></pre></div><ul>
 <li><code>shared</code> along with <code>fPIC</code> option instructs the compiler to produced share library, that can by used be another applications</li>
 <li><code>pthread</code> adds support for multithreading</li>
 <li><code>O2</code> and <code>fwrapv</code> and <code>fno-strict-aliasing</code> turn on C code optimizations</li>
@@ -241,305 +202,180 @@
 <li><code>O</code> specifies output filename</li>
 <li>the last positional argument is name of a C source file generated by <code>cython</code> command</li>
 </ul>
-
 <p>Now you are ready to use newly created shared library in Python.  Spin up a Python REPL with <code>python</code> command and type in this code:</p>
-
-<pre><code class="language-bash">&gt;&gt;&gt; import hello
-&gt;&gt;&gt; hello.hello()
-Hello, World!
-</code></pre>
-
-<h3 id="using-distutils">Using distutils</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt;&gt;&gt; import hello
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; hello.hello<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>Hello, World!
+</span></span></code></pre></div><h3 id="using-distutils">Using distutils</h3>
 <p>There is a more straightforward way to compile Cython without the need to invoke the compiler directly and providing all necessary compilation option. By using standard Python packaging tool <code>distutil</code> and <code>cythonize</code> function from Cython module you can compile <code>hello.pyx</code> directly to shared library.</p>
-
 <p>First, you need to create a setup script. By convention this script is named <code>setup.py</code>. In the first two lines of the script you need to import <code>setup</code> function from <code>distutils</code> and <code>cytonize</code> from <code>Cython</code>:</p>
-
-<pre><code class="language-python">from distutils.core import setup
-from Cython.Build import cythonize
-</code></pre>
-
-<p>Setup function accepts a number of keyword arguments. First one is a name of our application and the second are extensions to build it with. <code>cytonize</code> accepts a single or multiple - in a form a list - names of Cython source files. The rest of the setup script looks like this:</p>
-
-<pre><code class="language-python">setup(
-    name=&quot;Hello&quot;,
-    ext_modules = cythonize(&quot;hello.pyx&quot;, language_level=3),
-)
-</code></pre>
-
-<p><code>language_level</code> keyword arguments instructs to run <code>cython</code> command with <code>-3</code> options, enabling Python 3.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> distutils.core <span style="color:#f92672">import</span> setup
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Cython.Build <span style="color:#f92672">import</span> cythonize
+</span></span></code></pre></div><p>Setup function accepts a number of keyword arguments. First one is a name of our application and the second are extensions to build it with. <code>cytonize</code> accepts a single or multiple - in a form a list - names of Cython source files. The rest of the setup script looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>setup(
+</span></span><span style="display:flex;"><span>    name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello&#34;</span>,
+</span></span><span style="display:flex;"><span>    ext_modules <span style="color:#f92672">=</span> cythonize(<span style="color:#e6db74">&#34;hello.pyx&#34;</span>, language_level<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p><code>language_level</code> keyword arguments instructs to run <code>cython</code> command with <code>-3</code> options, enabling Python 3.</p>
 <p>In order to compile the application you need to run it with the following command:</p>
-
-<pre><code class="language-bash">python setup.py build_ext --inplace
-</code></pre>
-
-<ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python setup.py build_ext --inplace
+</span></span></code></pre></div><ul>
 <li><code>build_ext</code> tells <code>disutils</code> to use extensions</li>
 <li><code>inplace</code> option will make <code>hello.so</code> file to appear in the same directory</li>
 </ul>
-
 <h3 id="compiling-cython-in-jupyter-notebook">Compiling Cython in Jupyter notebook</h3>
-
 <p>You can seamlessly use Cython in Jupyter notebooks without any explicit compilation. It may be useful when experimenting with Cython or profiling using many Jupyter’s helpers.</p>
-
 <p>First step is to load a Cython extension:</p>
-
-<pre><code class="language-jupyter">In [1]: %load_ext Cython
-</code></pre>
-
-<p>Then in a cell with Cython code start with a magic <code>%%cython</code> like so:</p>
-
-<pre><code class="language-jupyter">In [2]: %%cython
+<pre tabindex="0"><code class="language-jupyter" data-lang="jupyter">In [1]: %load_ext Cython
+</code></pre><p>Then in a cell with Cython code start with a magic <code>%%cython</code> like so:</p>
+<pre tabindex="0"><code class="language-jupyter" data-lang="jupyter">In [2]: %%cython
         def hello():
-            print(&quot;Hello, World!&quot;)
-</code></pre>
-
-<p>Now you can call Cython function as you’d call a normal one:</p>
-
-<pre><code class="language-jupyter">In [3]: hello()
-        &quot;Hello, World!&quot;
-</code></pre>
-
-<h2 id="profiling">Profiling</h2>
-
+            print(&#34;Hello, World!&#34;)
+</code></pre><p>Now you can call Cython function as you’d call a normal one:</p>
+<pre tabindex="0"><code class="language-jupyter" data-lang="jupyter">In [3]: hello()
+        &#34;Hello, World!&#34;
+</code></pre><h2 id="profiling">Profiling</h2>
 <p>Any performance tuning starts with establishing a baseline and finding bottlenecks. Python provides useful utilities to do that including <code>timeit</code> module and <code>cProfile</code>.</p>
-
 <p>Next application you are going to write will calculate sum of squares of all numbers from1 to 1 million.
 Create a file <code>sum_of_squares.py</code> and enter the following code in it:</p>
-
-<pre><code class="language-python">def square(a):
-   return a**2
-
-def sum_of_squares():
-    s = 0
-    for i in range(1, 10**6 + 1):
-        s += square(i)
-    return s
-
-if __name__ == &quot;__main__&quot;:
-    print(sum_of_squares())
-</code></pre>
-
-<p>Python standard library has a nice module called <code>timeit</code> to measure the execution time. You can invoke it from terminal for you application’s source file <code>sum_of_squares.py</code>:</p>
-
-<pre><code class="language-bash">python -m timeit &quot;from sum_of_squares import sum_of_squares; sum_of_squares()&quot;
-10 loops, best of 3: 745 msec per loop
-</code></pre>
-
-<p>This number - 745 msec - will be your baseline.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">square</span>(a):
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> a<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum_of_squares</span>():
+</span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">**</span><span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> square(i)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    print(sum_of_squares())
+</span></span></code></pre></div><p>Python standard library has a nice module called <code>timeit</code> to measure the execution time. You can invoke it from terminal for you application’s source file <code>sum_of_squares.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python -m timeit <span style="color:#e6db74">&#34;from sum_of_squares import sum_of_squares; sum_of_squares()&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span> loops, best of 3: <span style="color:#ae81ff">745</span> msec per loop
+</span></span></code></pre></div><p>This number - 745 msec - will be your baseline.</p>
 <p>In order to find where this code spends most time you can use <code>cProfile</code>:</p>
-
-<pre><code class="language-bash">python -m cProfile naive_sum.py
-   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    0.901    0.901 naive_sum.py:1(&lt;module&gt;)
-   999999    0.563    0.000    0.563    0.000 naive_sum.py:1(square)
-        1    0.338    0.338    0.901    0.901 naive_sum.py:4(sum_of_squares)
-        1    0.000    0.000    0.901    0.901 {built-in method builtins.exec}
-        1    0.000    0.000    0.000    0.000 {built-in method builtins.print}
-        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
-</code></pre>
-
-<p>Looks like a call to seemingly redundant <code>square</code> function is pretty costly. But don’t jump to refactoring this code right away - let’s see how Cython can help with that.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python -m cProfile naive_sum.py
+</span></span><span style="display:flex;"><span>   ncalls  tottime  percall  cumtime  percall filename:lineno<span style="color:#f92672">(</span><span style="color:#66d9ef">function</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>    0.000    0.000    0.901    0.901 naive_sum.py:1<span style="color:#f92672">(</span>&lt;module&gt;<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">999999</span>    0.563    0.000    0.563    0.000 naive_sum.py:1<span style="color:#f92672">(</span>square<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>    0.338    0.338    0.901    0.901 naive_sum.py:4<span style="color:#f92672">(</span>sum_of_squares<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>    0.000    0.000    0.901    0.901 <span style="color:#f92672">{</span>built-in method builtins.exec<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>    0.000    0.000    0.000    0.000 <span style="color:#f92672">{</span>built-in method builtins.print<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>    0.000    0.000    0.000    0.000 <span style="color:#f92672">{</span>method <span style="color:#e6db74">&#39;disable&#39;</span> of <span style="color:#e6db74">&#39;_lsprof.Profiler&#39;</span> objects<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Looks like a call to seemingly redundant <code>square</code> function is pretty costly. But don’t jump to refactoring this code right away - let’s see how Cython can help with that.</p>
 <p>Firstly, just by compiling it with Cython you can achieve almost 30% increase in performance:</p>
-
 <ol>
 <li>Rename <code>sum_of_squares.py</code> to <code>sum_of_squares_cython.pyx</code></li>
 <li>Compile with one of the methods from above</li>
-
-<li><p>Use <code>timeit</code> again:</p>
-
-<pre><code class="language-bash">python -m timeit &quot;from sum_of_squares_cython import sum_of_squares; sum_of_squares()&quot;
-10 loops, best of 3: 543 msec per loop
-</code></pre></li>
+<li>Use <code>timeit</code> again:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python -m timeit <span style="color:#e6db74">&#34;from sum_of_squares_cython import sum_of_squares; sum_of_squares()&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span> loops, best of 3: <span style="color:#ae81ff">543</span> msec per loop
+</span></span></code></pre></div></li>
 </ol>
-
 <p>Cython provides an annotation tools that helps with profiling. Each line in the annotation is color coded - darker lines indicate that there is much more C code was generated for them and that they are potentially slower.</p>
-
 <p>To get the annotation you need to call <code>cython</code> command with <code>-a</code> argument on <code>.pyx</code> file:</p>
-
-<pre><code class="language-bash">cython -3 -a naive_sum_cython.pyx 
-</code></pre>
-
-<p>It will produce a <code>sum_of_squares_cython.html</code> file:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/cython/cython-a1.png" alt="cython annotation" /></p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cython -3 -a naive_sum_cython.pyx 
+</span></span></code></pre></div><p>It will produce a <code>sum_of_squares_cython.html</code> file:</p>
+<p><img src="https://smirnov-am.github.io/content/images/cython/cython-a1.png" alt="cython annotation"></p>
 <p>Yellow lines hint at Python interaction.
 Click on a line that starts with a &ldquo;+&rdquo; to see the C code that Cython generated for it. And again a call to <code>square</code> on line 7 is marked as heavy.</p>
-
 <p>As you can see the program spends a lot of time in a long loop calling a function that does numeric computations. Such &ldquo;hot&rdquo; loops with numeric computations are good examples of an code that will benefit from the main feature of Cython - static types.</p>
-
 <h2 id="defining-static-types">Defining static types</h2>
-
 <p>In Python variables are <em>labels</em> that refer to an object in memory. In any place of your program you can create new variable <code>s</code> and assign an integer to it:</p>
-
-<pre><code class="language-python">s = 0 
-</code></pre>
-
-<p>The integer 0 is now bounded to the variable <code>s</code>. Later on in the program you can redefine <code>s</code> - assign another value of a different type to <code>s</code>:</p>
-
-<pre><code class="language-python">s = 'sum of squares'
-</code></pre>
-
-<p>Python has no problems with dynamically changing the type of a variable - now <code>s</code> points to a string <code>'sum of squares'</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+</span></span></code></pre></div><p>The integer 0 is now bounded to the variable <code>s</code>. Later on in the program you can redefine <code>s</code> - assign another value of a different type to <code>s</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sum of squares&#39;</span>
+</span></span></code></pre></div><p>Python has no problems with dynamically changing the type of a variable - now <code>s</code> points to a string <code>'sum of squares'</code>.</p>
 <p>Variables with static types are more like <em>data containers</em> - they store the value in the variable and their type cannot change.</p>
-
 <p>In Cython to define a variable you need to put <code>cdef</code> keyword and a type before variable name:</p>
-
-<pre><code class="language-python">cdef int s
-</code></pre>
-
-<p>You can also initialize the value in the same line:</p>
-
-<pre><code class="language-python">cdef int s = 0
-</code></pre>
-
-<p>Let&rsquo;s see how Cython would react if you try to assign a float to <code>s</code>:</p>
-
-<pre><code class="language-python">cdef int s = 0
-s = 0.0
-</code></pre>
-
-<p>When compiling the code you&rsquo;ll get an error:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cdef int s
+</span></span></code></pre></div><p>You can also initialize the value in the same line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cdef int s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>Let&rsquo;s see how Cython would react if you try to assign a float to <code>s</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cdef int s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
+</span></span></code></pre></div><p>When compiling the code you&rsquo;ll get an error:
 <code>Cannot assign type 'double' to 'int'</code></p>
-
 <p>Cython provides all the standard C types, such as <code>char</code>, <code>short</code>, <code>int</code>, <code>long</code> along with Python types of <code>list</code>, <code>dict</code>, <code>tuple</code>, etc. Let&rsquo;s see how defining a type can speed things up.</p>
-
 <p>A simple loop in Python that sums up numbers may look like this:</p>
-
-<pre><code class="language-python">def loop():
-    s = 0
-    for i in range(1, 10**6+1):
-        s += i
-    return s
-</code></pre>
-
-<p>Timing this function gives: <code>10 loops, best of 3: 128 msec per loop</code>. But if you define a type for loop index and result variable <code>s</code>:</p>
-
-<pre><code class="language-python">def loop_with_types():
-    cdef long s = 0
-    cdef int i = 0
-    for i in range(1, 10**6+1):
-        s += i
-    return s
-</code></pre>
-
-<p>the execution time will be 1000 faster: <code>10 loops, best of 3: 139 ns per loop</code>.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">loop</span>():
+</span></span><span style="display:flex;"><span>    s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">**</span><span style="color:#ae81ff">6</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> i
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s
+</span></span></code></pre></div><p>Timing this function gives: <code>10 loops, best of 3: 128 msec per loop</code>. But if you define a type for loop index and result variable <code>s</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">loop_with_types</span>():
+</span></span><span style="display:flex;"><span>    cdef long s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    cdef int i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">**</span><span style="color:#ae81ff">6</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> i
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s
+</span></span></code></pre></div><p>the execution time will be 1000 faster: <code>10 loops, best of 3: 139 ns per loop</code>.</p>
 <p>This increase in speed is possible because the loop was converted to pure C and then machine code, while Python code was relying on slow interpreter.</p>
-
 <p>But what about slow <code>square</code> function from <code>sum_of_squares</code>? You can define types for function return and input variables to make them more efficient.</p>
-
 <h2 id="speeding-up-functions">Speeding up functions</h2>
-
 <p>You can specify types of the arguments of a Python function by putting a type in front of the argument name:</p>
-
-<pre><code class="language-python">def square(int a):
-   return a**2
-</code></pre>
-
-<p>This function is still a Python function, but with additional type checking. You can also achieve this with using function annotations:</p>
-
-<pre><code class="language-python">def square(a: int) -&gt; int:
-    return a**2
-</code></pre>
-
-<p><code>cythonize</code> function used in <code>setup.py</code> accepts a parameter <code>annotation_typing</code> that tells Cython to infer type of variables from annotations.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">square</span>(int a):
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> a<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>This function is still a Python function, but with additional type checking. You can also achieve this with using function annotations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">square</span>(a: int) <span style="color:#f92672">-&gt;</span> int:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p><code>cythonize</code> function used in <code>setup.py</code> accepts a parameter <code>annotation_typing</code> that tells Cython to infer type of variables from annotations.</p>
 <p>To take advantage from Cython optimizations you need to define a function using <code>cdef</code> and a return type. This, along with defining types for other variables, will give a substantial increase in speed:</p>
-
-<pre><code class="language-python">cdef long square(int a):
-    return a**2
-
-def sum_of_squares():
-    cdef long s = 0
-    cdef int i = 0
-    for i in range(1, 10**6 + 1):
-        s += square(i)
-    return s
-</code></pre>
-
-<p>Run time measured with <code>timeit</code> - <code>10 loops, best of 3: 106 msec per loop</code> - is 5 times faster than before.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cdef long square(int a):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> a<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum_of_squares</span>():
+</span></span><span style="display:flex;"><span>    cdef long s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    cdef int i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">**</span><span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        s <span style="color:#f92672">+=</span> square(i)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s
+</span></span></code></pre></div><p>Run time measured with <code>timeit</code> - <code>10 loops, best of 3: 106 msec per loop</code> - is 5 times faster than before.</p>
 <p>But functions defined with <code>cdef</code> are by default available only inside Cython and cannot be imported back to Python. Cython allows to define a functions that is both callable from Python and converted to C functions. If you define a function with <code>cpdef</code> Cython will create 2 versions - Python importable version and a C variant:</p>
-
-<pre><code>cpdef long sum_of_squares():
+<pre tabindex="0"><code>cpdef long sum_of_squares():
     cdef long s = 0
     cdef int i = 0
     for i in range(1, 10**6 + 1):
         s += square(i)
     return s
-</code></pre>
-
-<p>With having <code>sum_of_squares</code> function like that you lower the run time to 120ns, which is 4 orders of magnitude faster than your baseline of 745msec.</p>
-
+</code></pre><p>With having <code>sum_of_squares</code> function like that you lower the run time to 120ns, which is 4 orders of magnitude faster than your baseline of 745msec.</p>
 <p>Let&rsquo;s run Cythin annotation once more on final version of <code>sum_of_squares.pyx</code>:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/cython/cython-a-c.png" alt="cython annotation" />
+<p><img src="https://smirnov-am.github.io/content/images/cython/cython-a-c.png" alt="cython annotation">
 Most of the lines are white, which means that code was optimized.</p>
-
 <h2 id="working-with-arrays">Working with arrays</h2>
-
 <p>Often numerical computations use arrays. Cython gives access to fast C and NumPy arrays. But there are some important differences when you compare them with standard Python lists.</p>
-
 <p>In Python lists can contain elements of different types. This is a valid list in Python: <code>a = [1, &quot;two&quot;, 3.0]</code>. Moreover, you can append items to it anytime.</p>
-
 <p>In Cython, when defining an array, you need to specify a type of elements inside and the length:</p>
-
-<pre><code class="language-python">cdef double a[10]
-</code></pre>
-
-<p>This will allocate 80 bytes of memory - every <code>double</code> occupies 8 bytes -  and enforce that every element in <code>a</code> is of type <code>double</code>. For more flexibility you can use NumPy arrays.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cdef double a[<span style="color:#ae81ff">10</span>]
+</span></span></code></pre></div><p>This will allocate 80 bytes of memory - every <code>double</code> occupies 8 bytes -  and enforce that every element in <code>a</code> is of type <code>double</code>. For more flexibility you can use NumPy arrays.</p>
 <p>NumPy arrays are already pretty fast when you use them in regular Python. But Cython can optimize some indexing operations that will make certain operations even faster.</p>
-
 <p>You first need to import NumPy inside Cython. It&rsquo;s done with a special <code>cimport</code> statement:</p>
-
-<pre><code class="language-python">cimport numpy as cnp
-</code></pre>
-
-<p>Now you need to define an arrays with a special syntax:</p>
-
-<pre><code class="language-python">cdef cnp.ndarray[double, ndim=1] a
-</code></pre>
-
-<p>The type of variable a is <code>ndarray</code> - same one you use normally with NumPy.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cimport numpy <span style="color:#66d9ef">as</span> cnp
+</span></span></code></pre></div><p>Now you need to define an arrays with a special syntax:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>cdef cnp<span style="color:#f92672">.</span>ndarray[double, ndim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>] a
+</span></span></code></pre></div><p>The type of variable a is <code>ndarray</code> - same one you use normally with NumPy.
 In the square brackets you list a type of arrays elements and a number of dimensions - in this case it&rsquo;s a one dimensional array.</p>
-
 <p>Let&rsquo;s find out how using NumPy this way is faster than in Python. It&rsquo;s a simple function that creates an array with 1000 random elements. Then it adds 1 to each element. The implementation in Python may look like this:</p>
-
-<pre><code class="language-python">import numpy as np
-def numpy_py():
-    a = np.random.rand(1000)
-    for i in range(1000):
-        a[i] += 1
-</code></pre>
-
-<p>In Cython you define an array first before using it, but the rest of the program is the same:</p>
-
-<pre><code class="language-python">import numpy as np
-cimport numpy as сnp
-
-def numpy_cy():
-    cdef сnp.ndarray[double, ndim=1] c_arr
-    a = np.random.rand(1000)
-    cdef int i
-    for i in range(1000):
-        a[i] += 1
-</code></pre>
-
-<p>Cython version finishes in 21.7 µs vs 954 µs for Python, due to fast access to array element by index operations inside the loop.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">numpy_py</span>():
+</span></span><span style="display:flex;"><span>    a <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(<span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1000</span>):
+</span></span><span style="display:flex;"><span>        a[i] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>In Cython you define an array first before using it, but the rest of the program is the same:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>cimport numpy <span style="color:#66d9ef">as</span> сnp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">numpy_cy</span>():
+</span></span><span style="display:flex;"><span>    cdef сnp<span style="color:#f92672">.</span>ndarray[double, ndim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>] c_arr
+</span></span><span style="display:flex;"><span>    a <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(<span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>    cdef int i
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1000</span>):
+</span></span><span style="display:flex;"><span>        a[i] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Cython version finishes in 21.7 µs vs 954 µs for Python, due to fast access to array element by index operations inside the loop.</p>
 <h2 id="conclusion">Conclusion</h2>
-
 <p>You are now able to install and compile Cython code and use it in Python applications. You&rsquo;ve also learned about profiling tools and now to use them.</p>
-
 <p>You&rsquo;ve learned:</p>
-
 <ul>
 <li>how to install Cython on macOS, Linux and Windows</li>
 <li>compile Cython code using 3 different methods</li>

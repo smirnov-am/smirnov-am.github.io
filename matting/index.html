@@ -13,9 +13,9 @@
              "@id": "https:\/\/smirnov-am.github.io"
         },
         "articleSection" : "post",
-        "name" : "Rotoscoping with OpenCV\/C\x2b\x2b",
-        "headline" : "Rotoscoping with OpenCV\/C\x2b\x2b",
-        "description" : "How to replace background in a video using matting technique with C\x2b\x2b and OpenCV",
+        "name" : "Rotoscoping with OpenCV\/C\u002b\u002b",
+        "headline" : "Rotoscoping with OpenCV\/C\u002b\u002b",
+        "description" : "How to replace background in a video using matting technique with C\u002b\u002b and OpenCV",
         "inLanguage" : "en-US",
         "author" : "",
         "creator" : "",
@@ -23,11 +23,11 @@
         "accountablePerson" : "",
         "copyrightHolder" : "",
         "copyrightYear" : "2021",
-        "datePublished": "2021-01-12 23:03:00 \x2b0000 UTC",
-        "dateModified" : "2021-01-12 23:03:00 \x2b0000 UTC",
+        "datePublished": "2021-01-12 23:03:00 \u002b0000 UTC",
+        "dateModified" : "2021-01-12 23:03:00 \u002b0000 UTC",
         "url" : "https:\/\/smirnov-am.github.io\/matting\/",
-        "wordCount" : "1326",
-        "keywords" : [ "VFX","OpenCV","C\x2b\x2b","Blog" ]
+        "wordCount" : "1195",
+        "keywords" : [ "VFX","OpenCV","C\u002b\u002b","Blog" ]
     }
     </script>
 
@@ -132,6 +132,11 @@
   </div>
   <script src="https://smirnov-am.github.io/js/navicon-shift.js"></script>
 </section>
+<section class="section" style="padding: 0px 0px;">
+    <div class="container has-text-centered" >
+      <a href="https://t.me/+rY-4DY2YybQxZTRi"><img src="https://smirnov-am.github.io/content/images/ad.png"></a>
+    </div>>
+</section>
 <section class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
@@ -153,186 +158,86 @@
     <h1 class="title">Rotoscoping with OpenCV/C&#43;&#43;</h1>
     
     <div class="content">
-      
-
-<p>One of the most basic problems in VFX is separating an object in a video from its background. The object then composited back into new environment or scene. This task has different names such as matting, keying or more popular term rotoscoping.</p>
-
+      <p>One of the most basic problems in VFX is separating an object in a video from its background. The object then composited back into new environment or scene. This task has different names such as matting, keying or more popular term rotoscoping.</p>
 <p>In this demo you can see how a church in the foreground is separated from the background blue sky, which was later replaced with a sky full of stars. This is the kind of problem matting can help with.</p>
-
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe src="https://www.youtube.com/embed/psfRiN_H9FM" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
 </div>
 
-
-<p>Full code and how to use it is in this repo <a href="https://github.com/smirnov-am/vfx/tree/main/matting" target="_blank">https://github.com/smirnov-am/vfx/tree/main/matting</a></p>
-
+<p>Full code and how to use it is in this repo <a href="https://github.com/smirnov-am/vfx/tree/main/matting">https://github.com/smirnov-am/vfx/tree/main/matting</a></p>
 <h2 id="matting-problem">Matting problem</h2>
-
 <p>Every pixel <code>\( I(x, y) \)</code> in a video frame can be expressed as a composition of <code>\( F(x, y) \)</code> - foreground pixel - and <code>\( B(x, y) \)</code> - background pixel - as:</p>
-
-<div>$$
-I(x, y) = \alpha(x, y) * F(x, y) + (1-\alpha(x, y)) * B(x, y) ~~~~ [1]
-$$</div>
-
+<!-- raw HTML omitted -->
 <p><code>\(\alpha\)</code> is a scalar in a range from 0 to 1 and <code>\(I\)</code>, <code>\(F\)</code> and <code>\(B\)</code> are vectors in RGB space, where each component represents an intensity of a respective color channel. This formula is referred to as matting equation.</p>
-
 <p>It&rsquo;s impossible to solve this problem in general case as this system has only 3 equations - one for each color channel - but 7 unknowns. These unknowns are components of <code>\(F\)</code>, <code>\(B\)</code> and a scalar value of <code>\(\alpha\)</code>.</p>
-
 <p>However, if <code>\(\alpha\)</code> is known, foreground and background can be derived:</p>
-
-<div>$$
-F = \alpha * I ~~~~ [2]
-$$</div>
-
-<div>$$
-B = (1-\alpha) * I ~~~~ [3]
-$$</div>
-
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <p>But there is a way to supply additional information that can make this problem solvable and help with finding <code>\(\alpha\)</code>. Manually mark some pixels as foreground with white and, background with black like on this picture creating a trimap:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/matting/trimap.gif" alt="trimap" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/matting/trimap.gif" alt="trimap"></p>
 <p>I&rsquo;ve taken the first frame from my footage and using image editor roughly painted the church with white and sky with black brush.</p>
-
 <p>There are two method how to solve matting equation [1] given such a trimap covered in this post:</p>
-
 <ul>
 <li>Bayes’ inference</li>
 <li>artificial neural network</li>
 </ul>
-
 <h2 id="apply-bayes-theorem">Apply Bayes theorem</h2>
-
 <p>Since the frame pixel <code>\(I\)</code> is something you already have as an input, what can be reasonable values for <code>\(F\)</code>, <code>\(B\)</code> and <code>\(\alpha\)</code> to produce such a frame? This question can be represented as the probability of these unknowns given <code>\(I\)</code>.</p>
-
-<div>$$
-P(F,B,\alpha|I)
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>Now you need to find such unknowns - foreground <code>\( F \)</code>, background <code>\(B\)</code> and <code>\(\alpha\)</code> - for which this probability is maximum.</p>
-
 <p>Bayes theorem can revert that conditional probability:</p>
-
-<div>$$
-P(F,B,\alpha|I) = \frac{P(I|F,B,\alpha)*P(F,B,\alpha)}{P(I)}
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>The right part of this equation is a product of likelihood and prior probability, divided by evidence probability. Let’s tackle them separately.</p>
-
 <p>The likelihood term in Bayes theorem reflects the knowledge of how likely is an image if foreground, background and <code>\(\alpha\)</code> are known. If they are known, <code>\(I\)</code> is directly computed using matting equation [1]. So you can model the likelihood PDF as a very narrow function with maximum where the matting equation is valid:</p>
-
-<div>$$
-P(I|F,B,\alpha) = e^{-\frac{1}{\sigma^2}*\left \| I - (\alpha*F + (1-\alpha)*B) \right \|}
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>This PDF is a bell-shaped curve with the width controlled by <code>\(\sigma\)</code>, which is an input parameter for this method.</p>
-
 <p>Prior term is a bit more difficult. First, the assumption that foreground, background and and <code>\(\alpha\)</code> are independent of each other breaks this term into 3:</p>
-
-<div>$$
-P(F,B,\alpha) = P(F) * P(B) * P(\alpha)
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>Another useful assumption is that the probability distribution of <code>\(\alpha\)</code> is a constant. In reality is a beta-distribution with a lot of values close to extremes 0 and 1 and very few values in between.</p>
-
 <p>As for PDFs of <code>\(F\)</code> and <code>\(B\)</code>, they can be modeled as Gaussian. Again in general case they are not, but in case of my footage the foreground is mainly brown and the background - sky - is blue. I’m going to put these assumptions to test later on.</p>
-
 <p>Given that foreground and background PDFs are Gaussian, the probability of <code>\(F\)</code> and <code>\(B\)</code> in the prior term can be modeled as:</p>
-
-<div>$$
-P(B) = \frac{1}{2\pi^\frac{3}{2}|\Sigma |^\frac{1}{2}}exp(-\frac{1}{2}(B-\mu_B )^T\Sigma_B^{-1}(B-\mu_B))
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>At last, the probability of evidence <code>\(P(I)\)</code> is a constant and is not relevant.</p>
-
 <p>Given all these models and assumptions it&rsquo;s possible to just take a derivative and find the argument for which the conditional probability is at its maximum. This gives a closed form solution like:</p>
-
-<div>$$
-A \begin{bmatrix}F \\ B \end{bmatrix} = y ~~~~ [4]
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>The exact elements of the matrices can be found in the code:</p>
-
 <ul>
-<li>6-by-6 <code>\(A\)</code> matrix for left hand side - <a href="https://github.com/smirnov-am/vfx/blob/f8bf01f625508f28620bd8c76536eb82ab2f8e6c/matting/bayes.cpp#L9" target="_blank">code</a></li>
-<li>6-by-1 vector <code>\(y\)</code> for right hand side - <a href="https://github.com/smirnov-am/vfx/blob/f8bf01f625508f28620bd8c76536eb82ab2f8e6c/matting/bayes.cpp#L19" target="_blank">code</a></li>
+<li>6-by-6 <code>\(A\)</code> matrix for left hand side - <a href="https://github.com/smirnov-am/vfx/blob/f8bf01f625508f28620bd8c76536eb82ab2f8e6c/matting/bayes.cpp#L9">code</a></li>
+<li>6-by-1 vector <code>\(y\)</code> for right hand side - <a href="https://github.com/smirnov-am/vfx/blob/f8bf01f625508f28620bd8c76536eb82ab2f8e6c/matting/bayes.cpp#L19">code</a></li>
 </ul>
-
 <p>Given that system of linear equations and a formula for <code>\(\alpha\)</code></p>
-
-<div>$$
-\alpha = \frac{(I-B)\cdot (F-B)}{(F-B)\cdot (F-B)} ~~~~ [5]
-$$</div>
-
+<!-- raw HTML omitted -->
 <p>it&rsquo;s possible to iteratively solve them until alpha is converged to some stable value.</p>
-
 <h2 id="check-the-assumptions">Check the assumptions</h2>
-
 <p>Now let’s test the assumption that PDF for foreground and background are Gaussian. Go thought the frame and trimap pixel by pixel at the same time and plot the pixels for which trimap value is either 0 or 1 in 3D RGB space:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/matting/gauss.gif" alt="gauss" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/matting/gauss.gif" alt="gauss"></p>
 <p>I&rsquo;ve done so with Python and pandas. I&rsquo;ve used plotly to visualize the distributions. Furthermore, I&rsquo;m not plotting all pixels as there are thousands of them, but just a fraction. But it&rsquo;s enough to see that foreground and background are nicely separated compact blobs:</p>
-
 <h2 id="get-alpha-map-for-the-whole-video">Get alpha map for the whole video</h2>
-
 <p>The trimap is created for the first frame of the video. Now there is an approximate alpha for each pixel in this first frame. It can be used in equation [4] to calculate foreground and background and use them to get more precise alpha using equation [5] until convergence to some stable number. So the alpha values calculated this way constitute a full alpha map for the first frame.</p>
-
 <p>The alpha map for the first frame then used as a trimap for the second frame. Since there very little difference between the frames it speeds up calculations as the algorithm converges to stable values more quickly</p>
-
 <p>But still in my case of Full HD 60fps footage which is 12s long it took hours. However, it has good potential for parallelization, I didn’t implement that, because got a more interesting idea.</p>
-
 <p>The trimap provides a way to mark some pixels as 0 and another as 1 which looks like a perfect fit for a supervised learning algorithm, that can be implemented using OpenCV build-in artificial neural network.</p>
-
 <h2 id="use-an-artificial-neural-network">Use an artificial neural network</h2>
-
 <p>OpenCV has an implementation of multi-layer perceptron (MLP). To model foreground-background classification an input MLP layer is going to have 3 nodes - one for each color channel. The output layer has a single node for alpha. Since alpha can be fractional the output can be used as is.</p>
-
 <p>All other hyper-parameters of the neural net should be tuned. For that you can train a network and produce an alpha map for the first frame. By comparing them visually you can select the best ones, just short-circuiting a standard approach of separating training set to train-test-validate batches.</p>
-
 <p>The MLP topology looks like this:</p>
-
-<p><img src="https://smirnov-am.github.io/content/images/matting/mlp.png" alt="mlp" /></p>
-
+<p><img src="https://smirnov-am.github.io/content/images/matting/mlp.png" alt="mlp"></p>
 <p>Once the network is trained it is used to predict alpha for each pixel in each frame. The result again is a video alpha map.</p>
-
 <p>This method works much faster compared to Bayes’ inference once the network is trained, but has a slow start since training and tuning the hyper-parameters takes some time.</p>
-
 <h2 id="final-composition">Final composition</h2>
-
 <p>Finally, given a video alpha map - a video consisting of alpha maps of individual frames of the original video - you can compose a new video by replacing the background with the new one using equations [2] and [3]</p>
-
 <p>Here is a 30sec reel that shows the whole process:</p>
-
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe src="https://www.youtube.com/embed/9HJZA-fyR3Y" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
 </div>
 
-
-<script>
-MathJax = {
-    tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$','$$'], ['\\[', '\\]']],
-    processEscapes: true,
-    processEnvironments: true
-    },
-    options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-    }
-};
-
-window.addEventListener('load', (event) => {
-    document.querySelectorAll("mjx-container").forEach(function(x){
-        x.parentElement.classList += 'has-jax'})
-    });
-
-</script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script type="text/javascript" id="MathJax-script" async
-src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 
 
       <section class="section">
