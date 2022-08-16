@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://smirnov-am.github.io/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+    <lastmod>2022-08-14T18:41:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/tags/flask/</loc>
+    <lastmod>2022-08-14T18:41:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/modern-web-development-flask/</loc>
+    <lastmod>2022-08-14T18:41:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/post/</loc>
+    <lastmod>2022-08-14T18:41:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/tags/python/</loc>
+    <lastmod>2022-08-14T18:41:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/tags/</loc>
+    <lastmod>2022-08-14T18:41:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/tags/c&#43;&#43;/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
@@ -11,13 +26,7 @@
     <loc>https://smirnov-am.github.io/tags/opencv/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
   </url><url>
-    <loc>https://smirnov-am.github.io/post/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url><url>
     <loc>https://smirnov-am.github.io/matting/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url><url>
-    <loc>https://smirnov-am.github.io/tags/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/tags/vfx/</loc>
@@ -26,14 +35,8 @@
     <loc>https://smirnov-am.github.io/how-to-become-python-developer/</loc>
     <lastmod>2020-12-21T18:41:00+00:00</lastmod>
   </url><url>
-    <loc>https://smirnov-am.github.io/tags/python/</loc>
-    <lastmod>2020-12-21T18:41:00+00:00</lastmod>
-  </url><url>
     <loc>https://smirnov-am.github.io/chromakeying/</loc>
     <lastmod>2020-10-14T23:03:00+00:00</lastmod>
-  </url><url>
-    <loc>https://smirnov-am.github.io/tags/flask/</loc>
-    <lastmod>2020-09-14T23:03:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/flask-s3/</loc>
     <lastmod>2020-09-14T23:03:00+00:00</lastmod>

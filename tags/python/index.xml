@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2021</copyright>
-    <lastBuildDate>Mon, 21 Dec 2020 18:41:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Aug 2022 18:41:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Modern Web Development with Python and Flask [video course]</title>
+      <link>https://smirnov-am.github.io/modern-web-development-flask/</link>
+      <pubDate>Sun, 14 Aug 2022 18:41:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/modern-web-development-flask/</guid>
+      <description>Flask is a widely-used web framework. According StackOverflow developers survey it&amp;rsquo;s 10th most commont web framework beating even Laravel and RoR.
+Do you want to start developing modern web appications using Python and Flask? I&amp;rsquo;m building a video course and a support community for engineers who want to start developing fast scalable web applications with Python. It might be your for day-to-day job or a pet-project you are working on.</description>
+    </item>
+    
     <item>
       <title>How to become a Python developer</title>
       <link>https://smirnov-am.github.io/how-to-become-python-developer/</link>
@@ -236,7 +246,7 @@ In this tutorial, you’ll learn how to:
       <guid>https://smirnov-am.github.io/representing-money-in-python/</guid>
       <description>Python&amp;rsquo;s float type is a natural first step to represent monetary amounts in the code. Almost all platforms map Python floats to IEEE-754 “double precision”.
 Doubles contain 53 bits of precision. When the machine is trying to represent the fractional part (mantissa) of a given number it finds a bit sequence \(b_1, b_2 ... b_{53}\) so that a sum:
-is close to the number as possible. So, values such as 0.</description>
+$$ b_1(\frac{1}{2})^{1} + b_2(\frac{1}{2})^{2} + ... + b_{53}(\frac{1}{2})^{53} $$ is close to the number as possible.</description>
     </item>
     
     <item>
