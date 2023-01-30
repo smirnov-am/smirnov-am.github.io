@@ -6,18 +6,8 @@
     <description>Recent content in Posts on Alexey Smirnov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>&amp;copy; Alexey Smirnov 2021</copyright>
-    <lastBuildDate>Sun, 14 Aug 2022 18:41:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Modern Web Development with Python and Flask [video course]</title>
-      <link>https://smirnov-am.github.io/modern-web-development-flask/</link>
-      <pubDate>Sun, 14 Aug 2022 18:41:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/modern-web-development-flask/</guid>
-      <description>Flask is a widely-used web framework. According StackOverflow developers survey it&amp;rsquo;s 10th most commont web framework beating even Laravel and RoR.
-Do you want to start developing modern web appications using Python and Flask? I&amp;rsquo;m building a video course and a support community for engineers who want to start developing fast scalable web applications with Python. It might be your for day-to-day job or a pet-project you are working on.</description>
-    </item>
-    
+    <copyright>&amp;copy; Alexey Smirnov 2023</copyright>
+    <lastBuildDate>Tue, 12 Jan 2021 23:03:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Rotoscoping with OpenCV/C&#43;&#43;</title>
       <link>https://smirnov-am.github.io/matting/</link>
