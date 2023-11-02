@@ -3,10 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://smirnov-am.github.io/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/tags/aws/</loc>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/tags/blog/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/dynamodb-pros-cons/</loc>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/post/</loc>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/tags/serverless/</loc>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://smirnov-am.github.io/tags/</loc>
+    <lastmod>2023-10-11T11:00:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/tags/c&#43;&#43;/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
@@ -14,13 +29,7 @@
     <loc>https://smirnov-am.github.io/tags/opencv/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
   </url><url>
-    <loc>https://smirnov-am.github.io/post/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url><url>
     <loc>https://smirnov-am.github.io/matting/</loc>
-    <lastmod>2021-01-12T23:03:00+00:00</lastmod>
-  </url><url>
-    <loc>https://smirnov-am.github.io/tags/</loc>
     <lastmod>2021-01-12T23:03:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/tags/vfx/</loc>
@@ -86,9 +95,6 @@
     <loc>https://smirnov-am.github.io/deploy-flask/</loc>
     <lastmod>2020-04-12T17:03:00+00:00</lastmod>
   </url><url>
-    <loc>https://smirnov-am.github.io/tags/aws/</loc>
-    <lastmod>2020-04-12T17:03:00+00:00</lastmod>
-  </url><url>
     <loc>https://smirnov-am.github.io/python-linters-for-better-code-quality/</loc>
     <lastmod>2019-11-04T20:23:49+00:00</lastmod>
   </url><url>
@@ -126,9 +132,6 @@
     <lastmod>2018-07-11T15:26:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/tags/nlp/</loc>
-    <lastmod>2018-05-09T15:22:00+00:00</lastmod>
-  </url><url>
-    <loc>https://smirnov-am.github.io/tags/serverless/</loc>
     <lastmod>2018-05-09T15:22:00+00:00</lastmod>
   </url><url>
     <loc>https://smirnov-am.github.io/using-nltk-library-with-aws-lambda/</loc>

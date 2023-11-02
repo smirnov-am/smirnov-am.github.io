@@ -7,13 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Alexey Smirnov 2023</copyright>
-    <lastBuildDate>Tue, 12 Jan 2021 23:03:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Oct 2023 11:00:00 +0000</lastBuildDate><atom:link href="https://smirnov-am.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS</title>
+      <link>https://smirnov-am.github.io/tags/aws/</link>
+      <pubDate>Wed, 11 Oct 2023 11:00:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>blog</title>
       <link>https://smirnov-am.github.io/tags/blog/</link>
-      <pubDate>Tue, 12 Jan 2021 23:03:00 +0000</pubDate>
+      <pubDate>Wed, 11 Oct 2023 11:00:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Serverless</title>
+      <link>https://smirnov-am.github.io/tags/serverless/</link>
+      <pubDate>Wed, 11 Oct 2023 11:00:00 +0000</pubDate>
+      
+      <guid>https://smirnov-am.github.io/tags/serverless/</guid>
       <description></description>
     </item>
     
@@ -72,15 +90,6 @@
     </item>
     
     <item>
-      <title>AWS</title>
-      <link>https://smirnov-am.github.io/tags/aws/</link>
-      <pubDate>Sun, 12 Apr 2020 17:03:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/tags/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Security</title>
       <link>https://smirnov-am.github.io/tags/security/</link>
       <pubDate>Wed, 11 Jul 2018 15:26:00 +0000</pubDate>
@@ -95,15 +104,6 @@
       <pubDate>Wed, 09 May 2018 15:22:00 +0000</pubDate>
       
       <guid>https://smirnov-am.github.io/tags/nlp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Serverless</title>
-      <link>https://smirnov-am.github.io/tags/serverless/</link>
-      <pubDate>Wed, 09 May 2018 15:22:00 +0000</pubDate>
-      
-      <guid>https://smirnov-am.github.io/tags/serverless/</guid>
       <description></description>
     </item>
     
